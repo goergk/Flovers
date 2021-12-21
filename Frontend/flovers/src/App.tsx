@@ -1,13 +1,9 @@
 import React from 'react';
-import './App.css';
+import Page from './components/Current Page/PagesRoutes';
 
 function App() {
   return (
-    <div className="App">
-      <p>
-        Initial commit
-      </p>
-    </div>
+    <Page />
   );
 }
 

@@ -1,0 +1,470 @@
+.Container_1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 120vh;
+  background-image: url("../Images/flower_landing_page_full.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+@keyframes slide-right {
+  from {
+    padding-right: 300px;
+    opacity: 0;
+  }
+
+  to {
+    padding-right: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.Container_2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #090b0f;
+  align-items: center;
+  width: 100%;
+  min-height: 45vh;
+}
+
+.Container_3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #090b0f;
+  align-items: center;
+  width: 100%;
+  min-height: 6vh;
+}
+
+.Footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0em auto 0em auto;
+  width: 80%;
+  height: 100%;
+  color: white;
+}
+
+.Footer h2 {
+  font-size: calc(4px + 1vmin);
+}
+
+.Heart_Icon {
+  color: red;
+  margin-bottom: -0.2em;
+  transform: scale(0.7);
+}
+
+.Coffee_Icon {
+  color: brown;
+  margin-bottom: -0.23em;
+  transform: scale(0.7);
+}
+
+.Navbar_Container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2em auto 0em auto;
+  width: 80%;
+  opacity: 0;
+  -webkit-animation: slide-in ease-in 1;
+  -moz-animation: slide-in ease-in 1;
+  animation: slide-in ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+}
+
+.Logo_Container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Logo_Container h2 {
+  font-size: calc(8px + 2vmin);
+  color: #d97979;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.Logo_Icon {
+  color: #d97979;
+}
+
+.Login_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid #d97979;
+  border-radius: 2em;
+  color: #ffffff;
+  transition: 150ms ease-in;
+}
+
+.Login_Container p {
+  margin: 0;
+  padding: 0;
+  font-size: calc(8px + 1vmin);
+  font-weight: 500;
+  margin: 0.5em 2em;
+}
+
+.Login_Container:hover {
+  cursor: pointer;
+  background-color: #d97979;
+}
+
+.Offers_Container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0em auto 0em auto;
+  width: 80%;
+  margin-top: -2.5em;
+}
+
+.Offer_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 25em;
+  min-width: 18em;
+  border-radius: 2em;
+  background-color: #090b0f;
+  box-shadow: 0px 15px 15px 6px #000000;
+}
+
+.Title_Container {
+  margin: 8em auto 1em auto;
+  width: 80%;
+  color: #ffffff;
+  font-size: calc(6px + 2vmin);
+  font-family: "Inter", sans-serif;
+  opacity: 0;
+  -webkit-animation: slide-right ease-in 1;
+  -moz-animation: slide-right ease-in 1;
+  animation: slide-right ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+}
+
+.Title_Container h1 {
+  padding: 0;
+  margin: 0;
+  max-width: 15em;
+  font-weight: 900;
+  letter-spacing: 0.0005em;
+}
+
+.Text_Container {
+  margin: 0em auto 0em auto;
+  width: 80%;
+  color: #7ba79c;
+  font-size: calc(0.2px + 2vmin);
+  font-family: "Inter", sans-serif;
+  opacity: 0;
+  -webkit-animation: slide-right ease-in 1;
+  -moz-animation: slide-right ease-in 1;
+  animation: slide-right ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  animation-delay: 0.4s;
+}
+
+.Text_Container h2 {
+  padding: 0;
+  margin: 0;
+  max-width: 26em;
+  font-weight: 600;
+  letter-spacing: 0.0005em;
+}
+
+.Main_Button_Container {
+  margin: 5em auto 0em auto;
+  width: 80%;
+  font-family: "Inter", sans-serif;
+}
+
+.Button_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10em;
+  color: #090b0f;
+  background-color: #d97979;
+  border-radius: 2em;
+  padding: 0em 1em 0em 1em;
+  border: 1px solid #d97979;
+  transition: 150ms ease-in;
+  opacity: 0;
+  -webkit-animation: slide-right ease-in 1;
+  -moz-animation: slide-right ease-in 1;
+  animation: slide-right ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  animation-delay: 0.7s;
+}
+
+.Button_Container h2 {
+  font-size: 1.2em;
+  margin-right: 0.3em;
+}
+
+.Button_Container:hover {
+  cursor: pointer;
+  background-color: #84bb97;
+  border-color: #84bb97;
+}
+
+@keyframes myAnimation {
+  0% {
+    padding-left: 0px;
+  }
+  100% {
+    padding-left: 15px;
+  }
+}
+@-webkit-keyframes myAnimation {
+  0% {
+    padding-left: 0px;
+  }
+  100% {
+    padding-left: 15px;
+  }
+}
+@-moz-keyframes myAnimation {
+  0% {
+    padding-left: 0px;
+  }
+  100% {
+    padding-left: 15px;
+  }
+}
+@-o-keyframes myAnimation {
+  0% {
+    padding-left: 0px;
+  }
+  100% {
+    padding-left: 15px;
+  }
+}
+
+.Arrow {
+  color: #090b0f;
+  animation-name: myAnimation;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  -webkit-transition: all 0.9s ease;
+  -moz-transition: all 0.9s ease;
+  -o-transition: all 0.9s ease;
+  transition: all 0.9s ease;
+  animation-direction: alternate;
+}
+
+.Button_Container:hover .Arrow {
+  fill: #ffffff;
+}
+
+.Offer_Container h2 {
+  text-align: center;
+  margin-top: 2em;
+  color: #ffffff;
+  font-size: calc(6px + 2vmin);
+  max-width: 90%;
+}
+
+.Offer_Container p {
+  text-align: center;
+  text-align: center;
+  margin-top: 2em;
+  color: #84bb97;
+  font-size: calc(1px + 2vmin);
+  width: 14em;
+}
+
+.Offer_Icon {
+  color: #d97979;
+  transform: scale(4);
+}
+
+@media only screen and (max-width: 1200px) {
+  .Offers_Container {
+    justify-content: space-between;
+  }
+
+  .Offer_Container {
+    min-height: 20em;
+    min-width: 13em;
+  }
+
+  .Offer_Container h2 {
+    font-size: calc(2px + 2vmin);
+  }
+
+  .Offer_Container p {
+    font-size: calc(5px + 1vmin);
+  }
+
+  .Offer_Icon {
+    transform: scale(3);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .Container_1 {
+    background-image: url("../Images/flower_landing_page.jpg");
+  }
+
+  .Title_Container {
+    margin-top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    width: 100%;
+    -webkit-animation: slide-in ease-in 1;
+    -moz-animation: slide-in ease-in 1;
+    animation: slide-in ease-in 1;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+
+    -webkit-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+  }
+
+  .Text_Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    -webkit-animation: slide-in ease-in 1;
+    -moz-animation: slide-in ease-in 1;
+    animation: slide-in ease-in 1;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+
+    -webkit-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    animation-delay: 0.4s;
+  }
+
+  .Main_Button_Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .Container_2 {
+    border-radius: 0;
+    width: 100%;
+  }
+
+  .Button_Container h2 {
+    font-size: 0.8em;
+    margin-right: 0.3em;
+  }
+
+  .Button_Container {
+    width: 8em;
+    -webkit-animation: slide-in ease-in 1;
+    -moz-animation: slide-in ease-in 1;
+    animation: slide-in ease-in 1;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+
+    -webkit-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    animation-delay: 0.7s;
+  }
+
+  .Login_Container p {
+    font-size: calc(6px + 2vmin);
+  }
+
+  .Container_1 {
+    min-height: 110vh;
+  }
+
+  .Footer {
+    flex-direction: column;
+  }
+
+  .Offers_Container {
+    flex-direction: column;
+  }
+
+  .Offer_Container {
+    width: 80%;
+    height: 25em;
+    margin-bottom: 2em;
+  }
+
+  .Offer_Container h2 {
+    font-size: calc(15px + 2vmin);
+  }
+
+  .Offer_Container p {
+    font-size: calc(7px + 2vmin);
+  }
+
+  .Offer_Icon {
+    transform: scale(3.5);
+  }
+}

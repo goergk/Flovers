@@ -1,29 +1,30 @@
 import React from 'react';
 import classes from './LandingPage.module.css';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import SpaIcon from '@mui/icons-material/Spa';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import { PageType } from '../Current Page/PageType';
+import { Link } from 'react-router-dom';
+import Logo from '../../Assets/Logo/Logo';
 
 const LandingPage = () => {
     return (
         <>
             <div className={classes.Container_1}>
                 <div className={classes.Navbar_Container}>
-                    <div className={classes.Logo_Container}>
-                        <SpaIcon className={classes.Logo_Icon} />
-                        <h2>
-                            Flovers
-                        </h2>
-                    </div>
-                    <div className={classes.Login_Container}>
-                        <p>
-                            Sign In
-                        </p>
-                    </div>
+                    <Link to={`${PageType.LANDING_PAGE}`} style={{ textDecoration: 'none' }}>
+                        <Logo />
+                    </Link>
+                    <Link to={`${PageType.SIGNIN}`} style={{ textDecoration: 'none' }}>
+                        <div className={classes.Login_Container}>
+                            <p>
+                                Sign In
+                            </p>
+                        </div>
+                    </Link>
                 </div>
                 <div className={classes.Title_Container}>
                     <h1>
@@ -36,10 +37,12 @@ const LandingPage = () => {
                     </h2>
                 </div>
                 <div className={classes.Main_Button_Container}>
-                    <div className={classes.Button_Container}>
-                        <h2>Start now</h2>
-                        <ArrowRightAltIcon className={classes.Arrow} />
-                    </div>
+                    <Link to={`${PageType.SIGNUP}`} style={{ textDecoration: 'none' }}>
+                        <div className={classes.Button_Container}>
+                            <h2>Start now</h2>
+                            <ArrowRightAltIcon className={classes.Arrow} />
+                        </div>
+                    </Link>
                 </div>
             </div>
             <div className={classes.Container_2}>

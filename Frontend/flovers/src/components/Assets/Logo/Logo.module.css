@@ -1,0 +1,18 @@
+.Logo_Container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Logo_Container h2 {
+  font-size: calc(8px + 2vmin);
+  color: #d97979;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.Logo_Icon {
+  color: #d97979;
+}

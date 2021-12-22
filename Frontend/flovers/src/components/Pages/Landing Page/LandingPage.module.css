@@ -5,7 +5,7 @@
   align-items: flex-start;
   width: 100%;
   min-height: 120vh;
-  background-image: url("../Images/flower_landing_page_full.jpg");
+  background-image: url("../../Images/flower_landing_page_full.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -40,7 +40,7 @@
   background-color: #090b0f;
   align-items: center;
   width: 100%;
-  min-height: 45vh;
+  min-height: 55vh;
 }
 
 .Container_3 {
@@ -97,25 +97,6 @@
   -webkit-animation-duration: 0.5s;
   -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
-}
-
-.Logo_Container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.Logo_Container h2 {
-  font-size: calc(8px + 2vmin);
-  color: #d97979;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.Logo_Icon {
-  color: #d97979;
 }
 
 .Login_Container {
@@ -308,10 +289,6 @@
   animation-direction: alternate;
 }
 
-.Button_Container:hover .Arrow {
-  fill: #ffffff;
-}
-
 .Offer_Container h2 {
   text-align: center;
   margin-top: 2em;
@@ -359,7 +336,7 @@
 
 @media only screen and (max-width: 768px) {
   .Container_1 {
-    background-image: url("../Images/flower_landing_page.jpg");
+    background-image: url("../../Images/flower_landing_page.jpg");
   }
 
   .Title_Container {

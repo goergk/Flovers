@@ -5,8 +5,8 @@
 .Form {
   position: relative;
   width: 17.4em;
-  height: 0.7em;
-  margin-bottom: 4em;
+  height: 0.2em;
+  margin-bottom: 4.4em;
 }
 
 .Form_Input {
@@ -35,7 +35,7 @@
 .Form_Label {
   position: absolute;
   left: 0.7em;
-  top: 0.9em;
+  top: 0.7em;
   padding: 0 0.5em;
   color: white;
   cursor: text;
@@ -54,7 +54,7 @@
 }
 
 .error {
-  top: 6em;
+  top: 4.6em;
   position: absolute;
   color: red;
   font-size: 0.6em;
@@ -86,4 +86,49 @@
 }
 
 @media only screen and (max-width: 550px) {
+  .Form_Container {
+    width: 100%;
+    height: fit-content;
+  }
+
+  .Form {
+    width: calc(100% - 2em);
+    margin-bottom: 3.8em;
+    height: 0.001em;
+  }
+
+  .Form_Input {
+    font-size: 0.85em;
+    padding: 1.25em 1em 1.25em 1em;
+  }
+
+  .Form_Input_error {
+    font-size: 0.85em;
+    padding: 1.25em 1em 1.25em 1em;
+  }
+
+  .Form_Label {
+    font-size: 0.8em;
+    left: 1em;
+    top: 0.65em;
+  }
+
+  .error {
+    top: 4.5em;
+    position: absolute;
+    color: red;
+    font-size: 0.5em;
+    font-weight: 600;
+    animation-delay: 0.2s;
+  }
+
+  .Form_Input:focus + .Form_Label,
+  .Form_Input:not(:placeholder-shown).Form_Input:not(:focus) + .Form_Label,
+  .Form_Input_error:focus + .Form_Label,
+  .Form_Input_error:not(:placeholder-shown).Form_Input_error:not(:focus)
+    + .Form_Label {
+    top: -0.5em;
+    font-size: 0.6em;
+    left: 0.9em;
+  }
 }

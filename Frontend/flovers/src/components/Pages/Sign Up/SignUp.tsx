@@ -1,25 +1,49 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import classes from './SignUp.module.css';
 import { PageType } from '../Current Page/PageType';
 import Logo from '../../Assets/Logo/Logo';
-import TextField from '@mui/material/TextField/TextField';
+import Input from '../../Assets/Sign_Input/Input';
+import * as Yup from "yup";
+import { useFormik } from "formik";
+
+const initialValues = {
+    Username: "",
+    Email: "",
+    Password: "",
+    ConfirmPassword: "",
+};
+
+const FORM_VALIDATION = Yup.object().shape({
+    Username: Yup.string().required("Required"),
+    Email: Yup.string().email("Invalid email.").required("Required"),
+    Password: Yup.string()
+        .matches(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+            "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special case character."
+        )
+        .required("Password required."),
+    ConfirmPassword: Yup.string()
+        .oneOf([Yup.ref("Password"), null], "Password doesn't match")
+        .required("Confirm password."),
+});
 
 const SignUp = () => {
-    const [state, setState] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirm: "",
-    })
+    const history = useHistory();
+    const changeRoute = () => history.push('/flovers');
+    const [error, setError] = useState('');
 
-    function handleChange(evt: any) {
-        const value = evt.target.value;
-        setState({
-            ...state,
-            [evt.target.name]: value
-        });
-    }
+    const onSubmit = () => {
+        console.log('Its working :)');
+    };
+
+    const { handleChange, handleSubmit, values, errors } = useFormik({
+        initialValues,
+        validationSchema: FORM_VALIDATION,
+        validateOnChange: false,
+        validateOnBlur: false,
+        onSubmit,
+    });
 
     return (
         <div className={classes.Sign_In_Container}>
@@ -33,39 +57,42 @@ const SignUp = () => {
                     <h3>
                         Sign Up
                     </h3>
-                    <TextField
-                        label="Username"
-                        variant="outlined"
-                        value={state.username}
-                        onChange={handleChange}
-                        className={classes.Sign_In_Input}
-                    />
-                    <TextField
-                        label="Email"
-                        variant="outlined"
-                        value={state.email}
-                        onChange={handleChange}
-                        className={classes.Sign_In_Input}
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        variant="outlined"
-                        value={state.password}
-                        onChange={handleChange}
-                        className={classes.Sign_In_Input}
-                    />
-                    <TextField
-                        label="Confirm Password"
-                        type="password"
-                        variant="outlined"
-                        value={state.confirm}
-                        onChange={handleChange}
-                        className={classes.Sign_In_Input}
-                    />
-                    <div className={classes.Login_Button}>
-                        <b>Register</b>
-                    </div>
+                    <form onSubmit={handleSubmit} className={classes.Login_From_Container}>
+                        <Input
+                            error={errors.Username}
+                            value={values.Username}
+                            onChange={handleChange}
+                            type="text"
+                            name="Username"
+                            text="Username"
+                        />
+                        <Input
+                            error={errors.Email}
+                            value={values.Email}
+                            onChange={handleChange}
+                            type="text"
+                            name="Email"
+                            text="Email"
+                        />
+                        <Input
+                            error={errors.Password}
+                            value={values.Password}
+                            onChange={handleChange}
+                            type="password"
+                            name="Password"
+                            text="Password"
+                        />
+                        <Input
+                            error={errors.ConfirmPassword}
+                            value={values.ConfirmPassword}
+                            onChange={handleChange}
+                            type="password"
+                            name="ConfirmPassword"
+                            text="Confirm Password"
+                        />
+                        {error !== '' && <p className={classes.Login_Error}>{error}</p>}
+                        <button className={classes.Login_Button}>Register</button>
+                    </form>
                     <div className={classes.Container_2}>
                         <Link to={`${PageType.SIGNIN}`} style={{ textDecoration: 'none', color: '#d97979' }}>
                             <h4>

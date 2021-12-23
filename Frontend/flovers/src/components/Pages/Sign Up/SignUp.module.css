@@ -13,7 +13,7 @@
     height: 5em;
   }
   100% {
-    height: 32em;
+    height: 33.5em;
   }
 }
 @-webkit-keyframes login {
@@ -21,7 +21,7 @@
     height: 5em;
   }
   100% {
-    height: 32em;
+    height: 33.5em;
   }
 }
 @-moz-keyframes login {
@@ -29,7 +29,7 @@
     height: 5em;
   }
   100% {
-    height: 32em;
+    height: 33.5em;
   }
 }
 @-o-keyframes login {
@@ -37,7 +37,7 @@
     height: 5em;
   }
   100% {
-    height: 32em;
+    height: 33.5em;
   }
 }
 
@@ -48,7 +48,7 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background-image: url("../../Images/sign_up_page.jpg");
+  background-image: url("../../Images/sign_in_page.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -67,6 +67,7 @@
 }
 
 .Navbar_Container {
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -90,20 +91,20 @@
 .Container_1 {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   width: 100%;
 }
 
 .Login_Container {
-  margin-top: 5%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: 5em;
   width: 30em;
-  background-color: white;
+  background-color: rgb(255, 255, 255, 0.1);
+  color: black;
   border-radius: 0.5em;
   -webkit-animation: login ease-in 1;
   -moz-animation: login ease-in 1;
@@ -140,19 +141,19 @@
   justify-content: center;
   align-items: center;
   width: 20em;
-  border-top: 1px solid #090b0f;
+  border-top: 1px solid white;
   margin: 2em 0em;
 }
 
 .Login_Button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 1em;
+  font-weight: 600;
   color: white;
   width: 20em;
   height: 3em;
   background-color: #d97979;
   border-radius: 0.5em;
+  border: 1px solid #d97979;
 }
 
 .Login_Button:hover {
@@ -161,15 +162,7 @@
 
 .Login_Container h3 {
   margin-top: 2em;
-}
-
-.Sign_In_Input {
-  width: 20em;
-  height: 4em;
-}
-
-.Sign_In_Input input {
-  height: 1em;
+  color: white;
 }
 
 @media only screen and (max-width: 550px) {
@@ -178,7 +171,7 @@
       height: 5em;
     }
     100% {
-      height: 28em;
+      height: 24em;
     }
   }
   @-webkit-keyframes login {
@@ -186,7 +179,7 @@
       height: 5em;
     }
     100% {
-      height: 28em;
+      height: 24em;
     }
   }
   @-moz-keyframes login {
@@ -194,7 +187,7 @@
       height: 5em;
     }
     100% {
-      height: 28em;
+      height: 24em;
     }
   }
   @-o-keyframes login {
@@ -202,13 +195,12 @@
       height: 5em;
     }
     100% {
-      height: 28em;
+      height: 24em;
     }
   }
 
   .Login_Container {
     width: 80%;
-    height: 5em;
   }
 
   .Sign_In_Input {
@@ -219,12 +211,47 @@
     width: 90%;
   }
 
+  .Navbar_Container {
+    z-index: 10;
+  }
+
+  .Container_1 {
+    position: absolute;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+
   .Container_2 {
     width: 90%;
     margin-bottom: 1em;
   }
 
   .Login_Container h3 {
-    margin-top: 1em;
+    font-size: 1em;
+    margin-top: 0.8em;
+  }
+
+  .Login_Button {
+    font-size: 0.7em;
+    height: 3em;
+    width: 100%;
+  }
+
+  .Login_From_Container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+  }
+
+  .Container_2 {
+    margin: 0.8em 0em;
+  }
+
+  .Container_2 h4 {
+    font-size: 0.8em;
+    margin: 0.8em 0em;
   }
 }

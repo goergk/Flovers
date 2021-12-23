@@ -37,12 +37,14 @@ const LandingPage = () => {
                     </h2>
                 </div>
                 <div className={classes.Main_Button_Container}>
-                    <Link to={`${PageType.SIGNUP}`} style={{ textDecoration: 'none' }}>
-                        <div className={classes.Button_Container}>
-                            <h2>Start now</h2>
-                            <ArrowRightAltIcon className={classes.Arrow} />
-                        </div>
-                    </Link>
+                    <div style={{ width: 'fit-content' }}>
+                        <Link to={`${PageType.SIGNUP}`} style={{ textDecoration: 'none' }}>
+                            <div className={classes.Button_Container}>
+                                <h2>Start now</h2>
+                                <ArrowRightAltIcon className={classes.Arrow} />
+                            </div>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className={classes.Container_2}>

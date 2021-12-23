@@ -103,7 +103,8 @@
   align-items: center;
   height: 5em;
   width: 30em;
-  background-color: white;
+  background-color: rgb(255, 255, 255, 0.1);
+  color: black;
   border-radius: 0.5em;
   -webkit-animation: login ease-in 1;
   -moz-animation: login ease-in 1;
@@ -140,36 +141,24 @@
   justify-content: center;
   align-items: center;
   width: 20em;
-  border-top: 1px solid #090b0f;
+  border-top: 1px solid white;
   margin: 2em 0em;
 }
 
 .Login_Button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 1em;
+  font-weight: 600;
   color: white;
   width: 20em;
   height: 3em;
   background-color: #d97979;
   border-radius: 0.5em;
-}
-
-.Login_Button:hover {
-  cursor: pointer;
+  border: 1px solid #d97979;
 }
 
 .Login_Container h3 {
   margin-top: 2em;
-}
-
-.Sign_In_Input {
-  width: 20em;
-  height: 4em;
-}
-
-.Sign_In_Input input {
-  height: 1em;
+  color: white;
 }
 
 @media only screen and (max-width: 550px) {

@@ -1,0 +1,89 @@
+.Form_Container {
+  position: relative;
+}
+
+.Form {
+  position: relative;
+  width: 17.4em;
+  height: 0.7em;
+  margin-bottom: 4em;
+}
+
+.Form_Input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(187, 187, 187);
+  border-radius: 0.5em;
+  color: white;
+  outline: none;
+  padding: 1.25em;
+  background: none;
+  font-size: 1em;
+}
+
+.Form_Input:hover {
+  border-color: #ffffff;
+}
+
+.Form_Input:focus {
+  border-color: #d87878;
+}
+
+.Form_Label {
+  position: absolute;
+  left: 0.7em;
+  top: 0.9em;
+  padding: 0 0.5em;
+  color: white;
+  cursor: text;
+  transition: top 150ms ease-in, left 150ms ease-in, font-size 150ms ease-in;
+  background-color: #1a1a1a;
+}
+
+.Form_Input:focus + .Form_Label,
+.Form_Input:not(:placeholder-shown).Form_Input:not(:focus) + .Form_Label,
+.Form_Input_error:focus + .Form_Label,
+.Form_Input_error:not(:placeholder-shown).Form_Input_error:not(:focus)
+  + .Form_Label {
+  top: -0.5em;
+  font-size: 0.8em;
+  left: 0.9em;
+}
+
+.error {
+  top: 6em;
+  position: absolute;
+  color: red;
+  font-size: 0.6em;
+  font-weight: 600;
+  animation-delay: 0.2s;
+}
+
+.Form_Input_error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid red;
+  border-radius: 0.5em;
+  color: white;
+  outline: none;
+  padding: 1.25em;
+  background: none;
+  font-size: 1em;
+}
+
+.Form_Input_error:hover {
+  border-color: rgb(235, 117, 117);
+}
+
+.Form_Input_error:focus {
+  border-color: red;
+}
+
+@media only screen and (max-width: 550px) {
+}

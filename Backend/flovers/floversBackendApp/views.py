@@ -1,7 +1,7 @@
 from django.http.response import Http404, JsonResponse
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from .models import User
@@ -9,6 +9,8 @@ from .serializers import  UserSerializer
 
 
 @api_view(['GET'])
+@authentication_classes(())
+@permission_classes(())
 def apiRoutes(request):
     api_urls = {
         'Login':'login/',
@@ -75,6 +77,6 @@ def AllUsers(request):
     serializer = UserSerializer(users, many=True)
     return Response(
         {
-            "events":serializer.data,
+            "users":serializer.data,
             "length":len(users)
         })

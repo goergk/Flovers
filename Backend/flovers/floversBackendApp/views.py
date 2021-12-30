@@ -16,10 +16,12 @@ def apiRoutes(request):
         'Login':'login/',
         'Register':'register/',
         'Users':'users/',
+        'Get Token':'token/',
     }
     return Response(api_urls)
 
 @api_view(['POST'])
+@permission_classes(())
 def login_view(request):
 
     try:
@@ -37,12 +39,12 @@ def login_view(request):
                 "login": True
             })
         else:
-            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+            raise Http404
     except:
         raise Http404
 
-
 @api_view(['POST'])
+@permission_classes(())
 def register(request):
 
     user_data = request.data
@@ -52,13 +54,13 @@ def register(request):
     confirmation = user_data["confirmation"]
     
     if password != confirmation:
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        raise Http404
 
     try:
         user = User.objects.create_user(username, email, password)
         user.save()
     except IntegrityError:
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        raise Http404
     login(request, user)
     serializer = UserSerializer(user)
     return Response(

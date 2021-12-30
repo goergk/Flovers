@@ -4,8 +4,8 @@ import Index from '../Index Page/Index';
 import LandingPage from '../Landing Page/LandingPage';
 import { PageType } from './PageType';
 import classes from './CurrentPage.module.css';
-import SignIn from '../Sign In/SignIn';
-import SignUp from '../Sign Up/SignUp';
+import SignIn from '../Sign In Page/SignIn';
+import SignUp from '../Sign Up Page/SignUp';
 
 const Page = () => {
 

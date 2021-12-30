@@ -6,6 +6,9 @@ import Logo from '../../Assets/Logo/Logo';
 import Input from '../../Assets/Sign_Input/Input';
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
+import { signIn } from '../../../features/login';
 
 const initialValues = {
     Username: "",
@@ -30,11 +33,59 @@ const FORM_VALIDATION = Yup.object().shape({
 
 const SignUp = () => {
     const history = useHistory();
-    const changeRoute = () => history.push('/flovers');
+    const changeRoute = () => history.push(`${PageType.INDEX}`);
     const [error, setError] = useState('');
+    const { login } = useSelector((state: RootState) => state.Login);
+    const dispatch = useDispatch();
+
+    if (login) { changeRoute() }
 
     const onSubmit = () => {
-        console.log('Its working :)');
+        setError('');
+        fetch('http://127.0.0.1:8000/api/register/', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                "username": values.Username,
+                "email": values.Email,
+                "password": values.Password,
+                "confirmation": values.ConfirmPassword
+            })
+        }).then((response) => {
+            response.json().then(data => {
+                if (response.ok) {
+                    sessionStorage.setItem('user', data.user.username);
+
+                    fetch('http://127.0.0.1:8000/api/token/', {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json, text/plain',
+                            'Content-Type': 'application/json; charset=UTF-8'
+                        },
+                        body: JSON.stringify({
+                            "username": values.Username,
+                            "password": values.Password
+                        })
+                    }).then((response) => {
+                        response.json().then(data => {
+                            if (response.ok) {
+                                sessionStorage.setItem('token', data.access);
+                            }
+                        })
+                    });
+
+                    dispatch(signIn());
+                    changeRoute();
+                }
+                else {
+                    setError('');
+                    setError('Username already taken.');
+                }
+            })
+        });
     };
 
     const { handleChange, handleSubmit, values, errors } = useFormik({
@@ -90,7 +141,7 @@ const SignUp = () => {
                             name="ConfirmPassword"
                             text="Confirm Password"
                         />
-                        {error !== '' && <p className={classes.Login_Error}>{error}</p>}
+                        <p className={classes.Login_Error}>{error}</p>
                         <button className={classes.Login_Button}>Register</button>
                     </form>
                     <div className={classes.Container_2}>

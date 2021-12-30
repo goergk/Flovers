@@ -164,6 +164,15 @@
   color: white;
 }
 
+.Login_Error {
+  text-align: center;
+  height: 1em;
+  margin-top: -1.5em;
+  font-size: 0.6em;
+  color: red;
+  font-weight: 600;
+}
+
 @media only screen and (max-width: 550px) {
   @keyframes login {
     0% {
@@ -252,5 +261,9 @@
   .Container_2 h4 {
     font-size: 0.8em;
     margin: 0.8em 0em;
+  }
+
+  .Login_Error {
+    font-size: 0.5em;
   }
 }

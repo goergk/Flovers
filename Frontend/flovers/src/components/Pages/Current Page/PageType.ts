@@ -1,6 +1,6 @@
 export enum PageType {
     LANDING_PAGE = "/",
-    INDEX = "/Flovers",
+    FLOWERS = "/Flovers",
     SIGNIN = "/Sign In",
     SIGNUP = "/Sign Up",
 }

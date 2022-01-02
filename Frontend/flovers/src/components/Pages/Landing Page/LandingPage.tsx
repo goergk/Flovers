@@ -7,10 +7,18 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { PageType } from '../Current Page/PageType';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Logo from '../../Assets/Logo/Logo';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
 
 const LandingPage = () => {
+    const history = useHistory();
+    const changeRoute = () => history.push(`${PageType.FLOWERS}`);
+    const { login } = useSelector((state: RootState) => state.Login);
+
+    if (login) { changeRoute() }
+
     return (
         <>
             <div className={classes.Container_1}>

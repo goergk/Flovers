@@ -22,7 +22,7 @@ const FORM_VALIDATION = Yup.object().shape({
 
 const SignIn = () => {
     const history = useHistory();
-    const changeRoute = () => history.push(`${PageType.INDEX}`);
+    const changeRoute = () => history.push(`${PageType.FLOWERS}`);
     const [error, setError] = useState('');
     const { login } = useSelector((state: RootState) => state.Login);
     const dispatch = useDispatch();
@@ -44,7 +44,8 @@ const SignIn = () => {
         }).then((response) => {
             response.json().then(data => {
                 if (response.ok) {
-                    sessionStorage.setItem('user', data.user.username);
+                    sessionStorage.setItem('username', data.user.username);
+                    sessionStorage.setItem('user_id', data.user.id);
 
                     fetch('http://127.0.0.1:8000/api/token/', {
                         method: "POST",
@@ -60,12 +61,11 @@ const SignIn = () => {
                         response.json().then(data => {
                             if (response.ok) {
                                 sessionStorage.setItem('token', data.access);
+                                dispatch(signIn());
+                                changeRoute();
                             }
                         })
                     });
-
-                    dispatch(signIn());
-                    changeRoute();
                 }
                 else {
                     setError('');

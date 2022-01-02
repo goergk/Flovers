@@ -26,6 +26,8 @@ export const loginSlice = createSlice({
       state.login = false
       sessionStorage.removeItem('isLogged');
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('username');
+      sessionStorage.removeItem('user_id');
     },
   },
 })

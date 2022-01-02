@@ -1,0 +1,131 @@
+@keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.Main_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 80%;
+  color: white;
+
+  opacity: 0;
+  -webkit-animation: slide-in ease-in 1;
+  -moz-animation: slide-in ease-in 1;
+  animation: slide-in ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+}
+
+.Header_Container h1 {
+  font-size: calc(6px + 6vmin);
+  color: #7ba79c;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.Tabs_Container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.Add_Florist_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 12em;
+  width: 12em;
+  border: 2px solid gray;
+  border-radius: 2em;
+  transition: 150ms ease-in-out;
+  margin: 1em;
+}
+
+.Florist_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 12em;
+  width: 12em;
+  border: 2px solid white;
+  border-radius: 2em;
+  transition: 150ms ease-in-out;
+  margin: 1em;
+}
+
+.Florist_Icon {
+  color: white;
+  transform: scale(4);
+}
+
+.Add_Florist_Container h1,
+.Florist_Container h1 {
+  margin-bottom: 1.5em;
+}
+
+.Add_Icon {
+  color: #d97979;
+  transform: scale(4);
+}
+
+.Add_Florist_Container:hover {
+  cursor: pointer;
+  border-color: white;
+}
+
+.Add_Florist_Container:hover * {
+  color: white;
+}
+
+.Florist_Container:hover {
+  cursor: pointer;
+  border-color: #d97979;
+}
+
+.Florist_Container:hover * {
+  color: #d97979;
+}
+
+@media only screen and (max-width: 550px) {
+  .Tabs_Container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Add_Florist_Container,
+  .Florist_Container {
+    width: 10em;
+    height: 10em;
+  }
+
+  .Add_Icon,
+  .Florist_Icon {
+    transform: scale(3);
+  }
+
+  .Add_Florist_Container h1,
+  .Florist_Container h1 {
+    font-size: 1.5em;
+    margin-bottom: 1.5em;
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Index from '../Index Page/Index';
+import FloristSelect from '../Select Florist Page/FloristSelect';
 import LandingPage from '../Landing Page/LandingPage';
 import { PageType } from './PageType';
 import classes from './CurrentPage.module.css';
@@ -16,7 +16,7 @@ const Page = () => {
                     <LandingPage />
                 </Route>
                 <Route path={`${PageType.INDEX}`}>
-                    <Index />
+                    <FloristSelect />
                 </Route>
                 <Route path={`${PageType.SIGNIN}`}>
                     <SignIn />

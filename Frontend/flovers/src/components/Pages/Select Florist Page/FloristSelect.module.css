@@ -106,6 +106,47 @@
   color: #d97979;
 }
 
+.Modal_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20em;
+  background-color: rgb(240, 240, 240);
+  color: black;
+  border: 3px solid white;
+  border-radius: 1em;
+  box-shadow: 24em;
+  padding: 2em;
+}
+
+.Close_Icon {
+  float: right;
+  color: #d97979;
+}
+
+.Close_Icon:hover {
+  cursor: pointer;
+}
+
+.Modal_Form {
+  display: flex;
+  flex-direction: column;
+}
+.Modal_button {
+  margin-top: 1.2em;
+  height: 3em;
+  font-weight: 600;
+  font-size: 1em;
+  color: #7ba79c;
+  border: 1px solid #7ba79c;
+}
+
+.Modal_button:hover {
+  cursor: pointer;
+  background-color: rgb(123, 167, 156, 0.1);
+}
+
 @media only screen and (max-width: 550px) {
   .Tabs_Container {
     flex-direction: column;
@@ -127,5 +168,10 @@
   .Florist_Container h1 {
     font-size: 1.5em;
     margin-bottom: 1.5em;
+  }
+
+  .Modal_container {
+    padding: 1em;
+    width: 80vw;
   }
 }

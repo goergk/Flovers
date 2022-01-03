@@ -19,7 +19,7 @@ export const FloristsApi = createApi({
     endpoints: (builder) => ({
         getFlorists: builder.query<RootObject, number>({
             query: (id) => ({
-                url: `${baseUrl}/florists/${id}`,
+                url: `${baseUrl}/florists/${id}/`,
                 headers: {
                     'authorization': `Bearer ${sessionStorage.getItem('token')}`,
                 },

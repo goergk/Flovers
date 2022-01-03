@@ -26,27 +26,36 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 const FloristSelect = () => {
-    const [amount, setAmount] = useState(0);
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => { setOpen(false); resetValues(); };
-
-    const { data: Florists_data } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
-
-    const history = useHistory();
-    const changeRoute = () => history.push(`${PageType.SIGNIN}`);
-
-    const { login } = useSelector((state: RootState) => state.Login);
-
-    if (!login) { changeRoute() }
+    const handleClose = () => { resetValues(); setOpen(false); };
+    let { data: Florists_data, refetch } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
+    const [amount, setAmount] = useState(0);
 
     useEffect(() => {
         setAmount(Number(Florists_data?.length));
     }, [Florists_data])
 
+    const history = useHistory();
+    const changeRoute = () => history.push(`${PageType.SIGNIN}`);
+    const { login } = useSelector((state: RootState) => state.Login);
+    if (!login) { changeRoute() }
+
     const onSubmit = () => {
-        console.log('No działa');
+        fetch('http://127.0.0.1:8000/api/florists/add/', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                owner: sessionStorage.getItem('user_id'),
+                name: values.Name
+            })
+        })
+        setAmount(prevAmount => prevAmount += 1);
+        refetch();
         handleClose();
     }
 
@@ -60,7 +69,6 @@ const FloristSelect = () => {
 
     const resetValues = () => {
         values.Name = ""
-        errors.Name = undefined
     }
 
     return (

@@ -9,4 +9,4 @@ class Florist(models.Model):
     name = models.CharField(max_length=10, blank=False)
 
     def __str__(self):
-        return f"{self.creator}: {self.name}."
+        return f"{self.owner}: {self.name}."

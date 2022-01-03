@@ -16,8 +16,9 @@ def apiRoutes(request):
         'Login':'login/',
         'Register':'register/',
         'Users':'users/',
-        'Florists':'florists/<user:id>',
-        'Get Token':'token/',
+        'Florists':'florists/<user:id>/',
+        'Add Florist':'florists/add/',
+        'Get Token':'token/',        
     }
     return Response(api_urls)
 
@@ -100,3 +101,23 @@ def Florists(request, id):
             "florists":serializer.data,
             "length":len(florists)
         })
+
+@api_view(['POST'])
+def CreateFlorist(request):
+    if request.user.is_authenticated:  
+        serializer = FloristSerializer(data=request.data)
+        print(serializer)
+
+        if serializer.is_valid():
+            florist_data = request.data
+            new_florist = Florist.objects.create(
+                owner = User.objects.filter(id = florist_data['owner']).first(),
+                name =  florist_data['name']
+            )
+            new_florist.save()
+            serializer = FloristSerializer(new_florist)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        raise Http404
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

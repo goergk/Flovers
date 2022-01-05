@@ -28,6 +28,7 @@ export const loginSlice = createSlice({
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('username');
       sessionStorage.removeItem('user_id');
+      sessionStorage.removeItem('florist_id');
     },
   },
 })

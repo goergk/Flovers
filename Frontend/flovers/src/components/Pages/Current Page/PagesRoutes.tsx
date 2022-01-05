@@ -7,6 +7,7 @@ import classes from './CurrentPage.module.css';
 import SignIn from '../Sign In Page/SignIn';
 import SignUp from '../Sign Up Page/SignUp';
 import Error from '../Error Page/Error';
+import FloversPage from '../Current App Page/FloversPage';
 
 const Page = () => {
 
@@ -18,6 +19,15 @@ const Page = () => {
                 </Route>
                 <Route path={`${PageType.FLOWERS}`}>
                     <FloristSelect />
+                </Route>
+                <Route path={`${PageType.RESOURCES}`}>
+                    <FloversPage />
+                </Route>
+                <Route path={`${PageType.DELIVERIES}`}>
+                    <FloversPage />
+                </Route>
+                <Route path={`${PageType.COMPOSITIONS}`}>
+                    <FloversPage />
                 </Route>
                 <Route path={`${PageType.SIGNIN}`}>
                     <SignIn />

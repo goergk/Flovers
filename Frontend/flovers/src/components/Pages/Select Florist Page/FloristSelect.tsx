@@ -29,8 +29,9 @@ const FloristSelect = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => { resetValues(); setOpen(false); };
-    let { data: Florists_data, refetch } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
+    const { data: Florists_data, refetch } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
     const [amount, setAmount] = useState(0);
+    const [fade, setFade] = useState(false);
 
     useEffect(() => {
         setAmount(Number(Florists_data?.length));
@@ -71,8 +72,17 @@ const FloristSelect = () => {
         values.Name = ""
     }
 
+    const handleClick = (id: number) => {
+        sessionStorage.setItem('florist_id', id.toString());
+        const changeRoute = () => history.push(`${PageType.RESOURCES}`);
+        setFade(true);
+        setTimeout(function () {
+            changeRoute();
+        }, 400);
+    }
+
     return (
-        <div className={classes.Main_Container}>
+        <div className={fade ? classes.fadeOut : classes.Main_Container}>
             <div className={classes.Header_Container}>
                 <h1>Select florist:</h1>
             </div>
@@ -126,7 +136,11 @@ const FloristSelect = () => {
                 {
                     Florists_data?.florists?.map(florist => {
                         return (
-                            <div className={classes.Florist_Container} key={florist.id}>
+                            <div
+                                className={classes.Florist_Container}
+                                key={florist.id}
+                                onClick={() => handleClick(florist.id)}
+                            >
                                 <h1>
                                     {florist.name}
                                 </h1>

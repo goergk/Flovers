@@ -1,0 +1,88 @@
+@keyframes slide-right {
+  from {
+    margin-right: 15em;
+    opacity: 0;
+  }
+
+  to {
+    margin-right: 0em;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.Page_Container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  color: white;
+}
+
+.Main_Page_Container {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: calc(100% - 14em);
+  opacity: 0;
+  -webkit-animation: fade-in ease-in 1;
+  -moz-animation: fade-in ease-in 1;
+  animation: fade-in ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.3s;
+  -moz-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  animation-delay: 0.7s;
+}
+
+.Sidebar_Container {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 14em;
+  background-color: #0d1117;
+  opacity: 0;
+  -webkit-animation: slide-right ease-in 1;
+  -moz-animation: slide-right ease-in 1;
+  animation: slide-right ease-in 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.3s;
+  -moz-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  z-index: 5;
+}
+
+@media only screen and (max-width: 1000px) {
+  .Page_Container {
+    flex-direction: column;
+  }
+
+  .Main_Page_Container {
+    height: calc(100vh - 4em);
+    width: 100%;
+  }
+
+  .Sidebar_Container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 3em;
+  }
+}

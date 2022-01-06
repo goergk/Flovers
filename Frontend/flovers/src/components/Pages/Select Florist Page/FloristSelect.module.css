@@ -65,7 +65,7 @@
 
 .Header_Container h1 {
   font-size: calc(6px + 6vmin);
-  color: #7ba79c;
+  color: white;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -170,13 +170,13 @@
   height: 3em;
   font-weight: 600;
   font-size: 1em;
-  color: #7ba79c;
-  border: 1px solid #7ba79c;
+  color: #d97979;
+  border: 1px solid #d97979;
 }
 
 .Modal_button:hover {
   cursor: pointer;
-  background-color: rgb(123, 167, 156, 0.1);
+  background-color: rgb(217, 121, 121, 0.1);
 }
 
 @media only screen and (max-width: 550px) {

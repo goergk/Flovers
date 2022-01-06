@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from '../../Assets/Logo/Logo';
@@ -8,6 +8,7 @@ import { SidebarData } from './SidebarData';
 import { PageType } from '../../Pages/Current Page/PageType';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../features/login';
+import SpaIcon from '@mui/icons-material/Spa';
 
 const Sidebar = () => {
     const [mobileOpen, setMobileOpen] = useState(true);
@@ -17,6 +18,8 @@ const Sidebar = () => {
     const history = useHistory();
     const changeRoute = () => history.push(`${PageType.LANDING_PAGE}`);
     const dispatch = useDispatch();
+
+    const { pathname } = useLocation();
 
     useEffect(() => {
         window.addEventListener("resize", updateWidth);
@@ -68,7 +71,8 @@ const Sidebar = () => {
                     {SidebarData.map((item, index) => {
                         return (
                             <Link to={item.path} style={{ textDecoration: 'none', color: 'white' }} key={index}>
-                                <div className={classes.List_Container}>
+                                <div
+                                    className={pathname !== item.path ? classes.List_Container : classes.List_Container_Active}>
                                     {item.icon}
                                     <h3>
                                         {item.title}

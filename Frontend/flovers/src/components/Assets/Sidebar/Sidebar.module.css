@@ -21,7 +21,7 @@
   position: fixed;
   left: -100;
   top: 0;
-  background-color: #0d1117;
+  background-color: #090b0f;
   opacity: 0;
   -webkit-animation: slide-right ease-in 1;
   -moz-animation: slide-right ease-in 1;
@@ -53,7 +53,8 @@
   cursor: pointer;
 }
 
-.List_Container {
+.List_Container,
+.List_Container_Active {
   width: 10em;
   display: flex;
   justify-content: flex-start;
@@ -72,7 +73,16 @@
 
 .List_Container h3 {
   font-weight: 400;
-  font-size: 0.9em;
+  font-size: 0.8em;
+  margin: 0em;
+  margin-top: -0.15em;
+  margin-left: 1em;
+  padding: 0em;
+}
+
+.List_Container_Active h3 {
+  font-weight: 600;
+  font-size: 0.8em;
   margin: 0em;
   margin-top: -0.15em;
   margin-left: 1em;
@@ -88,7 +98,7 @@
   width: 14em;
   position: fixed;
   top: 0;
-  background-color: #0d1117;
+  background-color: #090b0f;
   opacity: 0;
   -webkit-animation: slide-right ease-in 1;
   -moz-animation: slide-right ease-in 1;
@@ -119,6 +129,12 @@
 .Logut_Button:hover {
   background-color: rgb(217, 121, 121, 0.08);
   cursor: pointer;
+}
+
+.List_Container_Active {
+  border-left: 5px solid #d97979;
+  font-weight: 600;
+  margin-left: -5px;
 }
 
 @media only screen and (max-width: 1000px) {

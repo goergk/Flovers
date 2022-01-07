@@ -1,3 +1,49 @@
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-1 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    height: 0em;
+  }
+  60% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    height: calc(8em + 3px);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    opacity: 1;
+    height: calc(8em + 3px);
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    height: 0em;
+  }
+}
+
 .Main_Container {
   display: flex;
   flex-direction: column;
@@ -5,6 +51,36 @@
   align-items: center;
   height: 100vh;
   width: 100%;
+}
+
+.Main_Container {
+  opacity: 0;
+  -webkit-animation: fade-in ease-out 1;
+  -moz-animation: fade-in ease-out 1;
+  animation: fade-in ease-out 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.3s;
+  -moz-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+}
+
+.More_Options_Container * {
+  opacity: 0;
+  -webkit-animation: fade-in-1 ease-out 1;
+  -moz-animation: fade-in-1 ease-out 1;
+  animation: fade-in-1 ease-out 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 1.9s;
+  -moz-animation-duration: 1.9s;
+  animation-duration: 1.9s;
 }
 
 .Top_Container {
@@ -242,6 +318,7 @@
   margin-right: 0.5em;
   transition-duration: 300ms;
   transition-property: rotateX;
+  z-index: 10;
 }
 
 .Show_More_Icon:hover {
@@ -275,10 +352,145 @@
   color: #d97979;
   transform: rotateX(180deg);
   margin-right: 0.5em;
+  z-index: 10;
 }
 
 .Show_More_Icon_True:hover {
   cursor: pointer;
+}
+
+.More_Options_Container {
+  height: calc(8em + 3px);
+  width: 100%;
+  opacity: 1;
+  -webkit-animation: slide-out ease-out 1;
+  -moz-animation: slide-out ease-out 1;
+  animation: slide-out ease-out 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.4s;
+  -moz-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+}
+
+.More_Options_Container_Show {
+  height: 0em;
+  width: 100%;
+  opacity: 0;
+  -webkit-animation: slide-in ease-out 1;
+  -moz-animation: slide-in ease-out 1;
+  animation: slide-in ease-out 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 0.4s;
+  -moz-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+}
+
+.More_Options_Container_1 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 2em;
+  width: 100%;
+  border-top: 1px solid gray;
+}
+
+.C1 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 40%;
+  margin-left: 2em;
+}
+
+.C2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 40%;
+}
+
+.C3 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  width: 20%;
+}
+
+.More_Options_Icon {
+  margin-right: 0.5em;
+  color: rgb(195, 195, 195);
+}
+
+.More_Options_Icon:hover {
+  cursor: pointer;
+}
+
+.List_Container_Text_White {
+  font-size: calc(6px + 1.2vmin);
+  font-weight: 400;
+  color: white;
+}
+
+.Button_Container_Mobile {
+  display: none;
+}
+
+.Add_Flower_Button_Mobile:hover {
+  cursor: pointer;
+  color: white;
+}
+
+.Modal_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20em;
+  background-color: rgb(240, 240, 240);
+  color: black;
+  border: 3px solid #090b0f;
+  border-radius: 1em;
+  box-shadow: 24em;
+  padding: 2em;
+}
+
+.Close_Icon {
+  float: right;
+  color: #d97979;
+}
+
+.Close_Icon:hover {
+  cursor: pointer;
+}
+
+.Modal_button {
+  margin-top: 1.2em;
+  height: 3em;
+  font-weight: 600;
+  font-size: 1em;
+  color: #d97979;
+  border: 1px solid #d97979;
+}
+
+.Modal_button:hover {
+  cursor: pointer;
+  background-color: rgb(217, 121, 121, 0.1);
+}
+
+.Modal_Form {
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -293,7 +505,7 @@
   }
 
   .Main_Container {
-    height: calc(100vh - 3em);
+    height: calc(100vh - 3.4em);
   }
 
   .Header_Container {
@@ -359,5 +571,33 @@
     color: #d97979;
     transform: scale(0.7) rotateX(180deg);
     margin-right: 0.1em;
+  }
+
+  .More_Options_Icon {
+    transform: scale(0.7);
+    margin-right: 0.1em;
+  }
+
+  .Button_Container_Mobile {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    margin-top: 1em;
+    margin-bottom: -1.5em;
+  }
+
+  .Add_Flower_Button_Mobile {
+    border: 1px solid #d97979;
+    background-color: #d97979;
+    width: 30%;
+    height: 2.5em;
+    border-radius: 0.5em;
+    font-weight: 600;
+    font-size: calc(1px + 1.3vh);
+    right: 0;
+  }
+
+  .Modal_container {
+    width: 70%;
   }
 }

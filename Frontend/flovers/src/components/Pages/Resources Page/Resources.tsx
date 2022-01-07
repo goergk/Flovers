@@ -12,6 +12,11 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import AddIllustration from '../../Images/flower_add.svg';
 import { makeStyles } from "@material-ui/core/styles";
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Modal from '@mui/material/Modal';
+import { Backdrop, Fade } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const useStyles = makeStyles({
     root: {
@@ -48,7 +53,8 @@ const initialValues = {
 const FORM_VALIDATION = Yup.object().shape({
     Name: Yup.string()
         .required("Required")
-        .max(10, 'Max length is 20'),
+        .min(4, 'Min length is 4')
+        .max(20, 'Max length is 20'),
     Price: Yup.number()
         .required("Required")
         .max(999.99, 'Max value is 999,99')
@@ -56,16 +62,24 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 const Resources = () => {
+    const [open, setOpen] = useState(false);
     const [indexOfElement, setIndex] = useState(-1);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const classes_2 = useStyles();
 
     const onSubmit = () => {
         console.log("Submit");
+        resetValues();
+        handleClose();
+        resetValues();
     }
 
     const handleInput = (index: number) => {
         if (indexOfElement === -1) { setIndex(index) }
+        else if (indexOfElement !== -1 && indexOfElement !== index) { setIndex(index) }
         else { setIndex(-1) }
     }
 
@@ -104,6 +118,56 @@ const Resources = () => {
                         </div>
                     </div>
                 </div>
+                <div className={classes.Button_Container_Mobile}>
+                    <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpen()}>
+                        Add Flower
+                    </button>
+                </div>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={open}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <div className={classes.Modal_container}>
+                            <CancelIcon className={classes.Close_Icon} onClick={handleClose} />
+                            <h2>
+                                Add new Flower
+                            </h2>
+                            <form className={classes.Modal_Form} onSubmit={handleSubmit}>
+                                <TextField
+                                    id="Name"
+                                    label="Flower Name"
+                                    variant="outlined"
+                                    size="small"
+                                    value={values.Name}
+                                    error={errors.Name !== undefined}
+                                    helperText={errors.Name !== undefined ? errors.Name : " "}
+                                    onChange={handleChange}
+                                    style={{ marginBottom: ".2em" }}
+                                />
+                                <TextField
+                                    id="Price"
+                                    label="Price"
+                                    variant="outlined"
+                                    size="small"
+                                    type="number"
+                                    value={values.Price}
+                                    error={errors.Price !== undefined}
+                                    helperText={errors.Price !== undefined ? errors.Price : " "}
+                                    onChange={handleChange}
+                                    style={{ marginBottom: ".2em" }}
+                                />
+                                <button className={classes.Modal_button} type="submit">Add</button>
+                            </form>
+                        </div>
+                    </Fade>
+                </Modal>
             </div>
             <div className={classes.Bottom_Container}>
                 <div className={classes.Show_Flowers_Container}>
@@ -137,41 +201,84 @@ const Resources = () => {
                         {
                             values_1.map((value, index) => {
                                 return (
-                                    <div className={classes.List_Item_Container}>
-                                        <div className={classes.Show_Name}>
-                                            <p
-                                                className={indexOfElement !== index
-                                                    ?
-                                                    classes.List_Container_Text_First
-                                                    :
-                                                    classes.List_Container_Text_First_True
-                                                }>
-                                                Rose White
-                                            </p>
+                                    <>
+                                        <div className={classes.List_Item_Container}>
+                                            <div className={classes.Show_Name}>
+                                                <p
+                                                    className={indexOfElement !== index
+                                                        ?
+                                                        classes.List_Container_Text_First
+                                                        :
+                                                        classes.List_Container_Text_First_True
+                                                    }>
+                                                    Rose White
+                                                </p>
+                                            </div>
+                                            <div className={classes.Show_Date}>
+                                                <p className={classes.List_Container_Text}
+                                                    style={{ "color": indexOfElement !== index ? "rgb(195, 195, 195)" : "#d97979" }}
+                                                >
+                                                    06-01-2021
+                                                </p>
+                                            </div>
+                                            <div className={classes.Show_Price}>
+                                                <p className={classes.List_Container_Text}
+                                                    style={{ "color": indexOfElement !== index ? "rgb(195, 195, 195)" : "#d97979" }}>
+                                                    0.99
+                                                </p>
+                                            </div>
+                                            <div className={classes.Show_Amount}>
+                                                <p className={classes.List_Container_Text}
+                                                    style={{ "color": indexOfElement !== index ? "rgb(195, 195, 195)" : "#d97979" }}>
+                                                    12
+                                                </p>
+                                                <ExpandCircleDownIcon
+                                                    onClick={e => handleInput(index)}
+                                                    className={indexOfElement !== index ? classes.Show_More_Icon : classes.Show_More_Icon_True} />
+                                            </div>
                                         </div>
-                                        <div className={classes.Show_Date}>
-                                            <p className={classes.List_Container_Text}>
-                                                06-01-2021
-                                            </p>
+                                        <div
+                                            className={indexOfElement !== index ? classes.More_Options_Container : classes.More_Options_Container_Show}
+                                        >
+                                            <div className={classes.More_Options_Container_1}>
+                                                <div className={classes.C1}>
+                                                    <p className={classes.List_Container_Text}>
+                                                        Delivery:
+                                                    </p>
+                                                </div>
+                                                <div className={classes.C2}>
+                                                    <p className={classes.List_Container_Text}>
+                                                        Amount:
+                                                    </p>
+                                                </div>
+                                                <div className={classes.C3}>
+                                                    <ModeEditIcon className={classes.More_Options_Icon} />
+                                                    <DeleteForeverIcon className={classes.More_Options_Icon} />
+                                                </div>
+                                            </div>
+                                            {[1, 2, 3].map(item => {
+                                                return (
+                                                    <div className={classes.More_Options_Container_1}>
+                                                        <div className={classes.C1}>
+                                                            <p className={classes.List_Container_Text_White}>
+                                                                990321
+                                                            </p>
+                                                        </div>
+                                                        <div className={classes.C2}>
+                                                            <p className={classes.List_Container_Text_White}>
+                                                                7
+                                                            </p>
+                                                        </div>
+                                                        <div className={classes.C3}>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
                                         </div>
-                                        <div className={classes.Show_Price}>
-                                            <p className={classes.List_Container_Text}>
-                                                0.99
-                                            </p>
-                                        </div>
-                                        <div className={classes.Show_Amount}>
-                                            <p className={classes.List_Container_Text}>
-                                                12
-                                            </p>
-                                            <ExpandCircleDownIcon
-                                                onClick={e => handleInput(index)}
-                                                className={indexOfElement !== index ? classes.Show_More_Icon : classes.Show_More_Icon_True} />
-                                        </div>
-                                    </div>
+                                    </>
                                 )
                             })
                         }
-
                     </div>
                 </div>
                 <div className={classes.Add_Flower_Container}>

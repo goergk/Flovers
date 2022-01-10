@@ -62,18 +62,24 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 const Resources = () => {
-    const [open, setOpen] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const [indexOfElement, setIndex] = useState(-1);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpenAdd = () => setOpenAdd(true);
+    const handleCloseAdd = () => setOpenAdd(false);
+    const handleOpenDelete = () => setOpenDelete(true);
+    const handleCloseDelete = () => setOpenDelete(false);
+    const handleOpenEdit = () => setOpenEdit(true);
+    const handleCloseEdit = () => setOpenEdit(false);
 
     const classes_2 = useStyles();
 
     const onSubmit = () => {
         console.log("Submit");
         resetValues();
-        handleClose();
+        handleCloseAdd();
         resetValues();
     }
 
@@ -119,23 +125,23 @@ const Resources = () => {
                     </div>
                 </div>
                 <div className={classes.Button_Container_Mobile}>
-                    <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpen()}>
+                    <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpenAdd()}>
                         Add Flower
                     </button>
                 </div>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
-                    open={open}
+                    open={openAdd}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{
                         timeout: 500,
                     }}
                 >
-                    <Fade in={open}>
+                    <Fade in={openAdd}>
                         <div className={classes.Modal_container}>
-                            <CancelIcon className={classes.Close_Icon} onClick={handleClose} />
+                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
                             <h2>
                                 Add new Flower
                             </h2>
@@ -164,6 +170,73 @@ const Resources = () => {
                                     style={{ marginBottom: ".2em" }}
                                 />
                                 <button className={classes.Modal_button} type="submit">Add</button>
+                            </form>
+                        </div>
+                    </Fade>
+                </Modal>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openDelete}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={openDelete}>
+                        <div className={classes.Modal_container}>
+                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
+                            <h2>
+                                Are you sure to delete this flower?
+                            </h2>
+                            <form className={classes.Modal_Form}>
+                                <button className={classes.Modal_button} onClick={e => { console.log('Deleted :)') }}>Delete</button>
+                            </form>
+                        </div>
+                    </Fade>
+                </Modal>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={openEdit}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={openEdit}>
+                        <div className={classes.Modal_container}>
+                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseEdit} />
+                            <h2>
+                                Edit Flower
+                            </h2>
+                            <form className={classes.Modal_Form} onSubmit={handleSubmit}>
+                                <TextField
+                                    id="Name"
+                                    label="Flower Name"
+                                    variant="outlined"
+                                    size="small"
+                                    value={values.Name}
+                                    error={errors.Name !== undefined}
+                                    helperText={errors.Name !== undefined ? errors.Name : " "}
+                                    onChange={handleChange}
+                                    style={{ marginBottom: ".2em" }}
+                                />
+                                <TextField
+                                    id="Price"
+                                    label="Price"
+                                    variant="outlined"
+                                    size="small"
+                                    type="number"
+                                    value={values.Price}
+                                    error={errors.Price !== undefined}
+                                    helperText={errors.Price !== undefined ? errors.Price : " "}
+                                    onChange={handleChange}
+                                    style={{ marginBottom: ".2em" }}
+                                />
+                                <button className={classes.Modal_button} type="submit" onClick={e => { console.log('Saved :)') }}>Save</button>
                             </form>
                         </div>
                     </Fade>
@@ -243,6 +316,19 @@ const Resources = () => {
                                             <div className={classes.More_Options_Container_1}>
                                                 <div className={classes.C1}>
                                                     <p className={classes.List_Container_Text}>
+                                                        Last 3 Deliveries:
+                                                    </p>
+                                                </div>
+                                                <div className={classes.C2}>
+                                                </div>
+                                                <div className={classes.C3}>
+                                                    <ModeEditIcon className={classes.More_Options_Icon} onClick={e => handleOpenEdit()} />
+                                                    <DeleteForeverIcon className={classes.More_Options_Icon} onClick={e => handleOpenDelete()} />
+                                                </div>
+                                            </div>
+                                            <div className={classes.More_Options_Container_1}>
+                                                <div className={classes.C1}>
+                                                    <p className={classes.List_Container_Text}>
                                                         Delivery:
                                                     </p>
                                                 </div>
@@ -252,13 +338,11 @@ const Resources = () => {
                                                     </p>
                                                 </div>
                                                 <div className={classes.C3}>
-                                                    <ModeEditIcon className={classes.More_Options_Icon} />
-                                                    <DeleteForeverIcon className={classes.More_Options_Icon} />
                                                 </div>
                                             </div>
                                             {[1, 2, 3].map(item => {
                                                 return (
-                                                    <div className={classes.More_Options_Container_1}>
+                                                    <div className={classes.More_Options_List_Container_1}>
                                                         <div className={classes.C1}>
                                                             <p className={classes.List_Container_Text_White}>
                                                                 990321

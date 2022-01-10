@@ -26,14 +26,14 @@
   }
   100% {
     opacity: 1;
-    height: calc(10em + 3px);
+    height: calc(8em + 3px);
   }
 }
 
 @keyframes slide-out {
   0% {
     opacity: 1;
-    height: calc(10em + 3px);
+    height: calc(8em + 3px);
   }
   40% {
     opacity: 0;
@@ -95,7 +95,7 @@
       rgba(9, 11, 15, 0.2),
       rgba(9, 11, 15, 1)
     ),
-    url("../../Images/resources_background.jpg") center center no-repeat;
+    url("../../Images/compose_background.jpg") center center no-repeat;
 }
 
 .Bottom_Container {
@@ -139,8 +139,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  width: 13em;
+  align-items: flex-start;
+  width: 40%;
   height: 100%;
   margin-left: 1em;
 }
@@ -150,7 +150,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 85%;
+  width: 55%;
   height: 100%;
 }
 
@@ -185,7 +185,7 @@
 .Add_Container_2 {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
   width: 100%;
@@ -222,23 +222,15 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 20%;
-  height: 100%;
-}
-
-.Show_Price {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 15%;
+  width: 30%;
   height: 100%;
 }
 
 .Show_Amount {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
-  width: 20%;
+  width: 25%;
   height: 100%;
 }
 
@@ -249,6 +241,13 @@
   width: 100%;
   height: 3em;
   border-bottom: 1px solid rgb(235, 235, 235);
+  z-index: 5;
+  transition: 200ms;
+}
+
+.List_Item_Container:hover {
+  cursor: pointer;
+  background-color: rgb(217, 121, 121, 0.15);
 }
 
 .List_Container_Text_First {
@@ -269,20 +268,24 @@
 }
 
 .Show_Container_2::-webkit-scrollbar,
-.Add_Container_2::-webkit-scrollbar {
+.Add_Container_2::-webkit-scrollbar,
+.Add_Flowers_List::-webkit-scrollbar {
   width: 0.8em;
 }
 
 .Show_Container_2,
-.Add_Container_2 {
+.Add_Container_2,
+.Add_Flowers_List {
   scrollbar-color: #d97979 #090b0f;
 }
 .Show_Container_2::-webkit-scrollbar-track,
-.Add_Container_2::-webkit-scrollbar-track {
+.Add_Container_2::-webkit-scrollbar-track,
+.Add_Flowers_List::-webkit-scrollbar-track {
   background: #090b0f;
 }
 .Show_Container_2::-webkit-scrollbar-thumb,
-.Add_Container_2::-webkit-scrollbar-thumb {
+.Add_Container_2::-webkit-scrollbar-thumb,
+.Add_Flowers_List::-webkit-scrollbar-thumb {
   background-color: #d97979;
   border-radius: 6px;
   border: 3px solid #090b0f;
@@ -310,29 +313,15 @@
   transform: scale(2.5);
 }
 
-.List_Item_Container .Show_Amount {
-  justify-content: space-between;
-}
-
-.Show_More_Icon {
-  margin-right: 0.5em;
-  transition-duration: 300ms;
-  transition-property: rotateX;
-  z-index: 10;
-}
-
-.Show_More_Icon:hover {
-  cursor: pointer;
-}
-
 .Resources_Form {
   margin-top: 0.2em;
+  width: 100%;
 }
 
-.Add_Flower_Button {
+.Add_Button {
   border: 1px solid #d97979;
   background-color: #d97979;
-  width: 100%;
+  width: 20em;
   height: 2.5em;
   border-radius: 0.5em;
   font-weight: 600;
@@ -343,24 +332,8 @@
   color: white;
 }
 
-.Add_Illustrator {
-  margin-top: 1.5em;
-  width: 100%;
-}
-
-.Show_More_Icon_True {
-  color: #d97979;
-  transform: rotateX(180deg);
-  margin-right: 0.5em;
-  z-index: 10;
-}
-
-.Show_More_Icon_True:hover {
-  cursor: pointer;
-}
-
 .More_Options_Container {
-  height: calc(10em + 3px);
+  height: calc(8em + 3px);
   width: 100%;
   opacity: 1;
   -webkit-animation: slide-out ease-out 1;
@@ -393,20 +366,12 @@
   animation-duration: 0.4s;
 }
 
-.More_Options_Container_1,
-.More_Options_List_Container_1 {
+.More_Options_Container_1 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   height: 2em;
   width: 100%;
-  border-top: 1px solid gray;
-}
-
-.More_Options_List_Container_1:hover {
-  transition: 200ms;
-  cursor: pointer;
-  background-color: rgb(217, 121, 121, 0.15);
 }
 
 .C1 {
@@ -500,6 +465,39 @@
   flex-direction: column;
 }
 
+.Add_Flowers_List {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-top: 1px solid rgb(195, 195, 195);
+  padding-top: 0.5em;
+  width: 100%;
+  height: 15em;
+  margin-bottom: 1.2em;
+}
+
+.Nested_Flower_Container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 2.5em;
+  margin: 0.3em 0em 0.3em 0em;
+  border-bottom: 1px solid rgb(195, 195, 195);
+}
+
+.Nested_Flower_Name {
+  font-size: calc(4px + 1.3vh);
+}
+
+.Nested_Flower_Name {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80%;
+}
+
 @media only screen and (max-width: 1000px) {
   .Top_Container {
     height: 30%;
@@ -541,15 +539,11 @@
   }
 
   .Show_Date {
-    width: 21%;
-  }
-
-  .Show_Price {
-    width: 16%;
+    width: 35%;
   }
 
   .Show_Amount {
-    width: 23%;
+    width: 25%;
   }
 
   .Show_Container_1 {
@@ -567,17 +561,6 @@
 
   .Header_Icon {
     transform: scale(1.5);
-  }
-
-  .Show_More_Icon {
-    transform: scale(0.7);
-    margin-right: 0.1em;
-  }
-
-  .Show_More_Icon_True {
-    color: #d97979;
-    transform: scale(0.7) rotateX(180deg);
-    margin-right: 0.1em;
   }
 
   .More_Options_Icon {

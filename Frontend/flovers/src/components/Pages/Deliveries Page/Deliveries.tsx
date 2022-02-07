@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import classes from './Deliveries.module.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EventIcon from '@mui/icons-material/Event';
@@ -12,6 +12,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Modal from '@mui/material/Modal';
 import { Backdrop, Fade } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Flower, useGetFloristQuery } from '../../../services/FloristsApi';
 
 const useStyles = makeStyles({
     root: {
@@ -71,7 +72,15 @@ const Deliveries = () => {
     const handleCloseEdit = () => setOpenEdit(false);
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchAmount, setAmountTerm] = useState('');
+    const [amount, setAmount] = useState('');
+
+    const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
+
+    let flowers_data = Florists_data?.florist[0].flowers
+
+    useEffect(() => {
+        flowers_data = Florists_data?.florist[0].flowers
+    }, [Florists_data])
 
     const classes_2 = useStyles();
 
@@ -81,6 +90,49 @@ const Deliveries = () => {
         handleCloseAdd();
         resetValues();
     }
+
+    let temp_flower: Flower;
+    let add_flowers_tab: Flower[] = [];
+
+    // const handleAddList = (targetValue: string, flower: Flower) => {
+
+    //     console.log(add_flowers_tab);
+
+    //     temp_flower = {
+    //         "id": flower.id,
+    //         "name": flower.name,
+    //         "price": flower.price,
+    //         "amount": Number(targetValue),
+    //         "creation_date": flower.creation_date
+    //     }
+
+    //     if (targetValue === '') {
+    //         /* Delete flower when input is empty */
+    //         add_flowers_tab.forEach(tabFlower => {
+    //             if (tabFlower.id === temp_flower.id) {
+    //                 const indexOfDelete = add_flowers_tab.indexOf(tabFlower);
+    //                 add_flowers_tab.splice(indexOfDelete, 1);
+    //                 console.log(add_flowers_tab);
+    //             }
+    //         })
+    //     }
+    //     else if (targetValue !== '') {
+    //         /* Add flower to tab when input has value */
+    //         if (add_flowers_tab.length > 0) {
+    //             add_flowers_tab.forEach(tabFlower => {
+    //                 if (tabFlower.id === temp_flower.id) {
+    //                     const indexOfDelete = add_flowers_tab.indexOf(tabFlower);
+    //                     add_flowers_tab.splice(indexOfDelete, 1);
+    //                     add_flowers_tab.push(temp_flower);
+    //                 }
+    //             })
+    //         }
+    //         else {
+    //             add_flowers_tab.push(temp_flower);
+    //         }
+    //         console.log(add_flowers_tab);
+    //     }
+    // }
 
     const handleInput = (index: number) => {
         if (indexOfElement === -1) { setIndex(index) }
@@ -102,10 +154,6 @@ const Deliveries = () => {
         values.Amount = "";
 
     };
-
-    const values_1 = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-    ]
 
     return (
         <div className={classes.Main_Container}>
@@ -261,7 +309,7 @@ const Deliveries = () => {
                     </div>
                     <div className={classes.Show_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
                         {
-                            values_1.map((value, index) => {
+                            [1, 2, 3].map((value, index) => {
                                 return (
                                     <>
                                         <div className={classes.List_Item_Container}>
@@ -332,12 +380,12 @@ const Deliveries = () => {
                                     />
                                 </div>
                             </div>
-                            {values_1.map((value, index) => {
+                            {flowers_data?.map((flower) => {
                                 return (
                                     <>
-                                        <div className={classes.Nested_Flower_Container}>
+                                        <div className={classes.Nested_Flower_Container} key={flower.id}>
                                             <div className={classes.Nested_Flower_Name}>
-                                                Flower_Name
+                                                {flower.name}
                                             </div>
                                             <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
                                                 <TextField
@@ -346,7 +394,10 @@ const Deliveries = () => {
                                                     variant="outlined"
                                                     size="small"
                                                     type="number"
-                                                    onChange={(e) => setAmountTerm(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setAmount(e.target.value);
+                                                        // handleAddList(e.target.value, flower);
+                                                    }}
                                                     className={classes_2.root}
                                                 />
                                             </div>
@@ -354,7 +405,7 @@ const Deliveries = () => {
                                     </>)
                             })}
                         </div>
-                        <button className={classes.Add_Button} type="submit">Add</button>
+                        <button className={classes.Add_Button} type="button" onClick={e => { console.log('Added'); console.log(add_flowers_tab); }}>Add</button>
                     </div>
                 </div>
             </div>

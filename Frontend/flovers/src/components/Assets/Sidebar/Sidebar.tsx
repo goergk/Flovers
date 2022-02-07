@@ -8,7 +8,6 @@ import { SidebarData } from './SidebarData';
 import { PageType } from '../../Pages/Current Page/PageType';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../features/login';
-import SpaIcon from '@mui/icons-material/Spa';
 
 const Sidebar = () => {
     const [mobileOpen, setMobileOpen] = useState(true);
@@ -31,7 +30,6 @@ const Sidebar = () => {
         setMobileOpen(!mobileOpen);
     };
 
-
     return (
         <>
             {width < 1000 && mobileOpen
@@ -45,7 +43,7 @@ const Sidebar = () => {
                     <CloseIcon onClick={handleDrawerToggle} className={classes.Close_Icon} />
                     {SidebarData.map((item, index) => {
                         return (
-                            <Link to={item.path} style={{ textDecoration: 'none', color: 'white' }} key={index}>
+                            <Link to={item.path} style={{ textDecoration: 'none', color: 'white' }} key={index} onClick={handleDrawerToggle}>
                                 <div className={classes.List_Container}>
                                     {item.icon}
                                     <h3>

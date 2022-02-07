@@ -327,6 +327,11 @@
   font-weight: 600;
 }
 
+.Add_Button:hover {
+  cursor: pointer;
+  color: white;
+}
+
 .Add_Flower_Button:hover {
   cursor: pointer;
   color: white;

@@ -13,7 +13,7 @@ urlpatterns = [
     ## GET
     path("users/", views.AllUsers, name="Users"),
     path("florists/<int:user_id>/", views.Florists, name="Florists"),
-    path("florist/<int:user_id>/<int:florist_id>", views.GetFlorist, name="GetFlorist"),
+    path("florist/<int:florist_id>", views.GetFlorist, name="GetFlorist"),
 
     ##POST
     path("florists/add/", views.CreateFlorist, name="CreateFlorist"),
@@ -25,7 +25,7 @@ urlpatterns = [
     path("flower/<int:flower_id>/update/", views.UpdateFlower, name="UpdateFlower"),
     path("bouquet/<int:bouquet_id>/update/", views.UpdateBouquet, name="UpdateBouquet"),
 
-    ## POST FLOWER & BOUQUET IN FLORIST
+    ## PUT FLOWER & BOUQUET IN FLORIST
     path("florist/<int:florist_id>/flower/", views.UpdateFloristFlowers, name="UpdateFloristFlowers"),
     path("florist/<int:florist_id>/bouquet/", views.UpdateFloristBouquets, name="UpdateFloristBouquets"),
 

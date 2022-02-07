@@ -19,7 +19,7 @@ def apiRoutes(request):
 
         'Users':'users/',
         'User\'s Florists':'florists/<user:id>/',
-        'User\'s Florist':'florist/<user:id>/<florist:id>',
+        'User\'s Florist':'florist/<florist:id>',
 
         'Add Florist':'florists/add/',
         'Add Flower':'flowers/add/',
@@ -34,6 +34,9 @@ def apiRoutes(request):
         'Update Flower': 'flower/<int:flower_id>/update/',
         'Update Bouquet': 'bouquet/<int:bouquet_id>/update/',
         'Update Florist': 'florist/<int:florist_id>/update/',
+
+        'Create Flower in Florist': 'florist/<int:florist_id>/flower/',
+        'Create Bouquet in Florist': 'florist/<int:florist_id>/bouquet/',
     }
     return Response(api_urls)
 
@@ -42,91 +45,91 @@ def apiRoutes(request):
 @api_view(['PUT'])
 @permission_classes(())
 def UpdateFlower(request, flower_id):
-    # if request.user.is_authenticated:  
-    try:
-        flower = Flower.objects.get(id=flower_id)
-    except:
+    if request.user.is_authenticated:  
+        try:
+            flower = Flower.objects.get(id=flower_id)
+        except:
+            raise Http404
+
+        serializer = FlowerSerializer(flower, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
         raise Http404
-
-    serializer = FlowerSerializer(flower, data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-
-    raise Http404
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['PUT'])
 @permission_classes(())
 def UpdateBouquet(request, bouquet_id):
-    # if request.user.is_authenticated:  
-    try:
-        bouquet = Bouquet.objects.get(id=bouquet_id)
-    except:
+    if request.user.is_authenticated:  
+        try:
+            bouquet = Bouquet.objects.get(id=bouquet_id)
+        except:
+            raise Http404
+
+        serializer = BouquetSerializer(bouquet, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
         raise Http404
-
-    serializer = BouquetSerializer(bouquet, data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-
-    raise Http404
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED)
      
 
 @api_view(['PUT'])
 @permission_classes(())
 def UpdateFloristFlowers(request, florist_id):
-    # if request.user.is_authenticated:  
-    try:
-        florist = Florist.objects.get(id=florist_id)
-    except:
+    if request.user.is_authenticated:  
+        try:
+            florist = Florist.objects.get(id=florist_id)
+        except:
+            raise Http404
+
+        serializer = FlowerSerializer(data=request.data)
+
+        if serializer.is_valid():
+            flower_data = request.data
+            new_flower = Flower.objects.create(            
+                name =  flower_data['name'],
+                price =  flower_data['price'],
+                amount =  0
+            )
+            new_flower.save()
+            florist.flowers.add(new_flower)
+            florist.save()
+
+            serializer = FloristSerializer(florist)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         raise Http404
-
-    serializer = FlowerSerializer(data=request.data)
-
-    if serializer.is_valid():
-        flower_data = request.data
-        new_flower = Flower.objects.create(            
-            name =  flower_data['name'],
-            price =  flower_data['price'],
-            amount =  flower_data['amount']
-        )
-        new_flower.save()
-        florist.flowers.add(new_flower)
-        florist.save()
-
-        serializer = FloristSerializer(florist)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    raise Http404
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['PUT'])
 @permission_classes(())
 def UpdateFloristBouquets(request, florist_id):
-    # if request.user.is_authenticated:  
-    try:
-        florist = Florist.objects.get(id=florist_id)
-    except:
+    if request.user.is_authenticated:  
+        try:
+            florist = Florist.objects.get(id=florist_id)
+        except:
+            raise Http404
+
+        serializer = FloristSerializer(florist, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
         raise Http404
-
-    serializer = FloristSerializer(florist, data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-
-    raise Http404
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED)    
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED)    
             
 
 # ================================
@@ -184,7 +187,7 @@ def register(request):
 @api_view(['POST'])
 @permission_classes(())
 def CreateFlorist(request):
-    # if request.user.is_authenticated:  
+    if request.user.is_authenticated:  
         serializer = FloristSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -198,14 +201,14 @@ def CreateFlorist(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         raise Http404
-    # else:
-    #     return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
 @permission_classes(())
 def CreateFlower(request):
-    # if request.user.is_authenticated:  
+    if request.user.is_authenticated:  
         serializer = FlowerSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -220,14 +223,14 @@ def CreateFlower(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         raise Http404
-    # else:
-    #     return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
 @permission_classes(())
 def CreateDelivery(request):
-    # if request.user.is_authenticated:  
+    if request.user.is_authenticated:  
         serializer = DeliverySerializer(data=request.data)
 
         if serializer.is_valid():
@@ -249,14 +252,14 @@ def CreateDelivery(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         raise Http404
-    # else:
-    #     return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
 @permission_classes(())
 def CreateBouquet(request):
-    # if request.user.is_authenticated:  
+    if request.user.is_authenticated:  
         serializer = BouquetSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -281,8 +284,8 @@ def CreateBouquet(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         raise Http404
-    # else:
-    #     return Response(status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 # ================================
 # GET VIEWS
@@ -321,9 +324,9 @@ def Florists(request, user_id):
 
 @api_view(['GET'])
 @permission_classes(())
-def GetFlorist(request, user_id, florist_id):
+def GetFlorist(request, florist_id):
     try:
-        florist = Florist.objects.filter(owner__id=user_id, id=florist_id)
+        florist = Florist.objects.filter(id=florist_id)
     except:
         return Response(
         {
@@ -341,45 +344,45 @@ def GetFlorist(request, user_id, florist_id):
 @api_view(['DELETE'])
 @permission_classes(())
 def DeleteFlower(request, flower_id):
-    # if request.user.is_authenticated:
-    try:
-        flower = Flower.objects.get(id=flower_id)
-    except:
-        raise Http404
-    
-    flower.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED) 
+    if request.user.is_authenticated:
+        try:
+            flower = Flower.objects.get(id=flower_id)
+        except:
+            raise Http404
+        
+        flower.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 
 @api_view(['DELETE'])
 @permission_classes(())
 def DeleteBouquet(request, bouquet_id):
-    # if request.user.is_authenticated:
-    try:
-        bouquet = Bouquet.objects.get(id=bouquet_id)
-    except:
-        raise Http404
-    
-    bouquet.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED) 
+    if request.user.is_authenticated:
+        try:
+            bouquet = Bouquet.objects.get(id=bouquet_id)
+        except:
+            raise Http404
+        
+        bouquet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 
 @api_view(['DELETE'])
 @permission_classes(())
 def DeleteFlorist(request, florist_id):
-    # if request.user.is_authenticated:
-    try:
-        florist = Flower.objects.get(id=florist_id)
-    except:
-        raise Http404
-    
-    florist.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
-    # else:
-    #    return Response(status=status.HTTP_401_UNAUTHORIZED) 
+    if request.user.is_authenticated:
+        try:
+            florist = Flower.objects.get(id=florist_id)
+        except:
+            raise Http404
+        
+        florist.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 

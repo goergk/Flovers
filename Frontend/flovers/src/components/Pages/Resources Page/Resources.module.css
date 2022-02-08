@@ -1,3 +1,12 @@
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -7,12 +16,35 @@
   }
 }
 
+@-webkit-keyframes fade-in-1 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes fade-in-1 {
   0% {
     opacity: 0;
   }
   100% {
     opacity: 0;
+  }
+}
+
+@-webkit-keyframes slide-in {
+  0% {
+    opacity: 0;
+    height: 0em;
+  }
+  60% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    height: calc(10em + 3px);
   }
 }
 
@@ -27,6 +59,20 @@
   100% {
     opacity: 1;
     height: calc(10em + 3px);
+  }
+}
+
+@-webkit-keyframes slide-out {
+  0% {
+    opacity: 1;
+    height: calc(10em + 3px);
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    height: 0em;
   }
 }
 
@@ -45,9 +91,18 @@
 }
 
 .Main_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100vh;
   width: 100%;
@@ -56,40 +111,53 @@
 .Main_Container {
   opacity: 0;
   -webkit-animation: fade-in ease-out 1;
-  -moz-animation: fade-in ease-out 1;
   animation: fade-in ease-out 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
   animation-duration: 0.3s;
 }
 
 .More_Options_Container * {
   opacity: 0;
   -webkit-animation: fade-in-1 ease-out 1;
-  -moz-animation: fade-in-1 ease-out 1;
   animation: fade-in-1 ease-out 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 1.9s;
-  -moz-animation-duration: 1.9s;
   animation-duration: 1.9s;
 }
 
 .Top_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 40%;
   width: 100%;
+  background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(rgba(9, 11, 15, 0.2)),
+      to(rgba(9, 11, 15, 1))
+    ),
+    url("../../Images/resources_background.jpg") center center no-repeat;
+  background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
+    url("../../Images/resources_background.jpg") center center no-repeat;
   background: linear-gradient(
       to bottom,
       rgba(9, 11, 15, 0.2),
@@ -99,8 +167,14 @@
 }
 
 .Bottom_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 60%;
   width: 96%;
@@ -108,9 +182,18 @@
 }
 
 .Header_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
   align-items: flex-start;
   width: 96%;
   height: 70%;
@@ -136,9 +219,18 @@
 }
 
 .Add_Flower_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 13em;
   height: 100%;
@@ -146,17 +238,32 @@
 }
 
 .Show_Flowers_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
   align-items: flex-start;
   width: 85%;
   height: 100%;
 }
 
 .Show_Container_1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 2em;
   width: calc(100% - 0.8em);
@@ -164,9 +271,18 @@
 }
 
 .Show_Container_2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100%;
   width: 100%;
@@ -174,8 +290,14 @@
 }
 
 .Add_Container_1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 2em;
   width: 100%;
@@ -183,9 +305,18 @@
 }
 
 .Add_Container_2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100%;
   width: 100%;
@@ -211,40 +342,70 @@
 }
 
 .Show_Name {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 45%;
   height: 100%;
 }
 
 .Show_Date {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 20%;
   height: 100%;
 }
 
 .Show_Price {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 15%;
   height: 100%;
 }
 
 .Show_Amount {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 20%;
   height: 100%;
 }
 
 .List_Item_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 100%;
   height: 3em;
@@ -289,15 +450,29 @@
 }
 
 .Header_Container_1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
 }
 
 .Icon_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: calc(6px + 13vmin);
   height: calc(6px + 13vmin);
@@ -307,16 +482,24 @@
 }
 
 .Header_Icon {
+  -webkit-transform: scale(2.5);
+  -ms-transform: scale(2.5);
   transform: scale(2.5);
 }
 
 .List_Item_Container .Show_Amount {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
 .Show_More_Icon {
   margin-right: 0.5em;
+  -webkit-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
   transition-duration: 300ms;
+  -webkit-transition-property: rotateX;
+  -o-transition-property: rotateX;
   transition-property: rotateX;
   z-index: 10;
 }
@@ -350,6 +533,7 @@
 
 .Show_More_Icon_True {
   color: #d97979;
+  -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
   margin-right: 0.5em;
   z-index: 10;
@@ -364,15 +548,12 @@
   width: 100%;
   opacity: 1;
   -webkit-animation: slide-out ease-out 1;
-  -moz-animation: slide-out ease-out 1;
   animation: slide-out ease-out 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.4s;
-  -moz-animation-duration: 0.4s;
   animation-duration: 0.4s;
 }
 
@@ -381,22 +562,25 @@
   width: 100%;
   opacity: 0;
   -webkit-animation: slide-in ease-out 1;
-  -moz-animation: slide-in ease-out 1;
   animation: slide-in ease-out 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.4s;
-  -moz-animation-duration: 0.4s;
   animation-duration: 0.4s;
 }
 
 .More_Options_Container_1,
 .More_Options_List_Container_1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 2em;
   width: 100%;
@@ -404,14 +588,22 @@
 }
 
 .More_Options_List_Container_1:hover {
+  -webkit-transition: 200ms;
+  -o-transition: 200ms;
   transition: 200ms;
   cursor: pointer;
   background-color: rgb(217, 121, 121, 0.15);
 }
 
 .C1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100%;
   width: 40%;
@@ -419,16 +611,28 @@
 }
 
 .C2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100%;
   width: 40%;
 }
 
 .C3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100%;
   width: 20%;
@@ -462,12 +666,15 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   width: 20em;
   background-color: rgb(240, 240, 240);
   color: black;
   border: 3px solid #090b0f;
   border-radius: 1em;
+  -webkit-box-shadow: 24em;
   box-shadow: 24em;
   padding: 2em;
 }
@@ -496,7 +703,12 @@
 }
 
 .Modal_Form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -528,6 +740,8 @@
   }
 
   .Icon {
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
     transform: scale(0.5);
     margin-left: -0.2em;
   }
@@ -566,27 +780,38 @@
   }
 
   .Header_Icon {
+    -webkit-transform: scale(1.5);
+    -ms-transform: scale(1.5);
     transform: scale(1.5);
   }
 
   .Show_More_Icon {
+    -webkit-transform: scale(0.7);
+    -ms-transform: scale(0.7);
     transform: scale(0.7);
     margin-right: 0.1em;
   }
 
   .Show_More_Icon_True {
     color: #d97979;
+    -webkit-transform: scale(0.7) rotateX(180deg);
     transform: scale(0.7) rotateX(180deg);
     margin-right: 0.1em;
   }
 
   .More_Options_Icon {
+    -webkit-transform: scale(0.7);
+    -ms-transform: scale(0.7);
     transform: scale(0.7);
     margin-right: 0.1em;
   }
 
   .Button_Container_Mobile {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
     justify-content: flex-end;
     width: 90%;
     margin-top: 1em;

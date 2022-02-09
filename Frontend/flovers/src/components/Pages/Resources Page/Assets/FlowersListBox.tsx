@@ -4,7 +4,7 @@ import { Flower } from '../../../../services/FloristsApi';
 import { FlowerItem, MoreOptionsBox, Tags } from '.';
 
 interface Props {
-    flowers_data: Flower[] | undefined,
+    flowersData: Flower[] | undefined,
     indexOfElement: number,
     handleOpenEdit: (flower_id: number) => void,
     setEditValues: (florist_name: string, florist_price: string) => void,
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const FlowersListBox: React.FC<Props> = ({
-    flowers_data,
+    flowersData,
     indexOfElement,
     handleOpenEdit,
     setEditValues,
@@ -27,11 +27,11 @@ const FlowersListBox: React.FC<Props> = ({
             </div>
             <div className={classes.Show_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
                 {
-                    flowers_data?.length! > 0
+                    flowersData?.length! > 0
                         ?
                         <>
                             {
-                                flowers_data?.map((flower, index) => {
+                                flowersData?.map((flower, index) => {
                                     return (
                                         <>
                                             <FlowerItem

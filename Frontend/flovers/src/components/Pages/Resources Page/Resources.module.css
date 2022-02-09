@@ -657,12 +657,19 @@
   display: none;
 }
 
+.Close_Icon_container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
 .Add_Flower_Button_Mobile:hover {
   cursor: pointer;
   color: white;
 }
 
 .Modal_container {
+  text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -677,6 +684,10 @@
   -webkit-box-shadow: 24em;
   box-shadow: 24em;
   padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .Close_Icon {

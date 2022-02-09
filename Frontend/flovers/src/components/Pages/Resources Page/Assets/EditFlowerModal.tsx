@@ -53,7 +53,9 @@ const EditFlowerModal: React.FC<Props> = ({
         >
             <Fade in={openEdit}>
                 <div className={classes.Modal_container}>
-                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseEdit} />
+                    <div className={classes.Close_Icon_container}>
+                        <CancelIcon className={classes.Close_Icon} onClick={handleCloseEdit} />
+                    </div>
                     <h2>
                         Edit Flower
                     </h2>

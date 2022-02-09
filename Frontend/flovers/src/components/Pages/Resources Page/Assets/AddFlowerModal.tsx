@@ -51,7 +51,9 @@ const AddFlowerModal: React.FC<Props> = ({
         >
             <Fade in={openAdd}>
                 <div className={classes.Modal_container}>
-                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
+                    <div className={classes.Close_Icon_container}>
+                        <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
+                    </div>
                     <h2>
                         Add new Flower
                     </h2>

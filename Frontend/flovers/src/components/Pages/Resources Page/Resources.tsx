@@ -47,15 +47,13 @@ const Resources = () => {
     const handleCloseEdit = () => { setOpenEdit(false); setEditId(-1) };
 
     const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
-
-    let flowers_data = Florists_data?.florist[0].flowers
+    const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
 
     useEffect(() => {
-        flowers_data = Florists_data?.florist[0].flowers
+        setFlowersData(Florists_data?.florist[0].flowers)
     }, [Florists_data])
 
     const onSubmit = () => {
-        console.log('No klikam')
         fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/flower/`, {
             method: "PUT",
             headers: {
@@ -158,7 +156,7 @@ const Resources = () => {
             </div>
             <div className={classes.Bottom_Container}>
                 <FlowersListBox
-                    flowers_data={flowers_data}
+                    flowersData={flowersData}
                     indexOfElement={indexOfElement}
                     handleOpenEdit={handleOpenEdit}
                     setEditValues={setEditValues}

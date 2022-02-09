@@ -28,7 +28,9 @@ const DeleteFlowerModal: React.FC<Props> = ({
         >
             <Fade in={openDelete}>
                 <div className={classes.Modal_container}>
-                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
+                    <div className={classes.Close_Icon_container}>
+                        <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
+                    </div>
                     <h2>
                         Are you sure to delete this flower?
                     </h2>

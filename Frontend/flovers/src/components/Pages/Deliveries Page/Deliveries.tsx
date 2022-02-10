@@ -1,17 +1,17 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './Deliveries.module.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EventIcon from '@mui/icons-material/Event';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import TextField from '@mui/material/TextField';
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import { makeStyles } from "@material-ui/core/styles";
 import NumbersIcon from '@mui/icons-material/Numbers';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Modal from '@mui/material/Modal';
 import { Backdrop, Fade } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ClearIcon from '@mui/icons-material/Clear';
 import { Flower, useGetFloristQuery } from '../../../services/FloristsApi';
 
 const useStyles = makeStyles({
@@ -41,119 +41,119 @@ const useStyles = makeStyles({
     }
 });
 
-const initialValues = {
-    Name: "",
-    Price: "",
-    Amount: "",
-};
-
-const FORM_VALIDATION = Yup.object().shape({
-    Name: Yup.string()
-        .required("Required")
-        .min(4, 'Min length is 4')
-        .max(20, 'Max length is 20'),
-    Price: Yup.number()
-        .required("Required")
-        .max(999.99, 'Max value is 999,99')
-        .min(0.01, 'Min value is 0.01'),
-});
-
 const Deliveries = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [indexOfElement, setIndex] = useState(-1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [amount, setAmount] = useState('');
+    const [firstRunTemp, setFirstRunTemp] = useState(true);
+    const [firstRun, setFirstRun] = useState(true);
 
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
     const handleOpenDelete = () => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
-    const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
 
-    const [searchTerm, setSearchTerm] = useState('');
-    const [amount, setAmount] = useState('');
-
     const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
-
-    let flowers_data = Florists_data?.florist[0].flowers
+    const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
+    const [tmpFlowers, setTmpFlowers] = useState<Flower[] | undefined>();
+    const [deliveryFlowers, setDeliveryFlowers] = useState<Flower[] | undefined>();
+    const [deliveryList, setDeliveryList] = useState<Flower[] | undefined>();
 
     useEffect(() => {
-        flowers_data = Florists_data?.florist[0].flowers
-    }, [Florists_data])
+        const filteredData = Florists_data?.florist[0].flowers.filter((flower) => flower.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()));
+        setFlowersData(filteredData);
+        if (Florists_data !== undefined && firstRun) {
+            setDeliveryFlowers(Florists_data?.florist[0].flowers);
+        }
+        if (Florists_data !== undefined && firstRunTemp) {
+            setTmpFlowers(Florists_data?.florist[0].flowers);
+        }
+    }, [Florists_data, searchTerm])
+
+    useEffect(() => {
+        if (firstRunTemp && tmpFlowers !== undefined) {
+            setZerosInTempArray();
+            setFirstRunTemp(false);
+        }
+        console.log(tmpFlowers)
+    }, [tmpFlowers]);
+
+    useEffect(() => {
+        if (firstRun && deliveryFlowers !== undefined) {
+            setZerosInDeliveryArray();
+            setFirstRun(false);
+        }
+        console.log(deliveryFlowers)
+    }, [deliveryFlowers]);
+
+    const setZerosInTempArray = () => {
+        let newArr = JSON.parse(JSON.stringify(tmpFlowers));
+        newArr.map((flower: Flower) => flower.amount = 0);
+        setTmpFlowers(newArr);
+    }
+
+    const setZerosInDeliveryArray = () => {
+        let newArr = JSON.parse(JSON.stringify(deliveryFlowers));
+        newArr.map((flower: Flower) => flower.amount = 0);
+        setDeliveryFlowers(newArr);
+    }
+
+    const updateArrayOnInputChange = (flower_id: number, e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        let newArr = JSON.parse(JSON.stringify(tmpFlowers!));
+        newArr.map((flower: Flower) => flower.id === flower_id ? flower.amount = Number(e.target.value) : flower);
+        setTmpFlowers(newArr);
+    }
+
+    const updateDeliveryFlowers = () => {
+        let newArr = JSON.parse(JSON.stringify(deliveryFlowers!));
+        tmpFlowers?.map((flower, index) => {
+            if (flower.amount > 0) {
+                newArr[index].amount += flower.amount;
+            }
+        })
+        setDeliveryFlowers(newArr);
+    }
+
+    const deleteDeliveryFlower = (flower_id: number) => {
+        let newArr = JSON.parse(JSON.stringify(deliveryFlowers!));
+        let index = -1;
+        newArr.map((flower: Flower, i: number) => {
+            if (flower.id === flower_id) {
+                index = i;
+            }
+        })
+        newArr.splice(index, 1);
+        setDeliveryFlowers(newArr);
+    }
+
+
+    const updateDeliveryList = () => {
+        let newArr: Flower[] | undefined = [];
+        deliveryFlowers?.map((flower) => {
+            if (flower.amount > 0) {
+                newArr!.push(flower);
+            }
+        })
+        if (newArr.length > 0) { setDeliveryList(newArr) }
+    }
+
+    const deleteListElement = (index: number) => {
+        let newArr = JSON.parse(JSON.stringify(deliveryList!));
+        newArr.splice(index, 1);
+        setDeliveryList(newArr);
+    }
+
+    const deliveryItemsAmount = () => {
+        let amount = 0;
+        deliveryFlowers?.map(flower => flower.amount > 0 && amount++);
+        return amount;
+    }
 
     const classes_2 = useStyles();
-
-    const onSubmit = () => {
-        console.log("Submit");
-        resetValues();
-        handleCloseAdd();
-        resetValues();
-    }
-
-    let temp_flower: Flower;
-    let add_flowers_tab: Flower[] = [];
-
-    // const handleAddList = (targetValue: string, flower: Flower) => {
-
-    //     console.log(add_flowers_tab);
-
-    //     temp_flower = {
-    //         "id": flower.id,
-    //         "name": flower.name,
-    //         "price": flower.price,
-    //         "amount": Number(targetValue),
-    //         "creation_date": flower.creation_date
-    //     }
-
-    //     if (targetValue === '') {
-    //         /* Delete flower when input is empty */
-    //         add_flowers_tab.forEach(tabFlower => {
-    //             if (tabFlower.id === temp_flower.id) {
-    //                 const indexOfDelete = add_flowers_tab.indexOf(tabFlower);
-    //                 add_flowers_tab.splice(indexOfDelete, 1);
-    //                 console.log(add_flowers_tab);
-    //             }
-    //         })
-    //     }
-    //     else if (targetValue !== '') {
-    //         /* Add flower to tab when input has value */
-    //         if (add_flowers_tab.length > 0) {
-    //             add_flowers_tab.forEach(tabFlower => {
-    //                 if (tabFlower.id === temp_flower.id) {
-    //                     const indexOfDelete = add_flowers_tab.indexOf(tabFlower);
-    //                     add_flowers_tab.splice(indexOfDelete, 1);
-    //                     add_flowers_tab.push(temp_flower);
-    //                 }
-    //             })
-    //         }
-    //         else {
-    //             add_flowers_tab.push(temp_flower);
-    //         }
-    //         console.log(add_flowers_tab);
-    //     }
-    // }
-
-    const handleInput = (index: number) => {
-        if (indexOfElement === -1) { setIndex(index) }
-        else if (indexOfElement !== -1 && indexOfElement !== index) { setIndex(index) }
-        else { setIndex(-1) }
-    }
-
-    const { handleChange, handleSubmit, values, errors } = useFormik({
-        initialValues,
-        validationSchema: FORM_VALIDATION,
-        validateOnChange: false,
-        validateOnBlur: false,
-        onSubmit,
-    });
-
-    const resetValues = () => {
-        values.Name = "";
-        values.Price = "";
-        values.Amount = "";
-
-    };
 
     return (
         <div className={classes.Main_Container}>
@@ -189,37 +189,60 @@ const Deliveries = () => {
                     }}
                 >
                     <Fade in={openAdd}>
-                        <div className={classes.Modal_container}>
-                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
-                            <h2>
-                                Add new delivery
-                            </h2>
-                            <form className={classes.Modal_Form} onSubmit={handleSubmit}>
-                                <TextField
-                                    id="Name"
-                                    label="Flower Name"
-                                    variant="outlined"
-                                    size="small"
-                                    value={values.Name}
-                                    error={errors.Name !== undefined}
-                                    helperText={errors.Name !== undefined ? errors.Name : " "}
-                                    onChange={handleChange}
-                                    style={{ marginBottom: ".2em" }}
-                                />
-                                <TextField
-                                    id="Price"
-                                    label="Price"
-                                    variant="outlined"
-                                    size="small"
-                                    type="number"
-                                    value={values.Price}
-                                    error={errors.Price !== undefined}
-                                    helperText={errors.Price !== undefined ? errors.Price : " "}
-                                    onChange={handleChange}
-                                    style={{ marginBottom: ".2em" }}
-                                />
-                                <button className={classes.Modal_button} type="submit">Add</button>
-                            </form>
+                        <div className={classes.Main_Delivery_Modal_container}>
+                            <div className={classes.Delivery_Modal_Container}>
+                                <div className={classes.Close_Icon_container}>
+                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
+                                </div>
+                                <h2>
+                                    Add new delivery
+                                </h2>
+                                {deliveryItemsAmount() > 0
+                                    &&
+                                    <div className={classes.Delete_Icon_container}>
+                                        <div className={classes.Delete_Icon_Inner_container}
+                                            onClick={e => {
+                                                setDeliveryList([]);
+                                                setZerosInDeliveryArray();
+                                            }}
+                                        >
+                                            Delete all <DeleteOutlineIcon />
+                                        </div>
+                                    </div>
+                                }
+                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                                    {
+                                        deliveryItemsAmount() == 0
+                                            ?
+                                            <h4>No flowers added to delivery</h4>
+                                            :
+                                            deliveryList?.map((flower, index) => {
+                                                return (
+                                                    <div className={classes.Delivery_Item_Container} key={flower.id}>
+                                                        <div className={classes.Container_C1}>
+                                                            <b>{index + 1}</b>
+                                                        </div>
+                                                        <div className={classes.Container_C2}>
+                                                            {flower.name}
+                                                        </div>
+                                                        <div className={classes.Container_C3}>
+                                                            {flower.amount}
+                                                        </div>
+                                                        <div className={classes.Container_C4}>
+                                                            <ClearIcon className={classes.Clear_Icon}
+                                                                onClick={e => {
+                                                                    deleteListElement(index);
+                                                                    deleteDeliveryFlower(flower.id);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                    }
+                                </div>
+                                {deliveryItemsAmount() > 0 && <button className={classes.Modal_button}>Save</button>}
+                            </div>
                         </div>
                     </Fade>
                 </Modal>
@@ -235,57 +258,14 @@ const Deliveries = () => {
                 >
                     <Fade in={openDelete}>
                         <div className={classes.Modal_container}>
-                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
+                            <div className={classes.Close_Icon_container}>
+                                <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
+                            </div>
                             <h2>
                                 Are you sure to delete this delivery?
                             </h2>
                             <form className={classes.Modal_Form}>
                                 <button className={classes.Modal_button} onClick={e => { console.log('Deleted :)') }}>Delete</button>
-                            </form>
-                        </div>
-                    </Fade>
-                </Modal>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openEdit}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openEdit}>
-                        <div className={classes.Modal_container}>
-                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseEdit} />
-                            <h2>
-                                Edit Flower
-                            </h2>
-                            <form className={classes.Modal_Form} onSubmit={handleSubmit}>
-                                <TextField
-                                    id="Name"
-                                    label="Flower Name"
-                                    variant="outlined"
-                                    size="small"
-                                    value={values.Name}
-                                    error={errors.Name !== undefined}
-                                    helperText={errors.Name !== undefined ? errors.Name : " "}
-                                    onChange={handleChange}
-                                    style={{ marginBottom: ".2em" }}
-                                />
-                                <TextField
-                                    id="Price"
-                                    label="Price"
-                                    variant="outlined"
-                                    size="small"
-                                    type="number"
-                                    value={values.Price}
-                                    error={errors.Price !== undefined}
-                                    helperText={errors.Price !== undefined ? errors.Price : " "}
-                                    onChange={handleChange}
-                                    style={{ marginBottom: ".2em" }}
-                                />
-                                <button className={classes.Modal_button} type="submit" onClick={e => { console.log('Saved :)') }}>Save</button>
                             </form>
                         </div>
                     </Fade>
@@ -353,7 +333,7 @@ const Deliveries = () => {
                         }
                     </div>
                 </div>
-                <div className={classes.Add_Flower_Container}>
+                <div className={classes.Add_Flower_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
                     <div className={classes.Add_Container_1}>
                         <AddBoxIcon className={classes.Icon} />
                         <p>
@@ -375,12 +355,13 @@ const Deliveries = () => {
                                         label="Search Name"
                                         variant="outlined"
                                         size="small"
+                                        value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className={classes_2.root}
                                     />
                                 </div>
                             </div>
-                            {flowers_data?.map((flower) => {
+                            {flowersData?.map((flower, index) => {
                                 return (
                                     <>
                                         <div className={classes.Nested_Flower_Container} key={flower.id}>
@@ -395,8 +376,7 @@ const Deliveries = () => {
                                                     size="small"
                                                     type="number"
                                                     onChange={(e) => {
-                                                        setAmount(e.target.value);
-                                                        // handleAddList(e.target.value, flower);
+                                                        updateArrayOnInputChange(flower.id, e);
                                                     }}
                                                     className={classes_2.root}
                                                 />
@@ -405,7 +385,26 @@ const Deliveries = () => {
                                     </>)
                             })}
                         </div>
-                        <button className={classes.Add_Button} type="button" onClick={e => { console.log('Added'); console.log(add_flowers_tab); }}>Add</button>
+                        <button className={classes.Add_Button} type="button"
+                            onClick={e => {
+                                updateDeliveryFlowers();
+                                setZerosInTempArray();
+                                setFlowersData([]);
+                                setTimeout(function () {
+                                    setFlowersData(Florists_data?.florist[0].flowers);
+                                    setSearchTerm('');
+                                }, 1);
+                            }}>
+                            Add to list
+                        </button>
+                        <div className={classes.Delivery_Container} onClick={e => {
+                            updateDeliveryList();
+                            handleOpenAdd();
+                        }}>
+                            <p>
+                                <b>Current Delivery (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,33 @@
+@keyframes fade-in {
+  0% {
+    margin-top: -5em;
+    opacity: 0;
+  }
+  20% {
+    margin-top: 3em;
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+.Alert_Container {
+  opacity: 0;
+  position: absolute;
+  top: 10;
+  left: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0em 2em;
+  background-color: rgba(211, 211, 211, 0.1);
+  border-radius: 1em;
+  margin-top: 3em;
+  animation: fade-in ease-in 1;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
+}

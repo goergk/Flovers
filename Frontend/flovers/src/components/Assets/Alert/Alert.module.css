@@ -31,3 +31,11 @@
   animation-fill-mode: forwards;
   animation-duration: 2s;
 }
+
+@media only screen and (max-width: 1000px) {
+  .Alert_Container {
+    background-color: rgb(240, 240, 240);
+    color: black;
+    z-index: 100;
+  }
+}

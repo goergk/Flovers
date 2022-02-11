@@ -148,6 +148,8 @@
   align-items: center;
   height: 40%;
   width: 100%;
+  background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
+    url("../../Images/resources_background.jpg") center center no-repeat;
   background: -webkit-gradient(
       linear,
       left top,
@@ -207,7 +209,7 @@
   padding: 0em;
   font-size: calc(6px + 8vmin);
   color: rgb(235, 235, 235);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .Header_Container p {
@@ -658,8 +660,12 @@
 }
 
 .Close_Icon_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 100%;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
 }
 
@@ -684,9 +690,18 @@
   -webkit-box-shadow: 24em;
   box-shadow: 24em;
   padding: 2em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 

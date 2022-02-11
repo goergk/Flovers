@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useGetFloristQuery } from '../../../services/FloristsApi';
 import { AddFlowerBox, AddFlowerModal, DeleteFlowerModal, EditFlowerModal, FlowerAddButton, FlowersListBox, Header } from './Assets';
+import AlertBox from './Assets/AlertBox';
 
 const initialValues = {
     Name: "",
@@ -38,6 +39,10 @@ const Resources = () => {
     const [indexOfElement, setIndex] = useState(-1);
     const [deleteId, setDeleteId] = useState(-1);
     const [editId, setEditId] = useState(-1);
+    const [width, setWidth] = useState(window.innerWidth);
+    const [showAddAlert, setShowAddAlert] = useState(false);
+    const [showEditAlert, setShowEditAlert] = useState(false);
+    const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
@@ -69,6 +74,10 @@ const Resources = () => {
         resetValues();
         refetch();
         handleCloseAdd();
+        setShowAddAlert(true);
+        setTimeout(function () {
+            setShowAddAlert(false);
+        }, 2000);
     }
 
     const handleDelete = () => {
@@ -83,6 +92,10 @@ const Resources = () => {
         resetValues();
         refetch();
         handleCloseDelete();
+        setShowDeleteAlert(true);
+        setTimeout(function () {
+            setShowDeleteAlert(false);
+        }, 2000);
     }
 
     const handleEdit = () => {
@@ -100,6 +113,10 @@ const Resources = () => {
         })
         refetch();
         handleCloseEdit();
+        setShowEditAlert(true);
+        setTimeout(function () {
+            setShowEditAlert(false);
+        }, 2000);
     }
 
     const handleInput = (index: number) => {
@@ -107,6 +124,15 @@ const Resources = () => {
         else if (indexOfElement !== -1 && indexOfElement !== index) { setIndex(index) }
         else { setIndex(-1) }
     }
+
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        if (width > 999) { handleCloseAdd() }
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    });
 
     const { handleChange, handleSubmit, values, errors } = useFormik({
         initialValues,
@@ -129,6 +155,11 @@ const Resources = () => {
     return (
         <div className={classes.Main_Container}>
             <div className={classes.Top_Container}>
+                <AlertBox
+                    showAddAlert={showAddAlert}
+                    showEditAlert={showEditAlert}
+                    showDeleteAlert={showDeleteAlert}
+                />
                 <Header />
                 <FlowerAddButton handleOpenAdd={handleOpenAdd} />
                 <AddFlowerModal

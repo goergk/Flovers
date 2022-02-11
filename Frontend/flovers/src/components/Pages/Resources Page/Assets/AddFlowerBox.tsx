@@ -56,7 +56,12 @@ interface Props {
     handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void
 }
 
-const AddFlowerBox: React.FC<Props> = ({ values, errors, handleChange, handleSubmit }) => {
+const AddFlowerBox: React.FC<Props> = ({
+    values,
+    errors,
+    handleChange,
+    handleSubmit
+}) => {
     const classes_2 = useStyles();
 
     return (

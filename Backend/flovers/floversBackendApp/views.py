@@ -37,6 +37,7 @@ def apiRoutes(request):
 
         'Create Flower in Florist': 'florist/<int:florist_id>/flower/',
         'Create Bouquet in Florist': 'florist/<int:florist_id>/bouquet/',
+        'Create Delivery in Florist': 'florist/<int:florist_id>/delivery/',
     }
     return Response(api_urls)
 
@@ -121,15 +122,69 @@ def UpdateFloristBouquets(request, florist_id):
         except:
             raise Http404
 
-        serializer = FloristSerializer(florist, data=request.data)
+        serializer = BouquetSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+            bouquets_data = request.data        
+            flowers_tab = bouquets_data['flowers']
+
+            new_bouquet = Bouquet()
+            new_bouquet.save()
+            for flower in flowers_tab:
+                new_flower = Flower.objects.create(            
+                name =  flower['name'],
+                price =  flower['price'],
+                amount =  flower['amount']
+            )
+                new_bouquet.flowers.add(new_flower)
+                new_bouquet.save()
+
+            florist.bouquets.add(new_bouquet)
+            florist.save()
+
+            serializer = BouquetSerializer(new_bouquet)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         raise Http404
     else:
-       return Response(status=status.HTTP_401_UNAUTHORIZED)    
+       return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['PUT'])
+@permission_classes(())
+def UpdateFloristDeliveries(request, florist_id):
+    if request.user.is_authenticated:  
+        try:
+            florist = Florist.objects.get(id=florist_id)
+        except:
+            raise Http404
+
+        serializer = DeliverySerializer(data=request.data)
+
+        if serializer.is_valid():
+            delivery_data = request.data        
+            flowers_tab = delivery_data['flowers']
+
+            new_delivery = Delivery()
+            new_delivery.save()
+            for flower in flowers_tab:
+                new_flower = Flower.objects.create(            
+                name =  flower['name'],
+                price =  flower['price'],
+                amount =  flower['amount']
+            )
+                new_delivery.flowers.add(new_flower)
+                new_delivery.save()
+
+            florist.deliveries.add(new_delivery)
+            florist.save()
+
+            serializer = DeliverySerializer(new_delivery)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        raise Http404
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED)     
             
 
 # ================================

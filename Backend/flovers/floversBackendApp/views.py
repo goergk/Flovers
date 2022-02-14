@@ -428,6 +428,21 @@ def DeleteBouquet(request, bouquet_id):
 
 @api_view(['DELETE'])
 @permission_classes(())
+def DeleteDelivery(request, delivery_id):
+    if request.user.is_authenticated:
+        try:
+            delivery = Delivery.objects.get(id=delivery_id)
+        except:
+            raise Http404
+        
+        delivery.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+@api_view(['DELETE'])
+@permission_classes(())
 def DeleteFlorist(request, florist_id):
     if request.user.is_authenticated:
         try:

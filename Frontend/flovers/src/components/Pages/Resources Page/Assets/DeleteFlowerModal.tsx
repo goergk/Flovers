@@ -3,17 +3,20 @@ import Modal from '@mui/material/Modal';
 import { Backdrop, Fade } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import classes from '../Resources.module.css';
+import Loader from '../../../Assets/Loader/Loader';
 
 interface Props {
     openDelete: boolean,
     handleCloseDelete: () => void,
-    handleDelete: () => void
+    handleDelete: () => void,
+    loader: boolean
 }
 
 const DeleteFlowerModal: React.FC<Props> = ({
     openDelete,
     handleCloseDelete,
-    handleDelete
+    handleDelete,
+    loader
 }) => {
     return (
         <Modal
@@ -28,15 +31,21 @@ const DeleteFlowerModal: React.FC<Props> = ({
         >
             <Fade in={openDelete}>
                 <div className={classes.Modal_container}>
-                    <div className={classes.Close_Icon_container}>
-                        <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
-                    </div>
-                    <h2>
-                        Are you sure to delete this flower?
-                    </h2>
-                    <form className={classes.Modal_Form}>
-                        <button className={classes.Modal_button} onClick={e => handleDelete()} type="button">Delete</button>
-                    </form>
+                    {
+                        loader
+                            ?
+                            <Loader />
+                            :
+                            <>
+                                <div className={classes.Close_Icon_container}>
+                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
+                                </div>
+                                <h2>
+                                    Are you sure to delete this flower?
+                                </h2>
+                                <button className={classes.Modal_button} onClick={e => handleDelete()} type="button">Delete</button>
+                            </>
+                    }
                 </div>
             </Fade>
         </Modal>

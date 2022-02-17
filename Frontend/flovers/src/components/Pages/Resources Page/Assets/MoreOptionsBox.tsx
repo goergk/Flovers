@@ -2,7 +2,7 @@ import React from 'react';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import classes from '../Resources.module.css';
-import { Flower } from '../../../../services/FloristsApi';
+import { Delivery, Flower } from '../../../../services/FloristsApi';
 
 interface Props {
     flower: Flower,
@@ -11,6 +11,9 @@ interface Props {
     handleOpenEdit: (flower_id: number) => void,
     setEditValues: (florist_name: string, florist_price: string) => void,
     handleOpenDelete: (flower_id: number) => void,
+    deliveriesData: Delivery[] | undefined,
+    handleOpenDelivery: () => void,
+    updateSingleDelivery: (delivery_id: number, flower_name: string) => void
 }
 
 const MoreOptionsBox: React.FC<Props> = ({
@@ -19,8 +22,13 @@ const MoreOptionsBox: React.FC<Props> = ({
     index,
     handleOpenEdit,
     setEditValues,
-    handleOpenDelete
+    handleOpenDelete,
+    deliveriesData,
+    handleOpenDelivery,
+    updateSingleDelivery
 }) => {
+    let i = 0;
+
     return (
         <div className={indexOfElement !== index ? classes.More_Options_Container : classes.More_Options_Container_Show}>
             <div className={classes.More_Options_Container_1}>
@@ -58,24 +66,50 @@ const MoreOptionsBox: React.FC<Props> = ({
                 <div className={classes.C3}>
                 </div>
             </div>
-            {[1, 2, 3].map(item => {
-                return (
-                    <div className={classes.More_Options_List_Container_1}>
-                        <div className={classes.C1}>
-                            <p className={classes.List_Container_Text_White}>
-                                990321
-                            </p>
-                        </div>
-                        <div className={classes.C2}>
-                            <p className={classes.List_Container_Text_White}>
-                                7
-                            </p>
-                        </div>
-                        <div className={classes.C3}>
-                        </div>
-                    </div>
-                )
-            })}
+            {flower.amount !== 0
+                ?
+                deliveriesData?.map((delivery) => {
+                    return (
+                        <>
+                            {delivery.flowers.map((flower_, index) => {
+                                if (flower_.name === flower.name && i < 3) {
+                                    i += 1;
+                                    return (
+                                        <>
+                                            <div
+                                                className={classes.More_Options_List_Container_1}
+                                                key={delivery.id}
+                                                onClick={e => {
+                                                    console.log(delivery.id);
+                                                    updateSingleDelivery(delivery.id, flower_.name);
+                                                    handleOpenDelivery();
+                                                }}
+                                            >
+                                                <div className={classes.C1}>
+                                                    <p className={classes.List_Container_Text_White}>
+                                                        {delivery.id}
+                                                    </p>
+                                                </div>
+                                                <div className={classes.C2}>
+                                                    <p className={classes.List_Container_Text_White}>
+                                                        {flower_.amount}
+                                                    </p>
+                                                </div>
+                                                <div className={classes.C3}>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                }
+                            })}
+                        </>
+                    )
+                })
+                :
+                <h5 style={{ marginLeft: '2.5em' }}>
+                    No deliveries found
+                </h5>
+            }
         </div>
     );
 };

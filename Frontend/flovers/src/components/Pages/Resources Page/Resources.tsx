@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import classes from './Resources.module.css';
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useGetFloristQuery } from '../../../services/FloristsApi';
+import { Delivery, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
 import { AddFlowerBox, AddFlowerModal, DeleteFlowerModal, EditFlowerModal, FlowerAddButton, FlowersListBox, Header } from './Assets';
 import AlertBox from './Assets/AlertBox';
+import ShowDeliveryModal from './Assets/ShowDeliveryModal';
 
 const initialValues = {
     Name: "",
@@ -36,6 +37,7 @@ const Resources = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [openDelivery, setOpenDelivery] = useState(false);
     const [indexOfElement, setIndex] = useState(-1);
     const [deleteId, setDeleteId] = useState(-1);
     const [editId, setEditId] = useState(-1);
@@ -43,6 +45,10 @@ const Resources = () => {
     const [showAddAlert, setShowAddAlert] = useState(false);
     const [showEditAlert, setShowEditAlert] = useState(false);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+    const [loader, setLoader] = useState(false);
+    const [addLoader, setAddLoader] = useState(false);
+    const [TempDelivery, setTempDelivery] = useState<Delivery | undefined>();
+    const [TempName, setTempName] = useState('');
 
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
@@ -50,15 +56,30 @@ const Resources = () => {
     const handleCloseDelete = () => { setOpenDelete(false); setDeleteId(-1); };
     const handleOpenEdit = (flower_id: number) => { setOpenEdit(true); setEditId(flower_id); };
     const handleCloseEdit = () => { setOpenEdit(false); setEditId(-1) };
+    const handleOpenDelivery = () => { setOpenDelivery(true); console.log("Opened"); };
+    const handleCloseDelivery = () => setOpenDelivery(false);
 
     const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
+    const [deliveriesData, setDeliveriesData] = useState(Florists_data?.florist[0].deliveries);
 
     useEffect(() => {
-        setFlowersData(Florists_data?.florist[0].flowers)
+        let tempArr: Flower[] | undefined = [];
+        let tempArr_1: Delivery[] | undefined = [];
+        if (Florists_data !== undefined) {
+            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
+            tempArr = tempArr!.reverse();
+            setFlowersData(tempArr);
+
+            tempArr_1 = JSON.parse(JSON.stringify(Florists_data?.florist[0].deliveries));
+            tempArr_1 = tempArr_1!.reverse();
+            setDeliveriesData(tempArr_1);
+        }
     }, [Florists_data])
 
     const onSubmit = () => {
+        setLoader(true);
+        setAddLoader(true);
         fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/flower/`, {
             method: "PUT",
             headers: {
@@ -71,16 +92,24 @@ const Resources = () => {
                 price: values.Price
             })
         })
+
         resetValues();
-        refetch();
-        handleCloseAdd();
-        setShowAddAlert(true);
         setTimeout(function () {
-            setShowAddAlert(false);
-        }, 2000);
+            refetch();
+            handleCloseAdd();
+            setTimeout(function () {
+                setLoader(false);
+                setAddLoader(false);
+            }, 500);
+            setShowAddAlert(true);
+            setTimeout(function () {
+                setShowAddAlert(false);
+            }, 2000);
+        }, 1100);
     }
 
     const handleDelete = () => {
+        setLoader(true);
         fetch(`http://127.0.0.1:8000/api/flower/${deleteId}/delete/`, {
             method: "DELETE",
             headers: {
@@ -89,16 +118,23 @@ const Resources = () => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             },
         })
+
         resetValues();
-        refetch();
-        handleCloseDelete();
-        setShowDeleteAlert(true);
         setTimeout(function () {
-            setShowDeleteAlert(false);
-        }, 2000);
+            refetch();
+            handleCloseDelete();
+            setTimeout(function () {
+                setLoader(false);
+            }, 500);
+            setShowDeleteAlert(true);
+            setTimeout(function () {
+                setShowDeleteAlert(false);
+            }, 2000);
+        }, 1100);
     }
 
     const handleEdit = () => {
+        setLoader(true);
         fetch(`http://127.0.0.1:8000/api/flower/${editId}/update/`, {
             method: "PUT",
             headers: {
@@ -111,12 +147,18 @@ const Resources = () => {
                 price: values.Edit_Price
             })
         })
-        refetch();
-        handleCloseEdit();
-        setShowEditAlert(true);
+
         setTimeout(function () {
-            setShowEditAlert(false);
-        }, 2000);
+            refetch();
+            handleCloseEdit();
+            setTimeout(function () {
+                setLoader(false);
+            }, 500);
+            setShowEditAlert(true);
+            setTimeout(function () {
+                setShowEditAlert(false);
+            }, 2000);
+        }, 1100);
     }
 
     const handleInput = (index: number) => {
@@ -133,6 +175,13 @@ const Resources = () => {
             window.removeEventListener("resize", handleResize);
         };
     });
+
+    const updateSingleDelivery = (delivery_id: number, flower_name: string) => {
+        setTempName(flower_name);
+        deliveriesData?.forEach((delivery: Delivery) => {
+            delivery.id === delivery_id && setTempDelivery(delivery);
+        })
+    }
 
     const { handleChange, handleSubmit, values, errors } = useFormik({
         initialValues,
@@ -154,6 +203,39 @@ const Resources = () => {
 
     return (
         <div className={classes.Main_Container}>
+
+            <AddFlowerModal
+                values={values}
+                errors={errors}
+                handleCloseAdd={handleCloseAdd}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                openAdd={openAdd}
+                loader={loader}
+            />
+            <DeleteFlowerModal
+                openDelete={openDelete}
+                handleCloseDelete={handleCloseDelete}
+                handleDelete={handleDelete}
+                loader={loader}
+            />
+            <EditFlowerModal
+                values={values}
+                errors={errors}
+                openEdit={openEdit}
+                handleCloseEdit={handleCloseEdit}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                handleEdit={handleEdit}
+                loader={loader}
+            />
+            <ShowDeliveryModal
+                openDelivery={openDelivery}
+                handleCloseDelivery={handleCloseDelivery}
+                delivery={TempDelivery}
+                TempName={TempName}
+            />
+
             <div className={classes.Top_Container}>
                 <AlertBox
                     showAddAlert={showAddAlert}
@@ -162,28 +244,6 @@ const Resources = () => {
                 />
                 <Header />
                 <FlowerAddButton handleOpenAdd={handleOpenAdd} />
-                <AddFlowerModal
-                    values={values}
-                    errors={errors}
-                    handleCloseAdd={handleCloseAdd}
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    openAdd={openAdd}
-                />
-                <DeleteFlowerModal
-                    openDelete={openDelete}
-                    handleCloseDelete={handleCloseDelete}
-                    handleDelete={handleDelete}
-                />
-                <EditFlowerModal
-                    values={values}
-                    errors={errors}
-                    openEdit={openEdit}
-                    handleCloseEdit={handleCloseEdit}
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    handleEdit={handleEdit}
-                />
             </div>
             <div className={classes.Bottom_Container}>
                 <FlowersListBox
@@ -193,12 +253,16 @@ const Resources = () => {
                     setEditValues={setEditValues}
                     handleOpenDelete={handleOpenDelete}
                     handleInput={handleInput}
+                    deliveriesData={deliveriesData}
+                    handleOpenDelivery={handleOpenDelivery}
+                    updateSingleDelivery={updateSingleDelivery}
                 />
                 <AddFlowerBox
                     values={values}
                     errors={errors}
                     handleChange={handleChange}
                     handleSubmit={handleSubmit}
+                    loader={addLoader}
                 />
             </div>
         </div>

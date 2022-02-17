@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from '../Resources.module.css';
-import { Flower } from '../../../../services/FloristsApi';
+import { Delivery, Flower } from '../../../../services/FloristsApi';
 import { FlowerItem, MoreOptionsBox, Tags } from '.';
 
 interface Props {
@@ -9,7 +9,10 @@ interface Props {
     handleOpenEdit: (flower_id: number) => void,
     setEditValues: (florist_name: string, florist_price: string) => void,
     handleOpenDelete: (flower_id: number) => void,
-    handleInput: (index: number) => void
+    handleInput: (index: number) => void,
+    deliveriesData: Delivery[] | undefined,
+    handleOpenDelivery: () => void,
+    updateSingleDelivery: (delivery_id: number, flower_name: string) => void
 }
 
 const FlowersListBox: React.FC<Props> = ({
@@ -18,7 +21,10 @@ const FlowersListBox: React.FC<Props> = ({
     handleOpenEdit,
     setEditValues,
     handleOpenDelete,
-    handleInput
+    handleInput,
+    deliveriesData,
+    handleOpenDelivery,
+    updateSingleDelivery
 }) => {
     return (
         <div className={classes.Show_Flowers_Container}>
@@ -47,6 +53,9 @@ const FlowersListBox: React.FC<Props> = ({
                                                 handleOpenEdit={handleOpenEdit}
                                                 setEditValues={setEditValues}
                                                 handleOpenDelete={handleOpenDelete}
+                                                deliveriesData={deliveriesData}
+                                                handleOpenDelivery={handleOpenDelivery}
+                                                updateSingleDelivery={updateSingleDelivery}
                                             />
                                         </>
                                     )

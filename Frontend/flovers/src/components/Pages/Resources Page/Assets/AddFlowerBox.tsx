@@ -5,6 +5,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import classes from '../Resources.module.css';
 import { makeStyles } from "@material-ui/core/styles";
 import { FormikErrors } from 'formik';
+import Loader from '../../../Assets/Loader/Loader';
 
 const useStyles = makeStyles({
     root: {
@@ -53,14 +54,16 @@ interface Props {
         (e: React.ChangeEvent<any>): void;
         <T_1 = string | React.ChangeEvent<any>>(field: T_1): T_1 extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
     },
-    handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void
+    handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void,
+    loader: boolean
 }
 
 const AddFlowerBox: React.FC<Props> = ({
     values,
     errors,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    loader
 }) => {
     const classes_2 = useStyles();
 
@@ -78,30 +81,38 @@ const AddFlowerBox: React.FC<Props> = ({
                         Add new flower to your database:
                     </h3>
                     <form className={classes.Resources_Form} onSubmit={handleSubmit}>
-                        <TextField
-                            id="Name"
-                            label="Flower Name"
-                            variant="outlined"
-                            size="small"
-                            value={values.Name}
-                            error={errors.Name !== undefined}
-                            helperText={errors.Name !== undefined ? errors.Name : " "}
-                            onChange={handleChange}
-                            className={classes_2.root}
-                        />
-                        <TextField
-                            id="Price"
-                            label="Price"
-                            variant="outlined"
-                            size="small"
-                            type="number"
-                            value={values.Price}
-                            error={errors.Price !== undefined}
-                            helperText={errors.Price !== undefined ? errors.Price : " "}
-                            onChange={handleChange}
-                            className={classes_2.root}
-                        />
-                        <button className={classes.Add_Flower_Button} type="submit">Add</button>
+                        {
+                            loader
+                                ?
+                                <Loader />
+                                :
+                                <>
+                                    <TextField
+                                        id="Name"
+                                        label="Flower Name"
+                                        variant="outlined"
+                                        size="small"
+                                        value={values.Name}
+                                        error={errors.Name !== undefined}
+                                        helperText={errors.Name !== undefined ? errors.Name : " "}
+                                        onChange={handleChange}
+                                        className={classes_2.root}
+                                    />
+                                    <TextField
+                                        id="Price"
+                                        label="Price"
+                                        variant="outlined"
+                                        size="small"
+                                        type="number"
+                                        value={values.Price}
+                                        error={errors.Price !== undefined}
+                                        helperText={errors.Price !== undefined ? errors.Price : " "}
+                                        onChange={handleChange}
+                                        className={classes_2.root}
+                                    />
+                                    <button className={classes.Add_Flower_Button} type="submit">Add</button>
+                                </>
+                        }
                     </form>
                 </div>
                 <div>

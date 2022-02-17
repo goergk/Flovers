@@ -124,7 +124,7 @@
   padding: 0em;
   font-size: calc(6px + 8vmin);
   color: rgb(235, 235, 235);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .Header_Container p {
@@ -241,7 +241,6 @@
   width: 100%;
   height: 3em;
   border-bottom: 1px solid rgb(235, 235, 235);
-  z-index: 5;
   transition: 200ms;
 }
 
@@ -466,7 +465,8 @@
   align-items: center;
 }
 
-.Main_Delivery_Modal_container {
+.Main_Delivery_Modal_container,
+.Mobile_Delivery_Modal_container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -484,19 +484,29 @@
   align-items: flex-start;
 }
 
+.Mobile_Delivery_Modal_container {
+  width: 80%;
+}
+
 .Close_Icon {
   float: right;
   color: #d97979;
 }
 
-.Close_Icon:hover {
+.Back_Icon {
+  float: left;
+  color: gray;
+}
+
+.Close_Icon:hover,
+.Back_Icon {
   cursor: pointer;
 }
 
 .Modal_button {
   margin-top: 1.2em;
   height: 3em;
-  width: 10em;
+  width: 100%;
   font-weight: 600;
   font-size: 1em;
   color: #d97979;
@@ -709,5 +719,14 @@
 
   .Modal_container {
     width: 70%;
+  }
+
+  .Main_Delivery_Modal_container {
+    width: 80%;
+    min-height: 80vh;
+  }
+
+  .Add_Button {
+    margin-top: 1em;
   }
 }

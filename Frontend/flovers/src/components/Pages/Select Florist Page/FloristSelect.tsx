@@ -7,13 +7,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { useHistory } from 'react-router-dom';
 import { PageType } from '../Current Page/PageType';
-import Fade from '@mui/material/Fade';
-import Modal from '@mui/material/Modal';
-import CancelIcon from '@mui/icons-material/Cancel';
-import Backdrop from '@material-ui/core/Backdrop';
-import TextField from '@material-ui/core/TextField';
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteModal from './Assets/DeleteModal';
+import AddModal from './Assets/AddModal';
 
 const initialValues = {
     Name: "",
@@ -32,6 +30,13 @@ const FloristSelect = () => {
     const { data: Florists_data, refetch } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
     const [amount, setAmount] = useState(0);
     const [fade, setFade] = useState(false);
+    const [loader, setLoader] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [deleteId, setDeleteId] = useState(-1);
+    const [err, setErr] = useState(false);
+
+    const handleOpenDelete = (florist_id: number) => { setOpenDelete(true); setDeleteId(florist_id); };
+    const handleCloseDelete = () => { setOpenDelete(false); setDeleteId(-1); };
 
     useEffect(() => {
         setAmount(Number(Florists_data?.length));
@@ -43,6 +48,27 @@ const FloristSelect = () => {
     if (!login) { changeRoute() }
 
     const onSubmit = () => {
+        if (amount > 0) {
+            let isSameName = false;
+            setErr(false);
+            Florists_data?.florists?.forEach(florist => {
+                if (florist.name === values.Name) {
+                    isSameName = true;
+                }
+            })
+            if (isSameName) {
+                setErr(true);
+            }
+            else if (!isSameName) {
+                handleAdd();
+            }
+        } else {
+            handleAdd();
+        }
+    }
+
+    const handleAdd = () => {
+        setLoader(true);
         fetch('http://127.0.0.1:8000/api/florists/add/', {
             method: "POST",
             headers: {
@@ -51,13 +77,38 @@ const FloristSelect = () => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                owner: sessionStorage.getItem('user_id'),
-                name: values.Name
+                name: values.Name,
+                owner: sessionStorage.getItem('user_id')
             })
         })
         setAmount(prevAmount => prevAmount += 1);
-        refetch();
-        handleClose();
+        setTimeout(function () {
+            refetch();
+            handleClose();
+            setTimeout(function () {
+                setLoader(false);
+            }, 200);
+        }, 700);
+    }
+
+    const handleDelete = () => {
+        setLoader(true);
+        fetch(`http://127.0.0.1:8000/api/florist/${deleteId}/delete/`, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            },
+        })
+
+        setTimeout(function () {
+            refetch();
+            handleCloseDelete();
+            setTimeout(function () {
+                setLoader(false);
+            }, 200);
+        }, 700);
     }
 
     const { handleChange, handleSubmit, values, errors } = useFormik({
@@ -86,41 +137,23 @@ const FloristSelect = () => {
             <div className={classes.Header_Container}>
                 <h1>Select florist:</h1>
             </div>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
+            <DeleteModal
+                openDelete={openDelete}
+                loader={loader}
+                handleCloseDelete={handleCloseDelete}
+                handleDelete={handleDelete}
+            />
+            <AddModal
                 open={open}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={open}>
-                    <div className={classes.Modal_container}>
-                        <CancelIcon className={classes.Close_Icon} onClick={handleClose} />
-                        <h2>
-                            Add new Florist
-                        </h2>
-                        <p>
-                            <b>Select name for your florist:</b>
-                        </p>
-                        <form className={classes.Modal_Form} onSubmit={handleSubmit}>
-                            <TextField
-                                id="Name"
-                                label="Florist Name"
-                                variant="outlined"
-                                size="small"
-                                value={values.Name}
-                                error={errors.Name !== undefined}
-                                helperText={errors.Name}
-                                onChange={handleChange}
-                            />
-                            <button className={classes.Modal_button} type="submit">Add</button>
-                        </form>
-                    </div>
-                </Fade>
-            </Modal>
+                loader={loader}
+                handleClose={handleClose}
+                handleSubmit={handleSubmit}
+                values={values}
+                errors={errors}
+                handleChange={handleChange}
+                err={err}
+                setErr={setErr}
+            />
             <div className={classes.Tabs_Container}>
                 {
                     amount < 4
@@ -141,6 +174,13 @@ const FloristSelect = () => {
                                 key={florist.id}
                                 onClick={() => handleClick(florist.id)}
                             >
+                                <DeleteForeverIcon
+                                    className={classes.Delete_Icon}
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        handleOpenDelete(florist.id);
+                                    }}
+                                />
                                 <h1>
                                     {florist.name}
                                 </h1>
@@ -149,7 +189,6 @@ const FloristSelect = () => {
                         )
                     })
                 }
-
             </div>
         </div>
     )

@@ -1,3 +1,13 @@
+@-webkit-keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;
@@ -5,6 +15,16 @@
 
   to {
     opacity: 1;
+  }
+}
+
+@-webkit-keyframes slide-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
   }
 }
 
@@ -19,31 +39,46 @@
 }
 
 .fadeOut {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   min-height: 100vh;
   width: 80%;
   color: white;
   opacity: 1;
   -webkit-animation: slide-out ease-out 1;
-  -moz-animation: slide-out ease-out 1;
   animation: slide-out ease-out 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
   animation-duration: 0.3s;
 }
 
 .Main_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   min-height: 100vh;
   width: 80%;
@@ -51,15 +86,12 @@
 
   opacity: 0;
   -webkit-animation: slide-in ease-in-out 1;
-  -moz-animation: slide-in ease-in-out 1;
   animation: slide-in ease-in-out 1;
 
   -webkit-animation-fill-mode: both;
-  -moz-animation-fill-mode: both;
   animation-fill-mode: both;
 
   -webkit-animation-duration: 0.5s;
-  -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
 }
 
@@ -73,40 +105,69 @@
 }
 
 .Tabs_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   width: 100%;
 }
 
 .Add_Florist_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 12em;
   width: 12em;
   border: 2px solid gray;
   border-radius: 2em;
+  -webkit-transition: 150ms ease-in-out;
+  -o-transition: 150ms ease-in-out;
   transition: 150ms ease-in-out;
   margin: 1em;
 }
 
 .Florist_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 12em;
   width: 12em;
   border: 2px solid white;
   border-radius: 2em;
+  -webkit-transition: 150ms ease-in-out;
+  -o-transition: 150ms ease-in-out;
   transition: 150ms ease-in-out;
   margin: 1em;
 }
 
 .Florist_Icon {
   color: white;
+  -webkit-transform: scale(4);
+  -ms-transform: scale(4);
   transform: scale(4);
 }
 
@@ -117,6 +178,8 @@
 
 .Add_Icon {
   color: #d97979;
+  -webkit-transform: scale(4);
+  -ms-transform: scale(4);
   transform: scale(4);
 }
 
@@ -142,14 +205,18 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   width: 20em;
   background-color: rgb(240, 240, 240);
   color: black;
   border: 3px solid white;
   border-radius: 1em;
+  -webkit-box-shadow: 24em;
   box-shadow: 24em;
   padding: 2em;
+  text-align: center;
 }
 
 .Close_Icon {
@@ -162,13 +229,19 @@
 }
 
 .Modal_Form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
 .Modal_button {
   margin-top: 1.2em;
   height: 3em;
+  width: 100%;
   font-weight: 600;
   font-size: 1em;
   color: #d97979;
@@ -180,9 +253,23 @@
   background-color: rgb(217, 121, 121, 0.1);
 }
 
+.Delete_Icon {
+  position: absolute;
+}
+
+.Delete_Icon:hover {
+  fill: white;
+  pointer-events: fill;
+}
+
 @media only screen and (max-width: 550px) {
   .Tabs_Container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
   }
 
@@ -194,6 +281,8 @@
 
   .Add_Icon,
   .Florist_Icon {
+    -webkit-transform: scale(3);
+    -ms-transform: scale(3);
     transform: scale(3);
   }
 

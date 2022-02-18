@@ -47,6 +47,11 @@ const Resources = () => {
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [loader, setLoader] = useState(false);
     const [addLoader, setAddLoader] = useState(false);
+    const [err, setErr] = useState(false);
+    const [errEdit, setErrEdit] = useState(false);
+    const [editTempName, setEditTempName] = useState('');
+    const [editNameErr, setEditNameErr] = useState<String | undefined>();
+    const [editPriceErr, setEditPriceErr] = useState<String | undefined>();
     const [TempDelivery, setTempDelivery] = useState<Delivery | undefined>();
     const [TempName, setTempName] = useState('');
 
@@ -56,7 +61,7 @@ const Resources = () => {
     const handleCloseDelete = () => { setOpenDelete(false); setDeleteId(-1); };
     const handleOpenEdit = (flower_id: number) => { setOpenEdit(true); setEditId(flower_id); };
     const handleCloseEdit = () => { setOpenEdit(false); setEditId(-1) };
-    const handleOpenDelivery = () => { setOpenDelivery(true); console.log("Opened"); };
+    const handleOpenDelivery = () => setOpenDelivery(true);
     const handleCloseDelivery = () => setOpenDelivery(false);
 
     const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
@@ -78,6 +83,55 @@ const Resources = () => {
     }, [Florists_data])
 
     const onSubmit = () => {
+        if (Florists_data !== undefined) {
+            let isSameName = false;
+            setErr(false);
+            flowersData?.forEach(flower => {
+                if (flower.name === values.Name) {
+                    isSameName = true;
+                }
+            })
+            if (isSameName) {
+                setErr(true);
+            }
+            else if (!isSameName) {
+                handleAdd();
+            }
+        } else {
+            handleAdd();
+        }
+    }
+
+    const onEdit = () => {
+        resetEditErrors();
+        if (values.Edit_Name === '' && values.Edit_Price === '') {
+            setEditNameErr("Required");
+            setEditPriceErr("Required");
+        }
+        else if (values.Edit_Name === '') {
+            setEditNameErr("Required");
+        }
+        else if (values.Edit_Price === '') {
+            setEditPriceErr("Required");
+        }
+        else {
+            let isSameName = false;
+            setErrEdit(false);
+            flowersData?.forEach(flower => {
+                if (flower.name === values.Edit_Name && flower.name !== editTempName) {
+                    isSameName = true;
+                }
+            })
+            if (isSameName) {
+                setErrEdit(true);
+            }
+            else if (!isSameName) {
+                handleEdit();
+            }
+        }
+    }
+
+    const handleAdd = () => {
         setLoader(true);
         setAddLoader(true);
         fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/flower/`, {
@@ -199,6 +253,13 @@ const Resources = () => {
     const setEditValues = (florist_name: string, florist_price: string) => {
         values.Edit_Name = florist_name;
         values.Edit_Price = florist_price;
+        setEditTempName(florist_name);
+    }
+
+    const resetEditErrors = () => {
+        setEditNameErr(undefined);
+        setEditPriceErr(undefined);
+        setErrEdit(false);
     }
 
     return (
@@ -212,6 +273,8 @@ const Resources = () => {
                 handleChange={handleChange}
                 openAdd={openAdd}
                 loader={loader}
+                err={err}
+                setErr={setErr}
             />
             <DeleteFlowerModal
                 openDelete={openDelete}
@@ -224,10 +287,15 @@ const Resources = () => {
                 errors={errors}
                 openEdit={openEdit}
                 handleCloseEdit={handleCloseEdit}
-                handleSubmit={handleSubmit}
                 handleChange={handleChange}
-                handleEdit={handleEdit}
+                onEdit={onEdit}
                 loader={loader}
+                errEdit={errEdit}
+                setErrEdit={setErrEdit}
+                editNameErr={editNameErr}
+                editPriceErr={editPriceErr}
+                resetEditErrors={resetEditErrors}
+                setEditTempName={setEditTempName}
             />
             <ShowDeliveryModal
                 openDelivery={openDelivery}
@@ -263,6 +331,8 @@ const Resources = () => {
                     handleChange={handleChange}
                     handleSubmit={handleSubmit}
                     loader={addLoader}
+                    err={err}
+                    setErr={setErr}
                 />
             </div>
         </div>

@@ -55,7 +55,9 @@ interface Props {
         <T_1 = string | React.ChangeEvent<any>>(field: T_1): T_1 extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
     },
     handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void,
-    loader: boolean
+    loader: boolean,
+    err: boolean,
+    setErr: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AddFlowerBox: React.FC<Props> = ({
@@ -63,7 +65,9 @@ const AddFlowerBox: React.FC<Props> = ({
     errors,
     handleChange,
     handleSubmit,
-    loader
+    loader,
+    err,
+    setErr
 }) => {
     const classes_2 = useStyles();
 
@@ -93,9 +97,9 @@ const AddFlowerBox: React.FC<Props> = ({
                                         variant="outlined"
                                         size="small"
                                         value={values.Name}
-                                        error={errors.Name !== undefined}
-                                        helperText={errors.Name !== undefined ? errors.Name : " "}
-                                        onChange={handleChange}
+                                        error={errors.Name !== undefined || err}
+                                        helperText={errors.Name !== undefined ? errors.Name : (err ? "Flower with that name already exists" : " ")}
+                                        onChange={e => { handleChange(e); setErr(false); }}
                                         className={classes_2.root}
                                     />
                                     <TextField

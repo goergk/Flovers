@@ -23,14 +23,19 @@ interface Props {
     }>,
     openEdit: boolean,
     handleCloseEdit: () => void,
-    handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void,
     handleChange:
     {
         (e: React.ChangeEvent<any>): void;
         <T_1 = string | React.ChangeEvent<any>>(field: T_1): T_1 extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
     },
-    handleEdit: () => void,
-    loader: boolean
+    onEdit: () => void,
+    loader: boolean,
+    errEdit: boolean,
+    setErrEdit: React.Dispatch<React.SetStateAction<boolean>>,
+    editNameErr: String | undefined,
+    editPriceErr: String | undefined,
+    resetEditErrors: () => void,
+    setEditTempName: React.Dispatch<React.SetStateAction<string>>
 }
 
 const EditFlowerModal: React.FC<Props> = ({
@@ -38,10 +43,15 @@ const EditFlowerModal: React.FC<Props> = ({
     errors,
     openEdit,
     handleCloseEdit,
-    handleSubmit,
     handleChange,
-    handleEdit,
-    loader
+    onEdit,
+    loader,
+    errEdit,
+    setErrEdit,
+    editNameErr,
+    editPriceErr,
+    resetEditErrors,
+    setEditTempName
 }) => {
     return (
         <Modal
@@ -63,21 +73,21 @@ const EditFlowerModal: React.FC<Props> = ({
                             :
                             <>
                                 <div className={classes.Close_Icon_container}>
-                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseEdit} />
+                                    <CancelIcon className={classes.Close_Icon} onClick={e => { handleCloseEdit(); resetEditErrors(); setEditTempName(''); }} />
                                 </div>
                                 <h2>
                                     Edit Flower
                                 </h2>
-                                <form className={classes.Modal_Form} onSubmit={handleSubmit}>
+                                <form className={classes.Modal_Form} onSubmit={e => { e.preventDefault(); onEdit(); }}>
                                     <TextField
                                         id="Edit_Name"
                                         label="Flower Name"
                                         variant="outlined"
                                         size="small"
                                         value={values.Edit_Name}
-                                        error={errors.Edit_Name !== undefined}
-                                        helperText={errors.Edit_Name !== undefined ? errors.Edit_Name : " "}
-                                        onChange={handleChange}
+                                        error={editNameErr !== undefined || errEdit}
+                                        helperText={editNameErr !== undefined ? editNameErr : (errEdit ? "Flower with that name already exists" : " ")}
+                                        onChange={e => { handleChange(e); setErrEdit(false); }}
                                         style={{ marginBottom: ".2em" }}
                                     />
                                     <TextField
@@ -87,12 +97,12 @@ const EditFlowerModal: React.FC<Props> = ({
                                         size="small"
                                         type="number"
                                         value={values.Edit_Price}
-                                        error={errors.Edit_Price !== undefined}
-                                        helperText={errors.Edit_Price !== undefined ? errors.Edit_Price : " "}
+                                        error={editPriceErr !== undefined}
+                                        helperText={editPriceErr !== undefined ? editPriceErr : " "}
                                         onChange={handleChange}
                                         style={{ marginBottom: ".2em" }}
                                     />
-                                    <button className={classes.Modal_button} type="button" onClick={e => handleEdit()}>Save</button>
+                                    <button className={classes.Modal_button} type="submit">Save</button>
                                 </form>
                             </>
                     }

@@ -29,7 +29,9 @@ interface Props {
         <T_1 = string | React.ChangeEvent<any>>(field: T_1): T_1 extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
     },
     openAdd: boolean,
-    loader: boolean
+    loader: boolean,
+    err: boolean,
+    setErr: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AddFlowerModal: React.FC<Props> = ({
@@ -39,7 +41,9 @@ const AddFlowerModal: React.FC<Props> = ({
     handleSubmit,
     handleChange,
     openAdd,
-    loader
+    loader,
+    err,
+    setErr
 }) => {
     return (
         <Modal
@@ -73,9 +77,9 @@ const AddFlowerModal: React.FC<Props> = ({
                                         variant="outlined"
                                         size="small"
                                         value={values.Name}
-                                        error={errors.Name !== undefined}
-                                        helperText={errors.Name !== undefined ? errors.Name : " "}
-                                        onChange={handleChange}
+                                        error={errors.Name !== undefined || err}
+                                        helperText={errors.Name !== undefined ? errors.Name : (err ? "Flower with that name already exists" : " ")}
+                                        onChange={e => { handleChange(e); setErr(false); }}
                                         style={{ marginBottom: ".2em" }}
                                     />
                                     <TextField

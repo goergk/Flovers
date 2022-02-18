@@ -150,10 +150,6 @@
   width: 100%;
   background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
     url("../../Images/resources_background.jpg") center center no-repeat;
-  background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
-    url("../../Images/resources_background.jpg") center center no-repeat;
-  background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
-    url("../../Images/resources_background.jpg") center center no-repeat;
   background: -webkit-gradient(
       linear,
       left top,
@@ -896,6 +892,10 @@
   flex-direction: column;
 }
 
+.Modal_button {
+  min-width: 20em;
+}
+
 @media only screen and (max-width: 1000px) {
   .Top_Container {
     height: 30%;
@@ -1015,5 +1015,10 @@
 
   .Modal_container {
     width: 70%;
+  }
+
+  .Main_Delivery_Modal_container {
+    width: 80%;
+    min-height: 80vh;
   }
 }

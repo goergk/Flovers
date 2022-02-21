@@ -211,6 +211,20 @@
   color: #d97979;
 }
 
+.Show_Number {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 15%;
+  height: 100%;
+}
+
 .Show_Name {
   display: flex;
   justify-content: flex-start;
@@ -223,7 +237,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 30%;
+  width: 25%;
   height: 100%;
 }
 
@@ -231,7 +245,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 25%;
+  width: 15%;
   height: 100%;
 }
 
@@ -675,8 +689,12 @@
     margin-left: -0.4em;
   }
 
+  .Show_Number {
+    width: 15%;
+  }
+
   .Show_Name {
-    width: 40%;
+    width: 35%;
   }
 
   .Show_Date {
@@ -684,7 +702,7 @@
   }
 
   .Show_Amount {
-    width: 25%;
+    width: 15%;
   }
 
   .Show_Container_1 {

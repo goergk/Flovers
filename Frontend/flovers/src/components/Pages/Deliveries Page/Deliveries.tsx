@@ -6,6 +6,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import NumbersIcon from '@mui/icons-material/Numbers';
+import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
@@ -545,6 +546,9 @@ const Deliveries = () => {
             <div className={classes.Bottom_Container}>
                 <div className={classes.Show_Flowers_Container}>
                     <div className={classes.Show_Container_1}>
+                        <div className={classes.Show_Number}>
+                            <Grid3x3Icon className={classes.Icon} />
+                        </div>
                         <div className={classes.Show_Name}>
                             <NumbersIcon className={classes.Icon} />
                             <p className={classes.Show_Container_Text}>
@@ -580,7 +584,7 @@ const Deliveries = () => {
                                 ?
                                 <>
                                     {
-                                        deliveriesData?.map(delivery => {
+                                        deliveriesData?.map((delivery, index) => {
                                             return (
                                                 <>
                                                     <div
@@ -591,6 +595,11 @@ const Deliveries = () => {
                                                             handleOpenDelivery();
                                                         }}
                                                     >
+                                                        <div className={classes.Show_Number}>
+                                                            <p className={classes.List_Container_Text}>
+                                                                {index + 1}
+                                                            </p>
+                                                        </div>
                                                         <div className={classes.Show_Name}>
                                                             <p className={classes.List_Container_Text_First}>
                                                                 {delivery.id}

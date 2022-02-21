@@ -346,6 +346,20 @@
   color: #d97979;
 }
 
+.Show_Number {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 6%;
+  height: 100%;
+}
+
 .Show_Name {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -356,7 +370,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 45%;
+  width: 39%;
   height: 100%;
 }
 
@@ -955,8 +969,12 @@
     margin-left: -0.4em;
   }
 
+  .Show_Number {
+    width: 12%;
+  }
+
   .Show_Name {
-    width: 40%;
+    width: 34%;
   }
 
   .Show_Date {
@@ -964,11 +982,11 @@
   }
 
   .Show_Price {
-    width: 16%;
+    width: 14%;
   }
 
   .Show_Amount {
-    width: 23%;
+    width: 19%;
   }
 
   .Show_Container_1 {

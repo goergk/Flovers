@@ -18,6 +18,13 @@ const FlowerItem: React.FC<Props> = ({
 }) => {
     return (
         <div className={classes.List_Item_Container}>
+            <div className={classes.Show_Number}>
+                <p
+                    className={classes.List_Container_Text}
+                    style={{ "color": indexOfElement !== index ? "rgb(195, 195, 195)" : "#d97979" }}>
+                    {index + 1}
+                </p>
+            </div>
             <div className={classes.Show_Name}>
                 <p
                     className={indexOfElement !== index

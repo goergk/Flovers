@@ -2,6 +2,35 @@ import React from 'react';
 import classes from '../Resources.module.css';
 import { Delivery, Flower } from '../../../../services/FloristsApi';
 import { FlowerItem, MoreOptionsBox, Tags } from '.';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+    root: {
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#d97979"
+        },
+        "& .MuiOutlinedInput-input": {
+            color: "white"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused": {
+            color: "#d97979"
+        },
+        "& .MuiInputLabel-outlined": {
+            color: "white"
+        },
+        "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white"
+        },
+        "& .MuiInputLabel-outlined.Mui-focused": {
+            color: "#d97979"
+        },
+        marginBottom: ".2em"
+    }
+});
 
 interface Props {
     flowersData: Flower[] | undefined,
@@ -12,7 +41,9 @@ interface Props {
     handleInput: (index: number) => void,
     deliveriesData: Delivery[] | undefined,
     handleOpenDelivery: () => void,
-    updateSingleDelivery: (delivery_id: number, flower_name: string) => void
+    updateSingleDelivery: (delivery_id: number, flower_name: string) => void,
+    itemSearchTerm: string,
+    setItemSearchTerm: React.Dispatch<React.SetStateAction<string>>
 }
 
 const FlowersListBox: React.FC<Props> = ({
@@ -24,14 +55,34 @@ const FlowersListBox: React.FC<Props> = ({
     handleInput,
     deliveriesData,
     handleOpenDelivery,
-    updateSingleDelivery
+    updateSingleDelivery,
+    itemSearchTerm,
+    setItemSearchTerm
 }) => {
+    const classes_2 = useStyles();
+
     return (
         <div className={classes.Show_Flowers_Container}>
             <div className={classes.Show_Container_1}>
                 <Tags />
             </div>
-            <div className={classes.Show_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
+            <div className={classes.Search_Container} style={{ borderBottom: 'none' }}>
+                <div>
+                    <b>Search for a flower:</b>
+                </div>
+                <div className={classes.Filter_Input}>
+                    <TextField
+                        id="Search"
+                        label="Search Name"
+                        variant="outlined"
+                        size="small"
+                        value={itemSearchTerm}
+                        onChange={(e) => setItemSearchTerm(e.target.value)}
+                        className={classes_2.root}
+                    />
+                </div>
+            </div>
+            <div className={classes.Show_Container_2}>
                 {
                     flowersData?.length! > 0
                         ?

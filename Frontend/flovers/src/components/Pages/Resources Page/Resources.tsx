@@ -54,6 +54,7 @@ const Resources = () => {
     const [editPriceErr, setEditPriceErr] = useState<String | undefined>();
     const [TempDelivery, setTempDelivery] = useState<Delivery | undefined>();
     const [TempName, setTempName] = useState('');
+    const [itemSearchTerm, setItemSearchTerm] = useState('');
 
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
@@ -72,7 +73,7 @@ const Resources = () => {
         let tempArr: Flower[] | undefined = [];
         let tempArr_1: Delivery[] | undefined = [];
         if (Florists_data !== undefined) {
-            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
+            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers.filter((flower) => flower.name.toLowerCase().includes(itemSearchTerm.toLocaleLowerCase()))));
             tempArr = tempArr!.reverse();
             setFlowersData(tempArr);
 
@@ -80,7 +81,7 @@ const Resources = () => {
             tempArr_1 = tempArr_1!.reverse();
             setDeliveriesData(tempArr_1);
         }
-    }, [Florists_data])
+    }, [Florists_data, itemSearchTerm])
 
     const onSubmit = () => {
         if (Florists_data !== undefined) {
@@ -199,6 +200,25 @@ const Resources = () => {
             body: JSON.stringify({
                 name: values.Edit_Name,
                 price: values.Edit_Price
+            })
+        })
+
+        deliveriesData?.forEach(delivery => {
+            delivery.flowers.forEach(flower => {
+                if (flower.name === editTempName) {
+                    fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
+                        method: "PUT",
+                        headers: {
+                            'Accept': 'application/json, text/plain',
+                            'Content-Type': 'application/json;charset=UTF-8',
+                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify({
+                            name: values.Edit_Name,
+                            price: values.Edit_Price
+                        })
+                    })
+                }
             })
         })
 
@@ -324,6 +344,8 @@ const Resources = () => {
                     deliveriesData={deliveriesData}
                     handleOpenDelivery={handleOpenDelivery}
                     updateSingleDelivery={updateSingleDelivery}
+                    itemSearchTerm={itemSearchTerm}
+                    setItemSearchTerm={setItemSearchTerm}
                 />
                 <AddFlowerBox
                     values={values}

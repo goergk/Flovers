@@ -44,7 +44,7 @@
   }
   100% {
     opacity: 1;
-    height: calc(10em + 3px);
+    height: 10em;
   }
 }
 
@@ -58,14 +58,14 @@
   }
   100% {
     opacity: 1;
-    height: calc(10em + 3px);
+    height: 10em;
   }
 }
 
 @-webkit-keyframes slide-out {
   0% {
     opacity: 1;
-    height: calc(10em + 3px);
+    height: 10em;
   }
   40% {
     opacity: 0;
@@ -79,7 +79,7 @@
 @keyframes slide-out {
   0% {
     opacity: 1;
-    height: calc(10em + 3px);
+    height: 10em;
   }
   40% {
     opacity: 0;
@@ -148,6 +148,8 @@
   align-items: center;
   height: 40%;
   width: 100%;
+  background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
+    url("../../Images/resources_background.jpg") center center no-repeat;
   background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
     url("../../Images/resources_background.jpg") center center no-repeat;
   background: -webkit-gradient(
@@ -289,6 +291,7 @@
   height: 100%;
   width: 100%;
   margin-top: 1.8em;
+  overflow-y: scroll;
 }
 
 .Add_Container_1 {
@@ -559,9 +562,9 @@
 }
 
 .More_Options_Container {
-  height: calc(10em + 3px);
+  height: 10em;
   width: 100%;
-  opacity: 1;
+  display: none;
   -webkit-animation: slide-out ease-out 1;
   animation: slide-out ease-out 1;
 
@@ -575,7 +578,6 @@
 .More_Options_Container_Show {
   height: 0em;
   width: 100%;
-  opacity: 0;
   -webkit-animation: slide-in ease-out 1;
   animation: slide-in ease-out 1;
 
@@ -896,6 +898,25 @@
   min-width: 20em;
 }
 
+.Search_Container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 2em;
+  margin-bottom: -1em;
+}
+
+.Filter_Input {
+  margin-right: 0.2em;
+}
+
 @media only screen and (max-width: 1000px) {
   .Top_Container {
     height: 30%;
@@ -1020,5 +1041,9 @@
   .Main_Delivery_Modal_container {
     width: 80%;
     min-height: 80vh;
+  }
+
+  .Filter_Input {
+    margin-right: 0em;
   }
 }

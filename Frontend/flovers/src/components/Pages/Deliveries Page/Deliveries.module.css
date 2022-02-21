@@ -171,6 +171,7 @@
   height: 100%;
   width: 100%;
   margin-top: 1.8em;
+  overflow-y: scroll;
 }
 
 .Add_Container_1 {
@@ -533,6 +534,7 @@
   width: 100%;
   height: 15em;
   margin-bottom: 1.2em;
+  overflow-y: scroll;
 }
 
 .Nested_Flower_Container {
@@ -626,6 +628,15 @@
 
 .Clear_Icon:hover {
   cursor: pointer;
+}
+
+.Search_Container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2em;
+  margin-bottom: -1em;
 }
 
 @media only screen and (max-width: 1000px) {

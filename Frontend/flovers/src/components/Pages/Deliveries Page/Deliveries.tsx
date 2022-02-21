@@ -49,6 +49,7 @@ const Deliveries = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [openDelivery, setOpenDelivery] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
     const [firstRun, setFirstRun] = useState(true);
     const [loader, setLoader] = useState(false);
@@ -75,11 +76,11 @@ const Deliveries = () => {
     useEffect(() => {
         let tempArr: Delivery[] | undefined = [];
         if (Florists_data !== undefined) {
-            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].deliveries));
+            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].deliveries.filter((delivery) => delivery.id.toString().includes(itemSearchTerm.toString()))));
             tempArr = tempArr!.reverse();
             setDeliveriesData(tempArr);
         }
-    }, [Florists_data])
+    }, [Florists_data, itemSearchTerm])
 
     useEffect(() => {
         let tempArr: Flower[] | undefined = [];
@@ -557,7 +558,23 @@ const Deliveries = () => {
                             </p>
                         </div>
                     </div>
-                    <div className={classes.Show_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                    <div className={classes.Search_Container}>
+                        <div>
+                            <b>Search for a delivery:</b>
+                        </div>
+                        <div>
+                            <TextField
+                                id="Search"
+                                label="Search Id"
+                                variant="outlined"
+                                size="small"
+                                value={itemSearchTerm}
+                                onChange={(e) => setItemSearchTerm(e.target.value)}
+                                className={classes_2.root}
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.Show_Container_2}>
                         {
                             deliveriesData?.length! > 0
                                 ?
@@ -620,7 +637,7 @@ const Deliveries = () => {
                             <div className={classes.Nested_Flower_Name}>
                                 <b>Search for a flower:</b>
                             </div>
-                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
+                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '1.1em' }}>
                                 <TextField
                                     id="Search"
                                     label="Search Name"
@@ -632,7 +649,7 @@ const Deliveries = () => {
                                 />
                             </div>
                         </div>
-                        <div className={classes.Add_Flowers_List} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                        <div className={classes.Add_Flowers_List}>
                             {flowersData?.map((flower, index) => {
                                 return (
                                     <>

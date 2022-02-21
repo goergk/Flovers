@@ -80,7 +80,6 @@ const MoreOptionsBox: React.FC<Props> = ({
                                                 className={classes.More_Options_List_Container_1}
                                                 key={delivery.id}
                                                 onClick={e => {
-                                                    console.log(delivery.id);
                                                     updateSingleDelivery(delivery.id, flower_.name);
                                                     handleOpenDelivery();
                                                 }}

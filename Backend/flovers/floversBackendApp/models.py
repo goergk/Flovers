@@ -5,7 +5,7 @@ class User(AbstractUser):
     pass
 
 class Flower(models.Model):
-    name = models.CharField(max_length=20, blank=False)
+    name = models.CharField(max_length=16, blank=False)
     price = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
     amount = models.IntegerField(blank=False, default=0)
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -21,7 +21,7 @@ class Delivery(models.Model):
         return f"Delivery id: {self.id}."
 
 class Bouquet(models.Model):
-    name = models.CharField(max_length=20, blank=False)
+    name = models.CharField(max_length=16, blank=False)
     flowers = models.ManyToManyField(Flower, related_name="flowers_in_bouquet", blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
 

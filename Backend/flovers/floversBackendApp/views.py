@@ -130,6 +130,8 @@ def UpdateFloristBouquets(request, florist_id):
 
             new_bouquet = Bouquet()
             new_bouquet.save()
+            new_bouquet.name = bouquets_data['name']
+            new_bouquet.save()
             for flower in flowers_tab:
                 new_flower = Flower.objects.create(            
                 name =  flower['name'],
@@ -167,6 +169,7 @@ def UpdateFloristDeliveries(request, florist_id):
 
             new_delivery = Delivery()
             new_delivery.save()
+            new_delivery.name = delivery_data['name']
             for flower in flowers_tab:
                 new_flower = Flower.objects.create(            
                 name =  flower['name'],
@@ -243,19 +246,17 @@ def register(request):
 @permission_classes(())
 def CreateFlorist(request):
     if request.user.is_authenticated:  
-        serializer = FloristSerializer(data=request.data)
+        serializer = FloristSerializer(data=request.data)        
 
-        if serializer.is_valid():
-            florist_data = request.data
-            new_florist = Florist.objects.create(
-                owner = User.objects.filter(id = florist_data['owner']).first(),
-                name =  florist_data['name']
-            )
-            new_florist.save()
-            serializer = FloristSerializer(new_florist)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        raise Http404
+        florist_data = request.data
+        new_florist = Florist.objects.create(
+            name =  florist_data['name'],
+            owner = User.objects.filter(id = florist_data['owner']).first()                
+        )
+        new_florist.save()
+        serializer = FloristSerializer(new_florist)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+      
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -446,7 +447,7 @@ def DeleteDelivery(request, delivery_id):
 def DeleteFlorist(request, florist_id):
     if request.user.is_authenticated:
         try:
-            florist = Flower.objects.get(id=florist_id)
+            florist = Florist.objects.get(id=florist_id)
         except:
             raise Http404
         

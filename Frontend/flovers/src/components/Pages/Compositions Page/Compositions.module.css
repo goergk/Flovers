@@ -124,7 +124,7 @@
   padding: 0em;
   font-size: calc(6px + 8vmin);
   color: rgb(235, 235, 235);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .Header_Container p {
@@ -171,6 +171,7 @@
   height: 100%;
   width: 100%;
   margin-top: 1.8em;
+  overflow-y: scroll;
 }
 
 .Add_Container_1 {
@@ -210,6 +211,20 @@
   color: #d97979;
 }
 
+.Show_Number {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 15%;
+  height: 100%;
+}
+
 .Show_Name {
   display: flex;
   justify-content: flex-start;
@@ -222,7 +237,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 30%;
+  width: 25%;
   height: 100%;
 }
 
@@ -230,7 +245,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 25%;
+  width: 15%;
   height: 100%;
 }
 
@@ -241,7 +256,6 @@
   width: 100%;
   height: 3em;
   border-bottom: 1px solid rgb(235, 235, 235);
-  z-index: 5;
   transition: 200ms;
 }
 
@@ -325,6 +339,11 @@
   height: 2.5em;
   border-radius: 0.5em;
   font-weight: 600;
+}
+
+.Add_Button:hover {
+  cursor: pointer;
+  color: white;
 }
 
 .Add_Flower_Button:hover {
@@ -418,12 +437,32 @@
   display: none;
 }
 
-.Add_Flower_Button_Mobile:hover {
+.Add_Bouquet_Button_Mobile:hover {
   cursor: pointer;
   color: white;
 }
 
+.Close_Icon_container,
+.Delete_Icon_container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.Delete_Icon_Inner_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Delete_Icon_Inner_container:hover {
+  user-select: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .Modal_container {
+  text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -435,6 +474,33 @@
   border-radius: 1em;
   box-shadow: 24em;
   padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Main_Bouquet_Modal_container,
+.Mobile_Bouquet_Modal_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: 30em;
+  background-color: rgb(240, 240, 240);
+  color: black;
+  border: 3px solid #090b0f;
+  border-radius: 1em;
+  box-shadow: 24em;
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.Mobile_Bouquet_Modal_container {
+  width: 80%;
 }
 
 .Close_Icon {
@@ -442,13 +508,20 @@
   color: #d97979;
 }
 
-.Close_Icon:hover {
+.Back_Icon {
+  float: left;
+  color: gray;
+}
+
+.Close_Icon:hover,
+.Back_Icon {
   cursor: pointer;
 }
 
 .Modal_button {
-  margin-top: 1.2em;
+  margin-top: 0.5em;
   height: 3em;
+  width: 100%;
   font-weight: 600;
   font-size: 1em;
   color: #d97979;
@@ -458,6 +531,15 @@
 .Modal_button:hover {
   cursor: pointer;
   background-color: rgb(217, 121, 121, 0.1);
+}
+
+.Bouquet_Name_Input {
+  margin-top: 1.5em;
+  width: 100%;
+}
+
+.Add_Bouquet_Form {
+  width: 100%;
 }
 
 .Modal_Form {
@@ -475,6 +557,7 @@
   width: 100%;
   height: 15em;
   margin-bottom: 1.2em;
+  overflow-y: scroll;
 }
 
 .Nested_Flower_Container {
@@ -496,6 +579,87 @@
   justify-content: flex-start;
   align-items: center;
   width: 80%;
+}
+
+.Bouquet_Container p {
+  font-size: calc(6px + 1.2vmin);
+}
+
+.Bouquet_Amount {
+  color: #d97979;
+}
+
+.Bouquet_Container:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.Bouquet_Modal_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+}
+
+.Bouquet_Modal_List_Container {
+  width: 100%;
+  border: 1px solid rgb(195, 195, 195);
+  border-radius: 0.3em;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Bouquet_Item_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgb(195, 195, 195);
+  width: 100%;
+}
+
+.Container_C1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 10%;
+}
+
+.Container_C2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 45%;
+}
+
+.Container_C3 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 30%;
+}
+
+.Container_C4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 15%;
+}
+
+.Clear_Icon:hover {
+  cursor: pointer;
+}
+
+.Search_Container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2em;
+  margin-bottom: -1em;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -534,8 +698,12 @@
     margin-left: -0.4em;
   }
 
+  .Show_Number {
+    width: 15%;
+  }
+
   .Show_Name {
-    width: 40%;
+    width: 35%;
   }
 
   .Show_Date {
@@ -543,7 +711,7 @@
   }
 
   .Show_Amount {
-    width: 25%;
+    width: 15%;
   }
 
   .Show_Container_1 {
@@ -576,7 +744,7 @@
     margin-bottom: -1.5em;
   }
 
-  .Add_Flower_Button_Mobile {
+  .Add_Bouquet_Button_Mobile {
     border: 1px solid #d97979;
     background-color: #d97979;
     width: 30%;
@@ -589,5 +757,14 @@
 
   .Modal_container {
     width: 70%;
+  }
+
+  .Main_Bouquet_Modal_container {
+    width: 80%;
+    min-height: 80vh;
+  }
+
+  .Add_Button {
+    margin-top: 1em;
   }
 }

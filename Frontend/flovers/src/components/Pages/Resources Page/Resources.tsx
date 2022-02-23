@@ -18,7 +18,7 @@ const FORM_VALIDATION = Yup.object().shape({
     Name: Yup.string()
         .required("Required")
         .min(4, 'Min length is 4')
-        .max(20, 'Max length is 20'),
+        .max(16, 'Max length is 16'),
     Price: Yup.number()
         .required("Required")
         .max(999.99, 'Max value is 999,99')
@@ -26,7 +26,7 @@ const FORM_VALIDATION = Yup.object().shape({
     Edit_Name: Yup.string()
         .required("Required")
         .min(4, 'Min length is 4')
-        .max(20, 'Max length is 20'),
+        .max(16, 'Max length is 16'),
     Edit_Price: Yup.number()
         .required("Required")
         .max(999.99, 'Max value is 999,99')

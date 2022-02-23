@@ -631,7 +631,7 @@ const Deliveries = () => {
                         }
                     </div>
                 </div>
-                <div className={classes.Add_Flower_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                <div className={classes.Add_Flower_Container}>
                     <div className={classes.Add_Container_1}>
                         <AddBoxIcon className={classes.Icon} />
                         <p>

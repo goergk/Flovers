@@ -62,6 +62,7 @@ const Compositions = () => {
     const [openMobileAdd, setOpenMobileAdd] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openBouquet, setOpenBouquet] = useState(false);
+    const [err, setErr] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
@@ -226,6 +227,26 @@ const Compositions = () => {
     }
 
     const onSubmit = () => {
+        setErr(false);
+        if (bouquetsData !== undefined) {
+            let isSameName = false;
+            bouquetsData?.forEach(bouquet => {
+                if (values.Name === bouquet.name) {
+                    isSameName = true;
+                }
+            });
+            if (isSameName) {
+                setErr(true);
+            }
+            else {
+                handleAdd();
+            }
+        } else {
+            handleAdd();
+        }
+    }
+
+    const handleAdd = () => {
         setLoader(true);
         fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/bouquet/`, {
             method: "PUT",
@@ -257,7 +278,7 @@ const Compositions = () => {
         // }, 2000);
     }
 
-    const { handleChange, handleSubmit, values, errors } = useFormik({
+    const { handleChange, handleSubmit, values, errors, setErrors } = useFormik({
         initialValues,
         validationSchema: FORM_VALIDATION,
         validateOnChange: false,
@@ -510,8 +531,8 @@ const Compositions = () => {
                                                         variant="outlined"
                                                         size="small"
                                                         value={values.Name}
-                                                        error={errors.Name !== undefined}
-                                                        helperText={errors.Name !== undefined ? errors.Name : " "}
+                                                        error={errors.Name !== undefined || err}
+                                                        helperText={errors.Name !== undefined ? errors.Name : (err ? "Bouquet with that name already exists" : " ")}
                                                         onChange={handleChange}
                                                         style={{ width: '100%' }}
                                                     />

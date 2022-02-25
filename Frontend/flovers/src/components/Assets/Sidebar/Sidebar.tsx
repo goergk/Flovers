@@ -42,8 +42,20 @@ const Sidebar = () => {
 
                     <CloseIcon onClick={handleDrawerToggle} className={classes.Close_Icon} />
                     {SidebarData.map((item, index) => {
+                        let border = false;
+                        if (item.path === `${PageType.COMPOSITIONS}`) { border = true }
                         return (
-                            <Link to={item.path} style={{ textDecoration: 'none', color: 'white' }} key={index} onClick={handleDrawerToggle}>
+                            <Link
+                                to={item.path}
+                                style={
+                                    border
+                                        ?
+                                        { borderBottom: '1px solid gray', textDecoration: 'none', color: 'white', marginBottom: '1em', width: '100%' }
+                                        :
+                                        { textDecoration: 'none', color: 'white' }}
+                                key={index}
+                                onClick={handleDrawerToggle}
+                            >
                                 <div className={classes.List_Container}>
                                     {item.icon}
                                     <h3>
@@ -67,8 +79,19 @@ const Sidebar = () => {
                         <Logo />
                     </div>
                     {SidebarData.map((item, index) => {
+                        let border = false;
+                        if (item.path === `${PageType.COMPOSITIONS}`) { border = true }
                         return (
-                            <Link to={item.path} style={{ textDecoration: 'none', color: 'white' }} key={index}>
+                            <Link
+                                to={item.path}
+                                style={
+                                    border
+                                        ?
+                                        { borderBottom: '1px solid gray', textDecoration: 'none', color: 'white', marginBottom: '1em' }
+                                        :
+                                        { textDecoration: 'none', color: 'white' }}
+                                key={index}
+                            >
                                 <div
                                     className={pathname !== item.path ? classes.List_Container : classes.List_Container_Active}>
                                     {item.icon}

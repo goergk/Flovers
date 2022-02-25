@@ -117,12 +117,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  bottom: 0;
   width: 6em;
   height: 2em;
-  margin-left: -1.6em;
-  margin-bottom: 5em;
+  margin: auto auto 2em auto;
   border: 1px solid #d97979;
 }
 

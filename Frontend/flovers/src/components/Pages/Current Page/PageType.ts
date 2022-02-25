@@ -4,6 +4,8 @@ export enum PageType {
     RESOURCES = "/Resources",
     DELIVERIES = "/Deliveries",
     COMPOSITIONS = "/Compositions",
+    SALES = "/Sales",
+    STATISTICS = "/Statistics",
     SIGNIN = "/Sign In",
     SIGNUP = "/Sign Up",
 }

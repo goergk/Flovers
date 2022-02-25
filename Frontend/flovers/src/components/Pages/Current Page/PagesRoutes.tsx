@@ -29,6 +29,12 @@ const Page = () => {
                 <Route path={`${PageType.COMPOSITIONS}`}>
                     <FloversPage />
                 </Route>
+                <Route path={`${PageType.SALES}`}>
+                    <FloversPage />
+                </Route>
+                <Route path={`${PageType.STATISTICS}`}>
+                    <FloversPage />
+                </Route>
                 <Route path={`${PageType.SIGNIN}`}>
                     <SignIn />
                 </Route>

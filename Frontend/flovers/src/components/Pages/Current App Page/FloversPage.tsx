@@ -4,6 +4,8 @@ import Error from '../Error Page/Error';
 import Resources from '../Resources Page/Resources';
 import Deliveries from '../Deliveries Page/Deliveries';
 import Compositions from '../Compositions Page/Compositions';
+import Sales from '../Sales Page/Sales';
+import Stats from '../Statistics Page/Stats';
 import { PageType } from '../Current Page/PageType';
 import Sidebar from '../../Assets/Sidebar/Sidebar';
 import classes from './FloversPage.module.css';
@@ -31,6 +33,12 @@ const FloversPage = () => {
                     </Route>
                     <Route path={`${PageType.COMPOSITIONS}`}>
                         <Compositions />
+                    </Route>
+                    <Route path={`${PageType.SALES}`}>
+                        <Sales />
+                    </Route>
+                    <Route path={`${PageType.STATISTICS}`}>
+                        <Stats />
                     </Route>
                     <Route path='/404'>
                         <Error />

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import classes from './Compositions.module.css';
+import classes from './Sales.module.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import EventIcon from '@mui/icons-material/Event';
-import GrassIcon from '@mui/icons-material/Grass';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from "@material-ui/core/styles";
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
+import NumbersIcon from '@mui/icons-material/Numbers';
 import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -14,10 +14,8 @@ import Modal from '@mui/material/Modal';
 import { Backdrop, Fade } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Bouquet, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
+import { Delivery, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
 import Loader from '../../Assets/Loader/Loader';
-import * as Yup from "yup";
-import { useFormik } from "formik";
 
 const useStyles = makeStyles({
     root: {
@@ -46,23 +44,11 @@ const useStyles = makeStyles({
     }
 });
 
-const initialValues = {
-    Name: ""
-};
-
-const FORM_VALIDATION = Yup.object().shape({
-    Name: Yup.string()
-        .required("Required")
-        .min(4, 'Min length is 4')
-        .max(16, 'Max length is 16')
-});
-
-const Compositions = () => {
+const Sales = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openMobileAdd, setOpenMobileAdd] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-    const [openBouquet, setOpenBouquet] = useState(false);
-    const [err, setErr] = useState(false);
+    const [openDelivery, setOpenDelivery] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
@@ -75,25 +61,25 @@ const Compositions = () => {
     const handleCloseMobileAdd = () => setOpenMobileAdd(false);
     const handleOpenDelete = () => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
-    const handleOpenBouquet = () => setOpenBouquet(true);
-    const handleCloseBouquet = () => setOpenBouquet(false);
+    const handleOpenDelivery = () => setOpenDelivery(true);
+    const handleCloseDelivery = () => setOpenDelivery(false);
 
     const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
 
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [tmpFlowers, setTmpFlowers] = useState<Flower[] | undefined>();
-    const [bouquetsFlowers, setBouquetsFlowers] = useState<Flower[] | undefined>();
-    const [BouquetList, setBouquetList] = useState<Flower[] | undefined>();
+    const [deliveryFlowers, setDeliveryFlowers] = useState<Flower[] | undefined>();
+    const [deliveryList, setDeliveryList] = useState<Flower[] | undefined>();
 
-    const [bouquetsData, setBouquetsData] = useState(Florists_data?.florist[0].bouquets);
-    const [singleBouquet, setSingleBouquet] = useState<Bouquet | undefined>();
+    const [deliveriesData, setDeliveriesData] = useState(Florists_data?.florist[0].deliveries);
+    const [singleDelivery, setSingleDelivery] = useState<Delivery | undefined>();
 
     useEffect(() => {
-        let tempArr: Bouquet[] | undefined = [];
+        let tempArr: Delivery[] | undefined = [];
         if (Florists_data !== undefined) {
-            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].bouquets.filter((bouquet) => bouquet.name.toLowerCase().includes(itemSearchTerm.toLocaleLowerCase()))));
+            tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].deliveries.filter((delivery) => delivery.id.toString().includes(itemSearchTerm.toString()))));
             tempArr = tempArr!.reverse();
-            setBouquetsData(tempArr);
+            setDeliveriesData(tempArr);
         }
     }, [Florists_data, itemSearchTerm])
 
@@ -105,7 +91,7 @@ const Compositions = () => {
             setFlowersData(tempArr);
         }
         if (Florists_data !== undefined && firstRun) {
-            setBouquetsFlowers(Florists_data?.florist[0].flowers);
+            setDeliveryFlowers(Florists_data?.florist[0].flowers);
         }
         if (Florists_data !== undefined && firstRunTemp) {
             setTmpFlowers(Florists_data?.florist[0].flowers);
@@ -120,11 +106,11 @@ const Compositions = () => {
     }, [tmpFlowers]);
 
     useEffect(() => {
-        if (firstRun && bouquetsFlowers !== undefined) {
-            setZerosInBouquetArray();
+        if (firstRun && deliveryFlowers !== undefined) {
+            setZerosInDeliveryArray();
             setFirstRun(false);
         }
-    }, [bouquetsFlowers]);
+    }, [deliveryFlowers]);
 
     const setZerosInTempArray = () => {
         let newArr = JSON.parse(JSON.stringify(tmpFlowers));
@@ -132,10 +118,10 @@ const Compositions = () => {
         setTmpFlowers(newArr);
     }
 
-    const setZerosInBouquetArray = () => {
-        let newArr = JSON.parse(JSON.stringify(bouquetsFlowers));
+    const setZerosInDeliveryArray = () => {
+        let newArr = JSON.parse(JSON.stringify(deliveryFlowers));
         newArr.map((flower: Flower) => flower.amount = 0);
-        setBouquetsFlowers(newArr);
+        setDeliveryFlowers(newArr);
     }
 
     const updateArrayOnInputChange = (flower_id: number, e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -144,19 +130,19 @@ const Compositions = () => {
         setTmpFlowers(newArr);
     }
 
-    const updateBouquetFlowers = () => {
-        let newArr = JSON.parse(JSON.stringify(bouquetsFlowers!));
+    const updateDeliveryFlowers = () => {
+        let newArr = JSON.parse(JSON.stringify(deliveryFlowers!));
         tmpFlowers?.map((flower, index) => {
             if (flower.amount > 0) {
                 newArr[index].amount += flower.amount;
             }
             return flower;
         })
-        setBouquetsFlowers(newArr);
+        setDeliveryFlowers(newArr);
     }
 
-    const deleteBouquetFlower = (flower_id: number) => {
-        let newArr = JSON.parse(JSON.stringify(bouquetsFlowers!));
+    const deleteDeliveryFlower = (flower_id: number) => {
+        let newArr = JSON.parse(JSON.stringify(deliveryFlowers!));
         let index = -1;
         newArr.map((flower: Flower, i: number) => {
             if (flower.id === flower_id) {
@@ -165,29 +151,29 @@ const Compositions = () => {
             return index;
         })
         newArr.splice(index, 1);
-        setBouquetsFlowers(newArr);
+        setDeliveryFlowers(newArr);
     }
 
-    const updateBouquetList = () => {
+    const updateDeliveryList = () => {
         let newArr: Flower[] | undefined = [];
-        bouquetsFlowers?.map((flower) => {
+        deliveryFlowers?.map((flower) => {
             if (flower.amount > 0) {
                 newArr!.push(flower);
             }
             return flower;
         })
-        if (newArr.length > 0) { setBouquetList(newArr) }
+        if (newArr.length > 0) { setDeliveryList(newArr) }
     }
 
-    const updateSingleBouquet = (bouquet_id: number) => {
-        bouquetsData?.forEach((bouquet: Bouquet) => {
-            bouquet.id === bouquet_id && setSingleBouquet(bouquet);
+    const updateSingleDelivery = (delivery_id: number) => {
+        deliveriesData?.forEach((delivery: Delivery) => {
+            delivery.id === delivery_id && setSingleDelivery(delivery);
         })
     }
 
-    const deleteSingleBouquet = (bouquet_id: number) => {
-        setLoader(true);
-        fetch(`http://127.0.0.1:8000/api/bouquet/${bouquet_id}/delete/`, {
+    const deleteSingleDelivery = (delivery_id: number) => {
+        updateFlowersInResources(deliveryList!, true);
+        fetch(`http://127.0.0.1:8000/api/delivery/${delivery_id}/delete/`, {
             method: "DELETE",
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -198,9 +184,6 @@ const Compositions = () => {
         setTimeout(function () {
             refetch();
             handleCloseDelete();
-            setTimeout(function () {
-                setLoader(false);
-            }, 200);
         }, 900);
         // setShowDeleteAlert(true);
         // setTimeout(function () {
@@ -209,14 +192,14 @@ const Compositions = () => {
     }
 
     const deleteListElement = (index: number) => {
-        let newArr = JSON.parse(JSON.stringify(BouquetList!));
+        let newArr = JSON.parse(JSON.stringify(deliveryList!));
         newArr.splice(index, 1);
-        setBouquetList(newArr);
+        setDeliveryList(newArr);
     }
 
-    const bouquetItemsAmount = () => {
+    const deliveryItemsAmount = () => {
         let amount = 0;
-        bouquetsFlowers?.map(flower => flower.amount > 0 && amount++);
+        deliveryFlowers?.map(flower => flower.amount > 0 && amount++);
         return amount;
     }
 
@@ -226,29 +209,8 @@ const Compositions = () => {
         return amount;
     }
 
-    const onSubmit = () => {
-        setErr(false);
-        if (bouquetsData !== undefined) {
-            let isSameName = false;
-            bouquetsData?.forEach(bouquet => {
-                if (values.Name === bouquet.name) {
-                    isSameName = true;
-                }
-            });
-            if (isSameName) {
-                setErr(true);
-            }
-            else {
-                handleAdd();
-            }
-        } else {
-            handleAdd();
-        }
-    }
-
-    const handleAdd = () => {
-        setLoader(true);
-        fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/bouquet/`, {
+    const addDelivery = () => {
+        fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/delivery/`, {
             method: "PUT",
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -256,35 +218,57 @@ const Compositions = () => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                name: values.Name,
-                flowers: BouquetList
+                flowers: deliveryList
             })
         })
-        setBouquetList([]);
-        setZerosInBouquetArray();
+        updateFlowersInResources(deliveryList!, false);
+        setDeliveryList([]);
+        setZerosInDeliveryArray();
         setZerosInTempArray();
         setTimeout(function () {
             refetch();
             handleCloseMobileAdd();
             handleCloseAdd();
-            setTimeout(function () {
-                setLoader(false);
-            }, 200);
         }, 900);
-        values.Name = "";
         // setShowAddAlert(true);
         // setTimeout(function () {
         //     setShowAddAlert(false);
         // }, 2000);
     }
 
-    const { handleChange, handleSubmit, values, errors, setErrors } = useFormik({
-        initialValues,
-        validationSchema: FORM_VALIDATION,
-        validateOnChange: false,
-        validateOnBlur: false,
-        onSubmit,
-    });
+    const updateFlowersInResources = (deliveryList: Flower[], del: boolean) => {
+        let tempAmount = 0;
+        setLoader(true);
+        let List: Flower[] = [];
+        if (del) { List = singleDelivery!.flowers }
+        else { List = deliveryList }
+
+        List.forEach(flower => {
+            flowersData?.forEach(flower_ => {
+                if (flower_.name === flower.name) {
+                    if (del) { tempAmount = flower_.amount - flower.amount; }
+                    else { tempAmount = flower_.amount + flower.amount; }
+                    fetch(`http://127.0.0.1:8000/api/flower/${flower_.id}/update/`, {
+                        method: "PUT",
+                        headers: {
+                            'Accept': 'application/json, text/plain',
+                            'Content-Type': 'application/json;charset=UTF-8',
+                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify({
+                            name: flower_.name,
+                            price: flower_.price,
+                            amount: tempAmount
+                        })
+                    })
+                    tempAmount = 0;
+                }
+            })
+        })
+        setTimeout(function () {
+            setLoader(false);
+        }, 1100);
+    }
 
     const classes_2 = useStyles();
 
@@ -294,21 +278,21 @@ const Compositions = () => {
                 <div className={classes.Header_Container}>
                     <div className={classes.Header_Container_1}>
                         <div className={classes.Icon_Container}>
-                            <GrassIcon className={classes.Header_Icon} />
+                            <MonetizationOnIcon className={classes.Header_Icon} />
                         </div>
                         <div>
                             <h1>
-                                Compose
+                                Sales
                             </h1>
                             <p>
-                                Create bouquets out of the available flowers.
+                                Sell your flowers and bouquets.
                             </p>
                         </div>
                     </div>
                 </div>
                 <div className={classes.Button_Container_Mobile}>
-                    <button className={classes.Add_Bouquet_Button_Mobile} onClick={e => handleOpenMobileAdd()}>
-                        New Bouquet
+                    <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpenMobileAdd()}>
+                        New Delivery
                     </button>
                 </div>
 
@@ -323,15 +307,15 @@ const Compositions = () => {
                     }}
                 >
                     <Fade in={openMobileAdd}>
-                        <div className={classes.Mobile_Bouquet_Modal_container}>
-                            <div className={classes.Bouquet_Modal_Container}>
+                        <div className={classes.Mobile_Delivery_Modal_container}>
+                            <div className={classes.Delivery_Modal_Container}>
                                 <div className={classes.Close_Icon_container}>
                                     <CancelIcon className={classes.Close_Icon} onClick={handleCloseMobileAdd} />
                                 </div>
                                 <h2>
-                                    Add flowers to bouquet
+                                    Add flowers to delivery
                                 </h2>
-                                <div className={classes.Bouquet_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
                                     <div className={classes.Nested_Flower_Container}>
                                         <div className={classes.Nested_Flower_Name}>
                                             <b>Search for a flower:</b>
@@ -372,7 +356,7 @@ const Compositions = () => {
                                 </div>
                                 <button className={classes.Add_Button} type="button"
                                     onClick={e => {
-                                        updateBouquetFlowers();
+                                        updateDeliveryFlowers();
                                         setZerosInTempArray();
                                         if (tempItemsAmount() > 0) {
                                             setFlowersData([]);
@@ -386,13 +370,12 @@ const Compositions = () => {
                                     }}>
                                     Add to list
                                 </button>
-                                <div className={classes.Bouquet_Container}
-                                    onClick={e => {
-                                        updateBouquetList();
-                                        handleOpenAdd();
-                                    }}>
+                                <div className={classes.Delivery_Container} onClick={e => {
+                                    updateDeliveryList();
+                                    handleOpenAdd();
+                                }}>
                                     <p>
-                                        <b>Current Bouquet (<span className={classes.Bouquet_Amount}> {bouquetItemsAmount()} </span>)</b>
+                                        <b>Current Delivery (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
                                     </p>
                                 </div>
                             </div>
@@ -403,27 +386,27 @@ const Compositions = () => {
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
-                    open={openBouquet}
+                    open={openDelivery}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{
                         timeout: 500,
                     }}
                 >
-                    <Fade in={openBouquet}>
-                        <div className={classes.Main_Bouquet_Modal_container}>
-                            <div className={classes.Bouquet_Modal_Container}>
+                    <Fade in={openDelivery}>
+                        <div className={classes.Main_Delivery_Modal_container}>
+                            <div className={classes.Delivery_Modal_Container}>
                                 <div className={classes.Close_Icon_container}>
-                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseBouquet} />
+                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelivery} />
                                 </div>
                                 <h2>
-                                    {singleBouquet?.name}
+                                    Delivery {singleDelivery?.id}
                                 </h2>
-                                <div className={classes.Bouquet_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
                                     {
-                                        singleBouquet?.flowers?.map((flower, index) => {
+                                        singleDelivery?.flowers?.map((flower, index) => {
                                             return (
-                                                <div className={classes.Bouquet_Item_Container} key={flower.id}>
+                                                <div className={classes.Delivery_Item_Container} key={flower.id}>
                                                     <div className={classes.Container_C1}>
                                                         <b>{index + 1}</b>
                                                     </div>
@@ -457,13 +440,13 @@ const Compositions = () => {
                     }}
                 >
                     <Fade in={openAdd}>
-                        <div className={classes.Main_Bouquet_Modal_container}>
+                        <div className={classes.Main_Delivery_Modal_container}>
                             {loader
                                 ?
                                 <Loader />
                                 :
 
-                                <div className={classes.Bouquet_Modal_Container}>
+                                <div className={classes.Delivery_Modal_Container}>
                                     <div className={classes.Close_Icon_container} style={openMobileAdd ? { justifyContent: 'flex-start' } : undefined}>
                                         {openMobileAdd
                                             ?
@@ -474,30 +457,30 @@ const Compositions = () => {
 
                                     </div>
                                     <h2>
-                                        Add new bouquet
+                                        Add new sale
                                     </h2>
-                                    {bouquetItemsAmount() > 0
+                                    {deliveryItemsAmount() > 0
                                         &&
                                         <div className={classes.Delete_Icon_container}>
                                             <div className={classes.Delete_Icon_Inner_container}
                                                 onClick={e => {
-                                                    setBouquetList([]);
-                                                    setZerosInBouquetArray();
+                                                    setDeliveryList([]);
+                                                    setZerosInDeliveryArray();
                                                 }}
                                             >
                                                 Delete all <DeleteOutlineIcon />
                                             </div>
                                         </div>
                                     }
-                                    <div className={classes.Bouquet_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                                    <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
                                         {
-                                            bouquetItemsAmount() === 0
+                                            deliveryItemsAmount() === 0
                                                 ?
-                                                <h4>No flowers added to bouquet</h4>
+                                                <h4>No flowers added to delivery</h4>
                                                 :
-                                                BouquetList?.map((flower, index) => {
+                                                deliveryList?.map((flower, index) => {
                                                     return (
-                                                        <div className={classes.Bouquet_Item_Container} key={flower.id}>
+                                                        <div className={classes.Delivery_Item_Container} key={flower.id}>
                                                             <div className={classes.Container_C1}>
                                                                 <b>{index + 1}</b>
                                                             </div>
@@ -511,7 +494,7 @@ const Compositions = () => {
                                                                 <ClearIcon className={classes.Clear_Icon}
                                                                     onClick={e => {
                                                                         deleteListElement(index);
-                                                                        deleteBouquetFlower(flower.id);
+                                                                        deleteDeliveryFlower(flower.id);
                                                                     }}
                                                                 />
                                                             </div>
@@ -520,26 +503,9 @@ const Compositions = () => {
                                                 })
                                         }
                                     </div>
-                                    {bouquetItemsAmount() > 0
+                                    {deliveryItemsAmount() > 0
                                         &&
-                                        <>
-                                            <form className={classes.Add_Bouquet_Form} onSubmit={handleSubmit}>
-                                                <div className={classes.Bouquet_Name_Input}>
-                                                    <TextField
-                                                        id="Name"
-                                                        label="Bouquet Name"
-                                                        variant="outlined"
-                                                        size="small"
-                                                        value={values.Name}
-                                                        error={errors.Name !== undefined || err}
-                                                        helperText={errors.Name !== undefined ? errors.Name : (err ? "Bouquet with that name already exists" : " ")}
-                                                        onChange={handleChange}
-                                                        style={{ width: '100%' }}
-                                                    />
-                                                </div>
-                                                <button className={classes.Modal_button} type="submit">Save</button>
-                                            </form>
-                                        </>
+                                        <button className={classes.Modal_button} onClick={addDelivery}>Save</button>
                                     }
                                 </div>
                             }
@@ -567,9 +533,9 @@ const Compositions = () => {
                                         <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
                                     </div>
                                     <h2>
-                                        Are you sure to delete this bouquet?
+                                        Are you sure to delete this delivery?
                                     </h2>
-                                    <button className={classes.Modal_button} onClick={e => { deleteSingleBouquet(singleBouquet!.id) }}>Delete</button>
+                                    <button className={classes.Modal_button} onClick={e => { deleteSingleDelivery(singleDelivery!.id) }}>Delete</button>
                                 </>
                             }
 
@@ -584,9 +550,9 @@ const Compositions = () => {
                             <Grid3x3Icon className={classes.Icon} />
                         </div>
                         <div className={classes.Show_Name}>
-                            <FormatColorTextIcon className={classes.Icon} />
+                            <NumbersIcon className={classes.Icon} />
                             <p className={classes.Show_Container_Text}>
-                                Bouquet name
+                                Sale ID
                             </p>
                         </div>
                         <div className={classes.Show_Date}>
@@ -598,12 +564,12 @@ const Compositions = () => {
                     </div>
                     <div className={classes.Search_Container}>
                         <div>
-                            <b>Search for a bouquet:</b>
+                            <b>Search for a sale:</b>
                         </div>
                         <div>
                             <TextField
                                 id="Search"
-                                label="Search Name"
+                                label="Search Id"
                                 variant="outlined"
                                 size="small"
                                 value={itemSearchTerm}
@@ -614,19 +580,19 @@ const Compositions = () => {
                     </div>
                     <div className={classes.Show_Container_2}>
                         {
-                            bouquetsData?.length! > 0
+                            deliveriesData?.length! > 0
                                 ?
                                 <>
                                     {
-                                        bouquetsData?.map((bouquet, index) => {
+                                        deliveriesData?.map((delivery, index) => {
                                             return (
                                                 <>
                                                     <div
                                                         className={classes.List_Item_Container}
-                                                        key={bouquet.id}
+                                                        key={delivery.id}
                                                         onClick={e => {
-                                                            updateSingleBouquet(bouquet.id);
-                                                            handleOpenBouquet();
+                                                            updateSingleDelivery(delivery.id);
+                                                            handleOpenDelivery();
                                                         }}
                                                     >
                                                         <div className={classes.Show_Number}>
@@ -636,19 +602,19 @@ const Compositions = () => {
                                                         </div>
                                                         <div className={classes.Show_Name}>
                                                             <p className={classes.List_Container_Text_First}>
-                                                                {bouquet.name}
+                                                                {delivery.id}
                                                             </p>
                                                         </div>
                                                         <div className={classes.Show_Date}>
                                                             <p className={classes.List_Container_Text}>
-                                                                {bouquet.creation_date.toString().split('T')[0]}
+                                                                {delivery.date.toString().split('T')[0]}
                                                             </p>
                                                         </div>
                                                         <div className={classes.Show_Amount}>
                                                             <DeleteForeverIcon className={classes.More_Options_Icon}
                                                                 onClick={e => {
                                                                     e.stopPropagation();
-                                                                    updateSingleBouquet(bouquet.id);
+                                                                    updateSingleDelivery(delivery.id);
                                                                     handleOpenDelete();
                                                                 }} />
                                                         </div>
@@ -660,7 +626,7 @@ const Compositions = () => {
                                 </>
                                 :
                                 <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                                    No bouquets
+                                    No deliveries
                                 </h3>
                         }
                     </div>
@@ -669,12 +635,12 @@ const Compositions = () => {
                     <div className={classes.Add_Container_1}>
                         <AddBoxIcon className={classes.Icon} />
                         <p>
-                            New Bouquet
+                            New Delivery
                         </p>
                     </div>
                     <div className={classes.Add_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
                         <h3>
-                            Add flowers to your new bouquet:
+                            Add products to new sale:
                         </h3>
                         <div className={classes.Nested_Flower_Container} style={{ borderBottom: 'none' }}>
                             <div className={classes.Nested_Flower_Name}>
@@ -719,7 +685,7 @@ const Compositions = () => {
                         </div>
                         <button className={classes.Add_Button} type="button"
                             onClick={e => {
-                                updateBouquetFlowers();
+                                updateDeliveryFlowers();
                                 setZerosInTempArray();
                                 if (tempItemsAmount() > 0) {
                                     setFlowersData([]);
@@ -731,12 +697,12 @@ const Compositions = () => {
                             }}>
                             Add to list
                         </button>
-                        <div className={classes.Bouquet_Container} onClick={e => {
-                            updateBouquetList();
+                        <div className={classes.Delivery_Container} onClick={e => {
+                            updateDeliveryList();
                             handleOpenAdd();
                         }}>
                             <p>
-                                <b>Current Bouquet (<span className={classes.Bouquet_Amount}> {bouquetItemsAmount()} </span>)</b>
+                                <b>Current Sale (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
                             </p>
                         </div>
                     </div>
@@ -747,4 +713,4 @@ const Compositions = () => {
     )
 }
 
-export default Compositions;
+export default Sales;

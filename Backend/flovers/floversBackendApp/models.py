@@ -28,12 +28,20 @@ class Bouquet(models.Model):
     def __str__(self):
         return f"Bouquet: {self.name}."    
 
-class Sale(models.Model):
-    flowers = models.ManyToManyField(Flower, related_name="sold_flowers", blank=True)
-    bouquets = models.ManyToManyField(Bouquet, related_name="sold_bouquets", blank=True)
+class BouquetObject(models.Model):
+    bouquet = models.ForeignKey(Bouquet, null=True, on_delete=models.CASCADE, related_name="bouquet_obj")
+    amount = models.IntegerField(blank=False, default=0)
 
     def __str__(self):
-        return f"Bouquet: {self.name}." 
+        return f"Bouquet: {self.bouquet.name}."  
+
+class Sale(models.Model):
+    flowers = models.ManyToManyField(Flower, related_name="sold_flowers", blank=True)
+    bouquets = models.ManyToManyField(BouquetObject, related_name="sold_bouquets", blank=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Sale: {self.id}." 
 
 class Florist(models.Model):
     owner =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="florist_owner")

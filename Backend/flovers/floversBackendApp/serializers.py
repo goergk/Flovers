@@ -44,16 +44,28 @@ class BouquetSerializer(serializers.ModelSerializer):
             'creation_date',            
         )
 
+class BouquetObjectSerializer(serializers.ModelSerializer):
+
+    bouquet = BouquetSerializer(many=False)
+    class Meta:
+        model = BouquetObject
+        fields = (
+            'id',
+            'bouquet',
+            'amount',           
+        )
+
 class SaleSerializer(serializers.ModelSerializer):
 
     flowers = FlowerSerializer(many=True)
-    bouquets = BouquetSerializer(many=True)
+    bouquets = BouquetObjectSerializer(many=True)
     class Meta:
         model = Sale
         fields = (
             'id',            
             'flowers',
-            'bouquets'
+            'bouquets',
+            'creation_date',    
         )
 
 class FloristSerializer(serializers.ModelSerializer):

@@ -38,6 +38,7 @@ def apiRoutes(request):
         'Create Flower in Florist': 'florist/<int:florist_id>/flower/',
         'Create Bouquet in Florist': 'florist/<int:florist_id>/bouquet/',
         'Create Delivery in Florist': 'florist/<int:florist_id>/delivery/',
+        'Create Sale in Florist': 'florist/<int:florist_id>/sale/',
     }
     return Response(api_urls)
 
@@ -169,7 +170,6 @@ def UpdateFloristDeliveries(request, florist_id):
 
             new_delivery = Delivery()
             new_delivery.save()
-            new_delivery.name = delivery_data['name']
             for flower in flowers_tab:
                 new_flower = Flower.objects.create(            
                 name =  flower['name'],
@@ -188,6 +188,72 @@ def UpdateFloristDeliveries(request, florist_id):
         raise Http404
     else:
        return Response(status=status.HTTP_401_UNAUTHORIZED)     
+
+
+@api_view(['PUT'])
+@permission_classes(())
+def UpdateFloristSales(request, florist_id):
+    if request.user.is_authenticated:  
+        try:
+            florist = Florist.objects.get(id=florist_id)
+        except:
+            raise Http404
+
+        serializer = SaleSerializer(data=request.data)
+
+        if serializer.is_valid():
+            sale_data = request.data        
+            flowers_tab = sale_data['flowers']
+            bouquets_tab = sale_data['bouquets']
+
+            new_sale = Sale()
+            new_sale.save()
+
+            for flower in flowers_tab:
+                new_flower = Flower.objects.create(            
+                name =  flower['name'],
+                price =  flower['price'],
+                amount =  flower['amount']
+            )
+                new_sale.flowers.add(new_flower)
+                new_sale.save()            
+
+            for bouquetObject in bouquets_tab:
+                temp_bouquet = bouquetObject['bouquet']               
+
+                new_bouquet_object = BouquetObject()
+                new_bouquet_object.save()
+                new_bouquet_object.amount = bouquetObject['amount']
+                new_bouquet_object.save()                
+
+                new_bouquet = Bouquet()
+                new_bouquet.save()
+                new_bouquet.name = temp_bouquet['name']
+                new_bouquet.save()
+                for flower in temp_bouquet['flowers']:
+                    new_flower = Flower.objects.create(            
+                    name =  flower['name'],
+                    price =  flower['price'],
+                    amount =  flower['amount']
+                )
+                    new_bouquet.flowers.add(new_flower)
+                    new_bouquet.save() 
+                    
+                new_bouquet_object.bouquet = new_bouquet
+                new_bouquet_object.save()
+
+                new_sale.bouquets.add(new_bouquet_object)
+                new_sale.save()
+
+            florist.sales.add(new_sale)
+            florist.save()
+
+            serializer = SaleSerializer(new_sale)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        raise Http404
+    else:
+       return Response(status=status.HTTP_401_UNAUTHORIZED) 
             
 
 # ================================

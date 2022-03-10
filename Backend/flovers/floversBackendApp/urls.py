@@ -29,6 +29,7 @@ urlpatterns = [
     path("florist/<int:florist_id>/flower/", views.UpdateFloristFlowers, name="UpdateFloristFlowers"),
     path("florist/<int:florist_id>/bouquet/", views.UpdateFloristBouquets, name="UpdateFloristBouquets"),
     path("florist/<int:florist_id>/delivery/", views.UpdateFloristDeliveries, name="UpdateFloristDeliveries"),
+    path("florist/<int:florist_id>/sale/", views.UpdateFloristSales, name="UpdateFloristSales"),
 
     ## DELETE
     path("flower/<int:flower_id>/delete/", views.DeleteFlower, name="DeleteFlower"),

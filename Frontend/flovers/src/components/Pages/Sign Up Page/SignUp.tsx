@@ -142,7 +142,7 @@ const SignUp = () => {
                             text="Confirm Password"
                         />
                         <p className={classes.Login_Error}>{error}</p>
-                        <button className={classes.Login_Button}>Register</button>
+                        <button className={classes.Login_Button} type="submit">Register</button>
                     </form>
                     <div className={classes.Container_2}>
                         <Link to={`${PageType.SIGNIN}`} style={{ textDecoration: 'none', color: '#d97979' }}>

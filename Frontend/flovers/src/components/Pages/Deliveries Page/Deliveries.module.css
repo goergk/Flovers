@@ -104,7 +104,7 @@
   align-items: center;
   height: 60%;
   width: 96%;
-  border-top: 1px solid rgb(195, 195, 195);
+  border-top: 1px solid gray;
 }
 
 .Header_Container {
@@ -114,7 +114,7 @@
   align-items: flex-start;
   width: 96%;
   height: 70%;
-  border-bottom: 1px solid rgb(235, 235, 235);
+  border-bottom: 1px solid gray;
   z-index: 10;
   padding-bottom: 1em;
 }
@@ -188,9 +188,14 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100%;
+  height: fit-content;
   width: 100%;
   margin-top: 1.8em;
+  border: 1px solid gray;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  margin-bottom: 0.8em;
+  margin-left: -1em;
 }
 
 .Add_Container_2 h3 {
@@ -543,7 +548,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  border-top: 1px solid rgb(195, 195, 195);
+  border-top: 1px solid gray;
   padding-top: 0.5em;
   width: 100%;
   height: 15em;
@@ -558,7 +563,7 @@
   width: 100%;
   height: 2.5em;
   margin: 0.3em 0em 0.3em 0em;
-  border-bottom: 1px solid rgb(195, 195, 195);
+  border-bottom: 1px solid gray;
 }
 
 .Nested_Flower_Name {
@@ -595,7 +600,7 @@
 
 .Delivery_Modal_List_Container {
   width: 100%;
-  border: 1px solid rgb(195, 195, 195);
+  border: 1px solid gray;
   border-radius: 0.3em;
   height: 50vh;
   display: flex;
@@ -608,7 +613,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid rgb(195, 195, 195);
+  border-bottom: 1px solid gray;
   width: 100%;
 }
 

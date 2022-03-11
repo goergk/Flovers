@@ -182,7 +182,7 @@
   align-items: center;
   height: 60%;
   width: 96%;
-  border-top: 1px solid rgb(195, 195, 195);
+  border-top: 1px solid gray;
 }
 
 .Header_Container {
@@ -201,7 +201,7 @@
   align-items: flex-start;
   width: 96%;
   height: 70%;
-  border-bottom: 1px solid rgb(235, 235, 235);
+  border-bottom: 1px solid gray;
   z-index: 10;
   padding-bottom: 1em;
 }
@@ -679,7 +679,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  border-bottom: 1px solid rgb(195, 195, 195);
+  border-bottom: 1px solid gray;
   width: 100%;
 }
 
@@ -791,7 +791,7 @@
 
 .Delivery_Modal_List_Container {
   width: 100%;
-  border: 1px solid rgb(195, 195, 195);
+  border: 1px solid gray;
   border-radius: 0.3em;
   height: 50vh;
   display: -webkit-box;

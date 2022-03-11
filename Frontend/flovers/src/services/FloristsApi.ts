@@ -31,6 +31,19 @@ export interface Delivery {
     date: Date;
 }
 
+export interface BouquetObject {
+    id: number;
+    bouquet: Bouquet;
+    amount: number;
+}
+
+export interface Sale {
+    id: number;
+    flowers: Flower[];
+    bouquets: BouquetObject[];
+    creation_date: Date;
+}
+
 export interface Florist {
     id: number;
     name: string;
@@ -38,7 +51,7 @@ export interface Florist {
     flowers: Flower[];
     bouquets: Bouquet[];
     deliveries: Delivery[];
-    sales: any[];
+    sales: Sale[];
 }
 
 export interface RootObject {

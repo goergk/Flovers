@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classes from './Resources.module.css';
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Bouquet, Delivery, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
+import { Bouquet, Delivery, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
 import { AddFlowerBox, AddFlowerModal, DeleteFlowerModal, EditFlowerModal, FlowerAddButton, FlowersListBox, Header } from './Assets';
 import AlertBox from './Assets/AlertBox';
 import ShowDeliveryModal from './Assets/ShowDeliveryModal';
@@ -69,6 +69,7 @@ const Resources = () => {
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [deliveriesData, setDeliveriesData] = useState(Florists_data?.florist[0].deliveries);
     const [bouquetsData, setBouquetsData] = useState(Florists_data?.florist[0].bouquets);
+    const [salesData, setSalesData] = useState(Florists_data?.florist[0].sales);
 
     useEffect(() => {
         let tempArr: Flower[] | undefined = [];
@@ -86,10 +87,15 @@ const Resources = () => {
 
     useEffect(() => {
         let tempArr: Bouquet[] | undefined = [];
+        let tempArr_1: Sale[] | undefined = [];
         if (Florists_data !== undefined) {
             tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].bouquets));
             tempArr = tempArr!.reverse();
             setBouquetsData(tempArr);
+
+            tempArr_1 = JSON.parse(JSON.stringify(Florists_data?.florist[0].sales));
+            tempArr_1 = tempArr_1!.reverse();
+            setSalesData(tempArr_1);
         }
     }, [Florists_data])
 
@@ -234,6 +240,25 @@ const Resources = () => {
 
         bouquetsData?.forEach(bouquet => {
             bouquet.flowers.forEach(flower => {
+                if (flower.name === editTempName) {
+                    fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
+                        method: "PUT",
+                        headers: {
+                            'Accept': 'application/json, text/plain',
+                            'Content-Type': 'application/json;charset=UTF-8',
+                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify({
+                            name: values.Edit_Name,
+                            price: values.Edit_Price
+                        })
+                    })
+                }
+            })
+        })
+
+        salesData?.forEach(sale => {
+            sale.flowers.forEach(flower => {
                 if (flower.name === editTempName) {
                     fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
                         method: "PUT",

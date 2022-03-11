@@ -38,7 +38,7 @@ class BouquetObject(models.Model):
 class Sale(models.Model):
     flowers = models.ManyToManyField(Flower, related_name="sold_flowers", blank=True)
     bouquets = models.ManyToManyField(BouquetObject, related_name="sold_bouquets", blank=True)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"Sale: {self.id}." 

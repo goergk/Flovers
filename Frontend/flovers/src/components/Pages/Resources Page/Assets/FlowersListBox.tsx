@@ -68,7 +68,7 @@ const FlowersListBox: React.FC<Props> = ({
             </div>
             <div className={classes.Search_Container} style={{ borderBottom: 'none' }}>
                 <div>
-                    <b>Search for a flower:</b>
+                    <b>Search for a flower:&nbsp;&nbsp;</b>
                 </div>
                 <div className={classes.Filter_Input}>
                     <TextField

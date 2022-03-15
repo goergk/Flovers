@@ -598,7 +598,7 @@ const Compositions = () => {
                     </div>
                     <div className={classes.Search_Container}>
                         <div>
-                            <b>Search for a bouquet:</b>
+                            <b>Search for a bouquet:&nbsp;&nbsp;</b>
                         </div>
                         <div>
                             <TextField

@@ -564,7 +564,7 @@ const Deliveries = () => {
                     </div>
                     <div className={classes.Search_Container}>
                         <div>
-                            <b>Search for a delivery:</b>
+                            <b>Search for a delivery:&nbsp;&nbsp;</b>
                         </div>
                         <div>
                             <TextField

@@ -435,40 +435,6 @@ const Sales = () => {
         // }, 2000);
     }
 
-    const updateFlowersInResources = (saleFlowersList: Flower[], del: boolean) => {
-        let tempAmount = 0;
-        setLoader(true);
-        let List: Flower[] = [];
-        if (del) { List = singleDelivery!.flowers }
-        else { List = saleFlowersList }
-
-        List.forEach(flower => {
-            flowersData?.forEach(flower_ => {
-                if (flower_.name === flower.name) {
-                    if (del) { tempAmount = flower_.amount - flower.amount; }
-                    else { tempAmount = flower_.amount + flower.amount; }
-                    fetch(`http://127.0.0.1:8000/api/flower/${flower_.id}/update/`, {
-                        method: "PUT",
-                        headers: {
-                            'Accept': 'application/json, text/plain',
-                            'Content-Type': 'application/json;charset=UTF-8',
-                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                        },
-                        body: JSON.stringify({
-                            name: flower_.name,
-                            price: flower_.price,
-                            amount: tempAmount
-                        })
-                    })
-                    tempAmount = 0;
-                }
-            })
-        })
-        setTimeout(function () {
-            setLoader(false);
-        }, 1100);
-    }
-
     const classes_2 = useStyles();
 
     return (
@@ -491,7 +457,7 @@ const Sales = () => {
                 </div>
                 <div className={classes.Button_Container_Mobile}>
                     <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpenMobileAdd()}>
-                        New Delivery
+                        New Sale
                     </button>
                 </div>
 
@@ -853,7 +819,7 @@ const Sales = () => {
                     </div>
                     <div className={classes.Search_Container}>
                         <div>
-                            <b>Search for a sale:</b>
+                            <b>Search for a sale:&nbsp;&nbsp;</b>
                         </div>
                         <div>
                             <TextField

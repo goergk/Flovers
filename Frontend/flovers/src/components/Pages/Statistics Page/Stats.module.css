@@ -61,6 +61,46 @@
   font-size: calc(6px + 3vmin);
 }
 
+.Info_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: calc(70% + 1.4em);
+  margin-top: 0.8em;
+  padding-top: 0.5em;
+  border-top: 1px solid gray;
+}
+
+.Single_Info_Container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.Icon_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Info_Icon {
+  transform: scale(0.7);
+}
+
+.Text_Container {
+  margin-left: 0.5em;
+  font-size: 1em;
+  color: gray;
+}
+
+.Text_Container p {
+  margin: 0em;
+  padding: 0em;
+}
+
 @media only screen and (max-width: 1000px) {
   .Main_Container {
     height: calc(100vh - 3.4em);
@@ -72,6 +112,14 @@
 
   .Options_Container {
     width: calc(90% + 1.4em);
+  }
+
+  .Info_Container {
+    width: calc(90% + 1.4em);
+  }
+
+  .Text_Container {
+    font-size: calc(2px + 3vmin);
   }
 }
 

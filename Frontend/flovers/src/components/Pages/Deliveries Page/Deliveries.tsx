@@ -1,48 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import classes from './Deliveries.module.css';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import EventIcon from '@mui/icons-material/Event';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import TextField from '@mui/material/TextField';
-import { makeStyles } from "@material-ui/core/styles";
-import NumbersIcon from '@mui/icons-material/Numbers';
-import Grid3x3Icon from '@mui/icons-material/Grid3x3';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import Modal from '@mui/material/Modal';
-import { Backdrop, Fade } from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
-import ClearIcon from '@mui/icons-material/Clear';
 import { Delivery, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
-import Loader from '../../Assets/Loader/Loader';
-
-const useStyles = makeStyles({
-    root: {
-        "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "white",
-        },
-        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#d97979"
-        },
-        "& .MuiOutlinedInput-input": {
-            color: "white"
-        },
-        "& .MuiOutlinedInput-root.Mui-focused": {
-            color: "#d97979"
-        },
-        "& .MuiInputLabel-outlined": {
-            color: "white"
-        },
-        "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "white"
-        },
-        "& .MuiInputLabel-outlined.Mui-focused": {
-            color: "#d97979"
-        },
-        marginBottom: ".2em"
-    }
-});
+import AddDeliveryModal from './Assets/AddDeliveryModal';
+import DeleteDeliveryModal from './Assets/DeleteDeliveryModal';
+import ShowDeliveryModal from './Assets/ShowDeliveryModal';
+import ShowDeliveryListModal from './Assets/ShowDeliveryListModal';
+import Header from './Assets/Header';
+import DeliveryAddButton from './Assets/DeliveryAddButton';
+import DeliveriesListBox from './Assets/DeliveriesListBox';
+import AddDeliveryBox from './Assets/AddDeliveryBox';
+import AlertBox from './Assets/AlertBox';
 
 const Deliveries = () => {
     const [openAdd, setOpenAdd] = useState(false);
@@ -54,6 +21,8 @@ const Deliveries = () => {
     const [firstRunTemp, setFirstRunTemp] = useState(true);
     const [firstRun, setFirstRun] = useState(true);
     const [loader, setLoader] = useState(false);
+    const [showAddAlert, setShowAddAlert] = useState(false);
+    const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
@@ -172,6 +141,7 @@ const Deliveries = () => {
     }
 
     const deleteSingleDelivery = (delivery_id: number) => {
+        setLoader(true);
         updateFlowersInResources(deliveryList!, true);
         fetch(`http://127.0.0.1:8000/api/delivery/${delivery_id}/delete/`, {
             method: "DELETE",
@@ -181,14 +151,18 @@ const Deliveries = () => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             },
         })
+
         setTimeout(function () {
             refetch();
             handleCloseDelete();
-        }, 900);
-        // setShowDeleteAlert(true);
-        // setTimeout(function () {
-        //     setShowDeleteAlert(false);
-        // }, 2000);
+            setTimeout(function () {
+                setLoader(false);
+            }, 500);
+            setShowDeleteAlert(true);
+            setTimeout(function () {
+                setShowDeleteAlert(false);
+            }, 2000);
+        }, 1100);
     }
 
     const deleteListElement = (index: number) => {
@@ -210,6 +184,7 @@ const Deliveries = () => {
     }
 
     const addDelivery = () => {
+        setLoader(true);
         fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/delivery/`, {
             method: "PUT",
             headers: {
@@ -225,20 +200,23 @@ const Deliveries = () => {
         setDeliveryList([]);
         setZerosInDeliveryArray();
         setZerosInTempArray();
+
         setTimeout(function () {
             refetch();
             handleCloseMobileAdd();
             handleCloseAdd();
-        }, 900);
-        // setShowAddAlert(true);
-        // setTimeout(function () {
-        //     setShowAddAlert(false);
-        // }, 2000);
+            setTimeout(function () {
+                setLoader(false);
+            }, 500);
+            setShowAddAlert(true);
+            setTimeout(function () {
+                setShowAddAlert(false);
+            }, 2000);
+        }, 1100);
     }
 
     const updateFlowersInResources = (deliveryList: Flower[], del: boolean) => {
         let tempAmount = 0;
-        setLoader(true);
         let List: Flower[] = [];
         if (del) { List = singleDelivery!.flowers }
         else { List = deliveryList }
@@ -265,450 +243,88 @@ const Deliveries = () => {
                 }
             })
         })
-        setTimeout(function () {
-            setLoader(false);
-        }, 1100);
     }
-
-    const classes_2 = useStyles();
 
     return (
         <div className={classes.Main_Container}>
+
+            <AddDeliveryModal
+                openMobileAdd={openMobileAdd}
+                handleCloseMobileAdd={handleCloseMobileAdd}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                flowersData={flowersData}
+                updateArrayOnInputChange={updateArrayOnInputChange}
+                updateDeliveryFlowers={updateDeliveryFlowers}
+                setZerosInTempArray={setZerosInTempArray}
+                tempItemsAmount={tempItemsAmount}
+                setFlowersData={setFlowersData}
+                Florists_data={Florists_data}
+                updateDeliveryList={updateDeliveryList}
+                handleOpenAdd={handleOpenAdd}
+                deliveryItemsAmount={deliveryItemsAmount}
+            />
+            <DeleteDeliveryModal
+                openDelete={openDelete}
+                loader={loader}
+                handleCloseDelete={handleCloseDelete}
+                deleteSingleDelivery={deleteSingleDelivery}
+                singleDelivery={singleDelivery}
+            />
+            <ShowDeliveryModal
+                openDelivery={openDelivery}
+                handleCloseDelivery={handleCloseDelivery}
+                singleDelivery={singleDelivery}
+            />
+            <ShowDeliveryListModal
+                openAdd={openAdd}
+                loader={loader}
+                openMobileAdd={openMobileAdd}
+                handleCloseAdd={handleCloseAdd}
+                deliveryItemsAmount={deliveryItemsAmount}
+                setDeliveryList={setDeliveryList}
+                setZerosInDeliveryArray={setZerosInDeliveryArray}
+                deliveryList={deliveryList}
+                deleteListElement={deleteListElement}
+                deleteDeliveryFlower={deleteDeliveryFlower}
+                addDelivery={addDelivery}
+            />
+
             <div className={classes.Top_Container}>
-                <div className={classes.Header_Container}>
-                    <div className={classes.Header_Container_1}>
-                        <div className={classes.Icon_Container}>
-                            <AssignmentIcon className={classes.Header_Icon} />
-                        </div>
-                        <div>
-                            <h1>
-                                Deliveries
-                            </h1>
-                            <p>
-                                Manage flowers delivered to florist.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div className={classes.Button_Container_Mobile}>
-                    <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpenMobileAdd()}>
-                        New Delivery
-                    </button>
-                </div>
-
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openMobileAdd}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openMobileAdd}>
-                        <div className={classes.Mobile_Delivery_Modal_container}>
-                            <div className={classes.Delivery_Modal_Container}>
-                                <div className={classes.Close_Icon_container}>
-                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseMobileAdd} />
-                                </div>
-                                <h2>
-                                    Add flowers to delivery
-                                </h2>
-                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                                    <div className={classes.Nested_Flower_Container}>
-                                        <div className={classes.Nested_Flower_Name}>
-                                            <b>Search for a flower:</b>
-                                        </div>
-                                        <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                            <TextField
-                                                id="Search"
-                                                label="Search Name"
-                                                variant="outlined"
-                                                size="small"
-                                                value={searchTerm}
-                                                onChange={(e) => setSearchTerm(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    {flowersData?.map((flower, index) => {
-                                        return (
-                                            <>
-                                                <div className={classes.Nested_Flower_Container} key={flower.id}>
-                                                    <div className={classes.Nested_Flower_Name}>
-                                                        {flower.name}
-                                                    </div>
-                                                    <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                        <TextField
-                                                            id="Amount"
-                                                            label="Amount"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            type="number"
-                                                            onChange={(e) => {
-                                                                updateArrayOnInputChange(flower.id, e);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </>)
-                                    })}
-                                </div>
-                                <button className={classes.Add_Button} type="button"
-                                    onClick={e => {
-                                        updateDeliveryFlowers();
-                                        setZerosInTempArray();
-                                        if (tempItemsAmount() > 0) {
-                                            setFlowersData([]);
-                                            setTimeout(function () {
-                                                let tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
-                                                tempArr = tempArr!.reverse();
-                                                setFlowersData(tempArr);
-                                                setSearchTerm('');
-                                            }, 1);
-                                        }
-                                    }}>
-                                    Add to list
-                                </button>
-                                <div className={classes.Delivery_Container} onClick={e => {
-                                    updateDeliveryList();
-                                    handleOpenAdd();
-                                }}>
-                                    <p>
-                                        <b>Current Delivery (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </Fade>
-                </Modal>
-
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openDelivery}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openDelivery}>
-                        <div className={classes.Main_Delivery_Modal_container}>
-                            <div className={classes.Delivery_Modal_Container}>
-                                <div className={classes.Close_Icon_container}>
-                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelivery} />
-                                </div>
-                                <h2>
-                                    Delivery {singleDelivery?.id}
-                                </h2>
-                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                                    {
-                                        singleDelivery?.flowers?.map((flower, index) => {
-                                            return (
-                                                <div className={classes.Delivery_Item_Container} key={flower.id}>
-                                                    <div className={classes.Container_C1}>
-                                                        <b>{index + 1}</b>
-                                                    </div>
-                                                    <div className={classes.Container_C2}>
-                                                        {flower.name}
-                                                    </div>
-                                                    <div className={classes.Container_C3}>
-                                                        {flower.amount}
-                                                    </div>
-                                                    <div className={classes.Container_C4}>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </Fade>
-                </Modal>
-
-
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openAdd}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openAdd}>
-                        <div className={classes.Main_Delivery_Modal_container}>
-                            {loader
-                                ?
-                                <Loader />
-                                :
-
-                                <div className={classes.Delivery_Modal_Container}>
-                                    <div className={classes.Close_Icon_container} style={openMobileAdd ? { justifyContent: 'flex-start' } : undefined}>
-                                        {openMobileAdd
-                                            ?
-                                            <KeyboardBackspaceIcon className={classes.Back_Icon} onClick={handleCloseAdd} />
-                                            :
-                                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
-                                        }
-
-                                    </div>
-                                    <h2>
-                                        Add new delivery
-                                    </h2>
-                                    {deliveryItemsAmount() > 0
-                                        &&
-                                        <div className={classes.Delete_Icon_container}>
-                                            <div className={classes.Delete_Icon_Inner_container}
-                                                onClick={e => {
-                                                    setDeliveryList([]);
-                                                    setZerosInDeliveryArray();
-                                                }}
-                                            >
-                                                Delete all <DeleteOutlineIcon />
-                                            </div>
-                                        </div>
-                                    }
-                                    <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                                        {
-                                            deliveryItemsAmount() === 0
-                                                ?
-                                                <h4>No flowers added to delivery</h4>
-                                                :
-                                                deliveryList?.map((flower, index) => {
-                                                    return (
-                                                        <div className={classes.Delivery_Item_Container} key={flower.id}>
-                                                            <div className={classes.Container_C1}>
-                                                                <b>{index + 1}</b>
-                                                            </div>
-                                                            <div className={classes.Container_C2}>
-                                                                {flower.name}
-                                                            </div>
-                                                            <div className={classes.Container_C3}>
-                                                                {flower.amount}
-                                                            </div>
-                                                            <div className={classes.Container_C4}>
-                                                                <ClearIcon className={classes.Clear_Icon}
-                                                                    onClick={e => {
-                                                                        deleteListElement(index);
-                                                                        deleteDeliveryFlower(flower.id);
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })
-                                        }
-                                    </div>
-                                    {deliveryItemsAmount() > 0
-                                        &&
-                                        <button className={classes.Modal_button} onClick={addDelivery}>Save</button>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    </Fade>
-                </Modal>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openDelete}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openDelete}>
-                        <div className={classes.Modal_container}>
-                            {loader
-                                ?
-                                <Loader />
-                                :
-                                <>
-                                    <div className={classes.Close_Icon_container}>
-                                        <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelete} />
-                                    </div>
-                                    <h2>
-                                        Are you sure to delete this delivery?
-                                    </h2>
-                                    <button className={classes.Modal_button} onClick={e => { deleteSingleDelivery(singleDelivery!.id) }}>Delete</button>
-                                </>
-                            }
-
-                        </div>
-                    </Fade>
-                </Modal>
+                <AlertBox
+                    showAddAlert={showAddAlert}
+                    showDeleteAlert={showDeleteAlert}
+                />
+                <Header />
+                <DeliveryAddButton
+                    handleOpenMobileAdd={handleOpenMobileAdd}
+                />
             </div>
             <div className={classes.Bottom_Container}>
-                <div className={classes.Show_Flowers_Container}>
-                    <div className={classes.Show_Container_1}>
-                        <div className={classes.Show_Number}>
-                            <Grid3x3Icon className={classes.Icon} />
-                        </div>
-                        <div className={classes.Show_Name}>
-                            <NumbersIcon className={classes.Icon} />
-                            <p className={classes.Show_Container_Text}>
-                                Delivery ID
-                            </p>
-                        </div>
-                        <div className={classes.Show_Date}>
-                            <EventIcon className={classes.Icon} />
-                            <p className={classes.Show_Container_Text}>
-                                Added
-                            </p>
-                        </div>
-                    </div>
-                    <div className={classes.Search_Container}>
-                        <div>
-                            <b>Search for a delivery:&nbsp;&nbsp;</b>
-                        </div>
-                        <div>
-                            <TextField
-                                id="Search"
-                                label="Search Id"
-                                variant="outlined"
-                                size="small"
-                                value={itemSearchTerm}
-                                onChange={(e) => setItemSearchTerm(e.target.value)}
-                                className={classes_2.root}
-                            />
-                        </div>
-                    </div>
-                    <div className={classes.Show_Container_2}>
-                        {
-                            deliveriesData?.length! > 0
-                                ?
-                                <>
-                                    {
-                                        deliveriesData?.map((delivery, index) => {
-                                            return (
-                                                <>
-                                                    <div
-                                                        className={classes.List_Item_Container}
-                                                        key={delivery.id}
-                                                        onClick={e => {
-                                                            updateSingleDelivery(delivery.id);
-                                                            handleOpenDelivery();
-                                                        }}
-                                                    >
-                                                        <div className={classes.Show_Number}>
-                                                            <p className={classes.List_Container_Text}>
-                                                                {index + 1}
-                                                            </p>
-                                                        </div>
-                                                        <div className={classes.Show_Name}>
-                                                            <p className={classes.List_Container_Text_First}>
-                                                                {delivery.id}
-                                                            </p>
-                                                        </div>
-                                                        <div className={classes.Show_Date}>
-                                                            <p className={classes.List_Container_Text}>
-                                                                {delivery.date.toString().split('T')[0]}
-                                                            </p>
-                                                        </div>
-                                                        <div className={classes.Show_Amount}>
-                                                            <DeleteForeverIcon className={classes.More_Options_Icon}
-                                                                onClick={e => {
-                                                                    e.stopPropagation();
-                                                                    updateSingleDelivery(delivery.id);
-                                                                    handleOpenDelete();
-                                                                }} />
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )
-                                        })
-                                    }
-                                </>
-                                :
-                                <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                                    No deliveries
-                                </h3>
-                        }
-                    </div>
-                </div>
-                <div className={classes.Add_Flower_Container}>
-                    <div className={classes.Add_Container_1}>
-                        <AddBoxIcon className={classes.Icon} />
-                        <p>
-                            New Delivery
-                        </p>
-                    </div>
-                    <div className={classes.Add_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                        <h3>
-                            Add flowers to your new delivery:
-                        </h3>
-                        <div className={classes.Nested_Flower_Container} style={{ borderBottom: 'none' }}>
-                            <div className={classes.Nested_Flower_Name}>
-                                <b>Search for a flower:</b>
-                            </div>
-                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '1.1em' }}>
-                                <TextField
-                                    id="Search"
-                                    label="Search Name"
-                                    variant="outlined"
-                                    size="small"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className={classes_2.root}
-                                />
-                            </div>
-                        </div>
-                        <div className={classes.Add_Flowers_List}>
-                            {flowersData?.map((flower, index) => {
-                                return (
-                                    <>
-                                        <div className={classes.Nested_Flower_Container} key={flower.id}>
-                                            <div className={classes.Nested_Flower_Name}>
-                                                {flower.name}
-                                            </div>
-                                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                <TextField
-                                                    id="Amount"
-                                                    label="Amount"
-                                                    variant="outlined"
-                                                    size="small"
-                                                    type="number"
-                                                    onChange={(e) => {
-                                                        updateArrayOnInputChange(flower.id, e);
-                                                    }}
-                                                    className={classes_2.root}
-                                                />
-                                            </div>
-                                        </div>
-                                    </>)
-                            })}
-                        </div>
-                        <button className={classes.Add_Button} type="button"
-                            onClick={e => {
-                                updateDeliveryFlowers();
-                                setZerosInTempArray();
-                                if (tempItemsAmount() > 0) {
-                                    setFlowersData([]);
-                                    setTimeout(function () {
-                                        setFlowersData(Florists_data?.florist[0].flowers);
-                                        setSearchTerm('');
-                                    }, 1);
-                                }
-                            }}>
-                            Add to list
-                        </button>
-                        <div className={classes.Delivery_Container} onClick={e => {
-                            updateDeliveryList();
-                            handleOpenAdd();
-                        }}>
-                            <p>
-                                <b>Current Delivery (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <DeliveriesListBox
+                    itemSearchTerm={itemSearchTerm}
+                    setItemSearchTerm={setItemSearchTerm}
+                    deliveriesData={deliveriesData}
+                    updateSingleDelivery={updateSingleDelivery}
+                    handleOpenDelivery={handleOpenDelivery}
+                    handleOpenDelete={handleOpenDelete}
+                />
+                <AddDeliveryBox
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    flowersData={flowersData}
+                    updateArrayOnInputChange={updateArrayOnInputChange}
+                    updateDeliveryFlowers={updateDeliveryFlowers}
+                    setZerosInTempArray={setZerosInTempArray}
+                    tempItemsAmount={tempItemsAmount}
+                    setFlowersData={setFlowersData}
+                    Florists_data={Florists_data}
+                    updateDeliveryList={updateDeliveryList}
+                    handleOpenAdd={handleOpenAdd}
+                    deliveryItemsAmount={deliveryItemsAmount}
+                />
             </div>
-        </div >
+        </div>
 
     )
 }

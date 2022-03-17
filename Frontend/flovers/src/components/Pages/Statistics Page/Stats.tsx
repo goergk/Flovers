@@ -1,71 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import InfoIcon from '@mui/icons-material/Info';
 import classes from './Stats.module.css';
-import { Line } from 'react-chartjs-2';
-import { makeStyles } from "@material-ui/core/styles";
 import moment from 'moment';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Paper from '@mui/material/Paper';
 import { Bouquet, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
 import Loader from '../../Assets/Loader/Loader';
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
-
-const useStyles = makeStyles({
-    root: {
-        "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "gray",
-        },
-        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#d97979"
-        },
-        "& .MuiOutlinedInput-input": {
-            color: "gray"
-        },
-        "& .MuiOutlinedInput-root.Mui-focused": {
-            color: "#d97979"
-        },
-        "& .MuiInputLabel-outlined": {
-            color: "gray"
-        },
-        "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "gray"
-        },
-        "& .MuiInputLabel-outlined.Mui-focused": {
-            color: "#d97979"
-        },
-        marginBottom: "1em",
-        "& .MuiSvgIcon-root": {
-            color: "gray"
-        },
-        "& .css-113ntv0-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-popupIndicator": {
-            color: "#d97979"
-        },
-        paper: {
-            backgroundColor: "red"
-        }
-    }
-});
+import OptionsBox from './Assets/OptionsBox';
+import InfoBox from './Assets/InfoBox';
+import ChartBox from './Assets/ChartsBox';
 
 const time_period = ['7 days', '30 days', '12 months']
 
@@ -88,9 +28,9 @@ const Stats = () => {
 
     const { data: Florists_data } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
 
-    const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
-    const [bouquetsData, setBouquetsData] = useState(Florists_data?.florist[0].bouquets);
-    const [salesData, setSalesData] = useState(Florists_data?.florist[0].sales);
+    const [flowersData, setFlowersData] = useState<Flower[] | undefined>(Florists_data?.florist[0].flowers);
+    const [bouquetsData, setBouquetsData] = useState<Bouquet[] | undefined>(Florists_data?.florist[0].bouquets);
+    const [salesData, setSalesData] = useState<Sale[] | undefined>(Florists_data?.florist[0].sales);
 
     useEffect(() => {
         let tempArr: Flower[] | undefined = [];
@@ -345,8 +285,6 @@ const Stats = () => {
         return average;
     }
 
-    const classes_2 = useStyles();
-
     return (
         <div className={classes.Main_Container}>
             <div className={classes.Header_Container}>
@@ -359,164 +297,31 @@ const Stats = () => {
                 <Loader />
                 :
                 <>
-                    <div className={classes.Options_Container}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            key={resetFlowerInput}
-                            onChange={(e, value) => setFlower(value)}
-                            options={flowersData!.map(flower => flower.name)}
-                            sx={width > 768 ? { width: 200 } : { width: '100%' }}
-                            PaperComponent={({ children }) => (
-                                <Paper style={{ background: "rgb(235,235,235)" }}>{children}</Paper>
-                            )}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    name="flower"
-                                    size="small"
-                                    label="Flower"
-                                    className={classes_2.root}
-                                />
-                            }
-                        />
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            key={resetBouquetInput}
-                            onChange={(e, value) => setBouquet(value)}
-                            options={bouquetsData!.map(bouquet => bouquet.name)}
-                            sx={width > 768 ? { width: 200 } : { width: '100%' }}
-                            PaperComponent={({ children }) => (
-                                <Paper style={{ background: "rgb(235,235,235)" }}>{children}</Paper>
-                            )}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    name="bouquet"
-                                    size="small"
-                                    label="Bouquet"
-                                    className={classes_2.root}
-                                />
-                            }
-                        />
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            onChange={(e, value) => setPeriod(value)}
-                            options={time_period.map(t => t)}
-                            sx={width > 768 ? { width: 200 } : { width: '100%' }}
-                            PaperComponent={({ children }) => (
-                                <Paper style={{ background: "rgb(235,235,235)" }}>{children}</Paper>
-                            )}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params} name="period"
-                                    size="small"
-                                    label="Period"
-                                    className={classes_2.root}
-                                />
-                            }
-                        />
-                    </div>
-                    <div className={classes.Chart_Container}>
-                        {
-                            showChart
-                            &&
-                            <Line
-                                data={state}
-                            />
-                        }
-
-                    </div>
-                    <div className={classes.Info_Container}>
-                        <div className={classes.Single_Info_Container}>
-                            <div className={classes.Icon_Container}>
-                                <InfoIcon className={classes.Info_Icon} />
-                            </div>
-                            <div className={classes.Text_Container}>
-                                {
-                                    soldProductsTab?.length!
-                                        ?
-                                        <p>Sum of the {flower ? 'flowers' : 'bouquets'} sold in the last {period ? period : '7 days'}:
-                                            <b style={{ color: 'rgb(235, 235, 235)' }}>
-                                                &nbsp;
-                                                {soldProductsTab?.reduce(reducer)}
-                                            </b>.
-                                        </p>
-                                        :
-                                        <p>Select flower or bouquet to see information about it.</p>
-                                }
-                            </div>
-                        </div>
-                        {
-                            soldProductsTab?.length!
-                                ?
-                                <>
-                                    <div className={classes.Single_Info_Container}>
-                                        <div className={classes.Icon_Container}>
-                                            <InfoIcon className={classes.Info_Icon} />
-                                        </div>
-                                        <div className={classes.Text_Container}>
-                                            {
-                                                soldProductsTab?.length!
-                                                    ?
-                                                    <p>Average sales per {period !== time_period[2] || !period ? 'day' : 'month'} in the last {period ? period : '7 days'}:
-                                                        <b style={{ color: 'rgb(235, 235, 235)' }}>
-                                                            &nbsp;
-                                                            {AverageOfSoldFlowers().toFixed(2)}
-                                                        </b>.
-                                                    </p>
-                                                    :
-                                                    <p>Select flower or bouquet to see information about it.</p>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className={classes.Single_Info_Container}>
-                                        <div className={classes.Icon_Container}>
-                                            <InfoIcon className={classes.Info_Icon} />
-                                        </div>
-                                        <div className={classes.Text_Container}>
-                                            {
-                                                soldProductsTab?.length!
-                                                    ?
-                                                    <p>Total revenue for {flower ? 'flower' : 'bouquet'} sales over the last {period ? period : '7 days'}:
-                                                        <b style={{ color: 'rgb(235, 235, 235)' }}>
-                                                            &nbsp;
-                                                            {income.toFixed(2)}
-                                                            $
-                                                        </b>.
-                                                    </p>
-                                                    :
-                                                    <p>Select flower or bouquet to see information about it.</p>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className={classes.Single_Info_Container}>
-                                        <div className={classes.Icon_Container}>
-                                            <InfoIcon className={classes.Info_Icon} />
-                                        </div>
-                                        <div className={classes.Text_Container}>
-                                            {
-                                                soldProductsTab?.length!
-                                                    ?
-                                                    <p>Average sales per {period !== time_period[2] || !period ? 'day' : 'month'} in the last {period ? period : '7 days'}:
-                                                        <b style={{ color: 'rgb(235, 235, 235)' }}>
-                                                            &nbsp;
-                                                            {AverageOfIncomes().toFixed(2)}
-                                                            $
-                                                        </b>.
-                                                    </p>
-                                                    :
-                                                    <p>Select flower or bouquet to see information about it.</p>
-                                            }
-                                        </div>
-                                    </div>
-                                </>
-                                :
-                                <p></p>
-                        }
-                    </div>
+                    <OptionsBox
+                        width={width}
+                        resetFlowerInput={resetFlowerInput}
+                        resetBouquetInput={resetBouquetInput}
+                        flowersData={flowersData}
+                        bouquetsData={bouquetsData}
+                        setFlower={setFlower}
+                        setBouquet={setBouquet}
+                        setPeriod={setPeriod}
+                        time_period={time_period}
+                    />
+                    <ChartBox
+                        showChart={showChart}
+                        state={state}
+                    />
+                    <InfoBox
+                        soldProductsTab={soldProductsTab}
+                        desc={desc}
+                        reducer={reducer}
+                        period={period}
+                        time_period={time_period}
+                        AverageOfSoldFlowers={AverageOfSoldFlowers}
+                        income={income}
+                        AverageOfIncomes={AverageOfIncomes}
+                    />
                 </>
             }
         </div>

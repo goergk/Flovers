@@ -3,9 +3,18 @@ import classes from './Resources.module.css';
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Bouquet, Delivery, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
-import { AddFlowerBox, AddFlowerModal, DeleteFlowerModal, EditFlowerModal, FlowerAddButton, FlowersListBox, Header } from './Assets';
-import AlertBox from './Assets/AlertBox';
 import ShowDeliveryModal from './Assets/ShowDeliveryModal';
+import {
+    AddFlowerBox,
+    AddFlowerModal,
+    DeleteFlowerModal,
+    EditFlowerModal,
+    FlowerAddButton,
+    FlowersListBox,
+    Header,
+    AlertBox
+} from './Assets';
+
 
 const initialValues = {
     Name: "",

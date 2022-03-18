@@ -3,15 +3,17 @@ import classes from './Compositions.module.css';
 import { Bouquet, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import AddBouquetModal from './Assets/AddBouquetModal';
-import DeleteBouquetModal from './Assets/DeleteBouquetModal';
-import ShowBouquetModal from './Assets/ShowBouquetModal';
-import ShowBouquetListModal from './Assets/ShowBouquetListModal';
-import Header from './Assets/Header';
-import BouquetAddButton from './Assets/BouquetAddButton';
-import BouquetsListBox from './Assets/BouquetsListBox';
-import AddBouquetBox from './Assets/AddBouquetBox';
-import AlertBox from './Assets/AlertBox';
+import {
+    AddBouquetBox,
+    AddBouquetModal,
+    AlertBox,
+    BouquetAddButton,
+    BouquetsListBox,
+    DeleteBouquetModal,
+    Header,
+    ShowBouquetListModal,
+    ShowBouquetModal
+} from './Assets';
 
 const initialValues = {
     Name: ""

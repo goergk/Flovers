@@ -8,3 +8,4 @@ export { default as FlowersListBox } from './FlowersListBox';
 export { default as Header } from './Header';
 export { default as MoreOptionsBox } from './MoreOptionsBox';
 export { default as Tags } from './Tags';
+export { default as AlertBox } from './AlertBox';

@@ -3,8 +3,7 @@ import classes from '../Deliveries.module.css';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import { Delivery } from '../../../../services/FloristsApi';
-import DeliveryItem from './DeliveryItem';
-import Tags from './Tags';
+import { DeliveryItem, Tags } from '.';
 
 const useStyles = makeStyles({
     root: {

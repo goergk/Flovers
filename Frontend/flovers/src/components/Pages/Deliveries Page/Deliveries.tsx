@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import classes from './Deliveries.module.css';
 import { Delivery, Flower, useGetFloristQuery } from '../../../services/FloristsApi';
-import AddDeliveryModal from './Assets/AddDeliveryModal';
-import DeleteDeliveryModal from './Assets/DeleteDeliveryModal';
-import ShowDeliveryModal from './Assets/ShowDeliveryModal';
-import ShowDeliveryListModal from './Assets/ShowDeliveryListModal';
-import Header from './Assets/Header';
-import DeliveryAddButton from './Assets/DeliveryAddButton';
-import DeliveriesListBox from './Assets/DeliveriesListBox';
-import AddDeliveryBox from './Assets/AddDeliveryBox';
-import AlertBox from './Assets/AlertBox';
+import {
+    AddDeliveryBox,
+    AddDeliveryModal,
+    AlertBox,
+    DeleteDeliveryModal,
+    DeliveriesListBox,
+    DeliveryAddButton,
+    Header,
+    ShowDeliveryListModal,
+    ShowDeliveryModal
+}
+    from './Assets';
 
 const Deliveries = () => {
     const [openAdd, setOpenAdd] = useState(false);

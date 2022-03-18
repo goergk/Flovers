@@ -3,8 +3,7 @@ import classes from '../Sales.module.css';
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from '@mui/material/TextField';
 import { Sale } from '../../../../services/FloristsApi';
-import Tags from './Tags';
-import SaleItem from './SaleItem';
+import { SaleItem, Tags } from '.';
 
 const useStyles = makeStyles({
     root: {

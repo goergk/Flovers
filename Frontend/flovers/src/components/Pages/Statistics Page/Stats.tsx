@@ -3,9 +3,7 @@ import classes from './Stats.module.css';
 import moment from 'moment';
 import { Bouquet, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
 import Loader from '../../Assets/Loader/Loader';
-import OptionsBox from './Assets/OptionsBox';
-import InfoBox from './Assets/InfoBox';
-import ChartBox from './Assets/ChartsBox';
+import { ChartsBox, InfoBox, OptionsBox } from './Assets';
 
 const time_period = ['7 days', '30 days', '12 months']
 
@@ -308,7 +306,7 @@ const Stats = () => {
                         setPeriod={setPeriod}
                         time_period={time_period}
                     />
-                    <ChartBox
+                    <ChartsBox
                         showChart={showChart}
                         state={state}
                     />

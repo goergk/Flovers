@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import classes from './Sales.module.css';
 import { Bouquet, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
-import AddSaleModal from './Assets/AddSaleModal';
-import ShowSaleModal from './Assets/ShowSaleModal';
-import ShowSaleListModal from './Assets/ShowSaleListModal';
-import Header from './Assets/Header';
-import SaleAddButton from './Assets/SaleAddButton';
-import SalesListBox from './Assets/SalesListBox';
-import AddSaleBox from './Assets/AddSaleBox';
 import Alert from '../../Assets/Alert/Alert';
+import {
+    AddSaleBox,
+    AddSaleModal,
+    Header,
+    SaleAddButton,
+    SalesListBox,
+    ShowSaleListModal,
+    ShowSaleModal
+} from './Assets';
+
 
 const Sales = () => {
     const [openAdd, setOpenAdd] = useState(false);

@@ -3,8 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import classes from '../Compositions.module.css';
 import TextField from '@mui/material/TextField';
 import { Bouquet } from '../../../../services/FloristsApi';
-import Tags from './Tags';
-import BouquetItem from './BouquetItem';
+import { BouquetItem, Tags } from '.';
 
 const useStyles = makeStyles({
     root: {

@@ -70,12 +70,12 @@ const MoreOptionsBox: React.FC<Props> = ({
                 ?
                 deliveriesData?.map((delivery) => {
                     return (
-                        <>
+                        <React.Fragment key={delivery.id}>
                             {delivery.flowers.map((flower_, index) => {
                                 if (flower_.name === flower.name && i < 3) {
                                     i += 1;
                                     return (
-                                        <>
+                                        <React.Fragment key={flower_.id}>
                                             <div
                                                 className={classes.More_Options_List_Container_1}
                                                 key={delivery.id}
@@ -97,11 +97,11 @@ const MoreOptionsBox: React.FC<Props> = ({
                                                 <div className={classes.C3}>
                                                 </div>
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     )
                                 }
                             })}
-                        </>
+                        </React.Fragment>
                     )
                 })
                 :

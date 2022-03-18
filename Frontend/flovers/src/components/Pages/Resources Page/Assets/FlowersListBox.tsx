@@ -90,7 +90,7 @@ const FlowersListBox: React.FC<Props> = ({
                             {
                                 flowersData?.map((flower, index) => {
                                     return (
-                                        <>
+                                        <React.Fragment key={flower.id}>
                                             <FlowerItem
                                                 flower={flower}
                                                 indexOfElement={indexOfElement}
@@ -108,7 +108,7 @@ const FlowersListBox: React.FC<Props> = ({
                                                 handleOpenDelivery={handleOpenDelivery}
                                                 updateSingleDelivery={updateSingleDelivery}
                                             />
-                                        </>
+                                        </React.Fragment>
                                     )
                                 })
                             }

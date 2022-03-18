@@ -125,7 +125,7 @@ const AddSaleModal: React.FC<Props> = ({
                                     ?
                                     flowersData?.map((flower, index) => {
                                         return (
-                                            <>
+                                            <React.Fragment key={flower.id}>
                                                 <div className={classes.Nested_Flower_Container} key={flower.id}>
                                                     <div className={classes.Nested_Flower_Name}>
                                                         {flower.name}
@@ -143,12 +143,12 @@ const AddSaleModal: React.FC<Props> = ({
                                                         />
                                                     </div>
                                                 </div>
-                                            </>)
+                                            </React.Fragment>)
                                     })
                                     :
                                     BouquetsData?.map((bouquet, index) => {
                                         return (
-                                            <>
+                                            <React.Fragment key={bouquet.id}>
                                                 <div className={classes.Nested_Flower_Container} key={bouquet.id}>
                                                     <div className={classes.Nested_Flower_Name}>
                                                         {bouquet.name}
@@ -166,7 +166,7 @@ const AddSaleModal: React.FC<Props> = ({
                                                         />
                                                     </div>
                                                 </div>
-                                            </>)
+                                            </React.Fragment>)
                                     })
                             }
                         </div>

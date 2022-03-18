@@ -81,13 +81,15 @@ const BouquetsListBox: React.FC<Props> = ({
                             {
                                 bouquetsData?.map((bouquet, index) => {
                                     return (
-                                        <BouquetItem
-                                            bouquet={bouquet}
-                                            updateSingleBouquet={updateSingleBouquet}
-                                            handleOpenBouquet={handleOpenBouquet}
-                                            index={index}
-                                            handleOpenDelete={handleOpenDelete}
-                                        />
+                                        <React.Fragment key={bouquet.id}>
+                                            <BouquetItem
+                                                bouquet={bouquet}
+                                                updateSingleBouquet={updateSingleBouquet}
+                                                handleOpenBouquet={handleOpenBouquet}
+                                                index={index}
+                                                handleOpenDelete={handleOpenDelete}
+                                            />
+                                        </React.Fragment>
                                     )
                                 })
                             }

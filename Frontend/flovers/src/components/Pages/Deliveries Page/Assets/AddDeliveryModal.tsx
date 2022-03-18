@@ -77,7 +77,7 @@ const AddDeliveryModal: React.FC<Props> = ({
                             </div>
                             {flowersData?.map((flower, index) => {
                                 return (
-                                    <>
+                                    <React.Fragment key={flower.id}>
                                         <div className={classes.Nested_Flower_Container} key={flower.id}>
                                             <div className={classes.Nested_Flower_Name}>
                                                 {flower.name}
@@ -95,7 +95,7 @@ const AddDeliveryModal: React.FC<Props> = ({
                                                 />
                                             </div>
                                         </div>
-                                    </>)
+                                    </React.Fragment>)
                             })}
                         </div>
                         <button className={classes.Add_Button} type="button"

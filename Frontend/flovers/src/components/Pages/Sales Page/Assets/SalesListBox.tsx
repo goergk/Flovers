@@ -79,12 +79,14 @@ const SalesListBox: React.FC<Props> = ({
                             {
                                 salesData?.map((sale, index) => {
                                     return (
-                                        <SaleItem
-                                            sale={sale}
-                                            updateSingleDelivery={updateSingleDelivery}
-                                            handleOpenSale={handleOpenSale}
-                                            index={index}
-                                        />
+                                        <React.Fragment key={sale.id}>
+                                            <SaleItem
+                                                sale={sale}
+                                                updateSingleDelivery={updateSingleDelivery}
+                                                handleOpenSale={handleOpenSale}
+                                                index={index}
+                                            />
+                                        </React.Fragment>
                                     )
                                 })
                             }

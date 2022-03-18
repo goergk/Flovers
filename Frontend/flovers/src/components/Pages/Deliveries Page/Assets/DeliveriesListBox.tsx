@@ -81,13 +81,15 @@ const DeliveriesListBox: React.FC<Props> = ({
                             {
                                 deliveriesData?.map((delivery, index) => {
                                     return (
-                                        <DeliveryItem
-                                            delivery={delivery}
-                                            updateSingleDelivery={updateSingleDelivery}
-                                            handleOpenDelivery={handleOpenDelivery}
-                                            index={index}
-                                            handleOpenDelete={handleOpenDelete}
-                                        />
+                                        <React.Fragment key={delivery.id}>
+                                            <DeliveryItem
+                                                delivery={delivery}
+                                                updateSingleDelivery={updateSingleDelivery}
+                                                handleOpenDelivery={handleOpenDelivery}
+                                                index={index}
+                                                handleOpenDelete={handleOpenDelete}
+                                            />
+                                        </React.Fragment>
                                     )
                                 })
                             }

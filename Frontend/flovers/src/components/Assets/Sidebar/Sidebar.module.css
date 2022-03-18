@@ -1,3 +1,15 @@
+@-webkit-keyframes slide-right {
+  from {
+    margin-right: 15em;
+    opacity: 0;
+  }
+
+  to {
+    margin-right: 0em;
+    opacity: 1;
+  }
+}
+
 @keyframes slide-right {
   from {
     margin-right: 15em;
@@ -11,10 +23,20 @@
 }
 
 .Sidebar_container {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
   align-items: flex-start;
   height: 100vh;
   width: 14em;
@@ -24,15 +46,12 @@
   background-color: #090b0f;
   opacity: 0;
   -webkit-animation: slide-right ease-in 1;
-  -moz-animation: slide-right ease-in 1;
   animation: slide-right ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.5s;
-  -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
 }
 
@@ -56,8 +75,14 @@
 .List_Container,
 .List_Container_Active {
   width: 10em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 2em;
   padding-left: 1.6em;
@@ -90,9 +115,18 @@
 }
 
 .Sidebar_container_Web {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 100vh;
   width: 14em;
@@ -101,21 +135,24 @@
   background-color: #090b0f;
   opacity: 0;
   -webkit-animation: slide-right ease-in 1;
-  -moz-animation: slide-right ease-in 1;
   animation: slide-right ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.5s;
-  -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
 }
 
 .Logut_Button {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 6em;
   height: 2em;
@@ -140,8 +177,14 @@
   }
 
   .Logut_Button {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     bottom: 0;
     width: 6em;

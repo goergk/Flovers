@@ -9,7 +9,11 @@ import { PageType } from '../../Pages/Current Page/PageType';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../features/login';
 
-const Sidebar = () => {
+interface Props {
+    setLogout: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Sidebar: React.FC<Props> = ({ setLogout }) => {
     const [mobileOpen, setMobileOpen] = useState(true);
     const [width, setWidth] = useState(window.innerWidth);
     const updateWidth = () => setWidth(window.innerWidth);
@@ -39,7 +43,6 @@ const Sidebar = () => {
             {!mobileOpen
                 ?
                 <div className={mobileOpen ? classes.Sidebar_container_mobile : classes.Sidebar_container}>
-
                     <CloseIcon onClick={handleDrawerToggle} className={classes.Close_Icon} />
                     {SidebarData.map((item, index) => {
                         let border = false;
@@ -67,8 +70,11 @@ const Sidebar = () => {
                     })}
                     <div className={classes.Logut_Button}
                         onClick={() => {
-                            dispatch(signOut());
-                            changeRoute();
+                            setLogout(true);
+                            setTimeout(function () {
+                                dispatch(signOut());
+                                changeRoute();
+                            }, 800);
                         }}>
                         Log out
                     </div>
@@ -104,8 +110,11 @@ const Sidebar = () => {
                     })}
                     <div className={classes.Logut_Button}
                         onClick={() => {
-                            dispatch(signOut());
-                            changeRoute();
+                            setLogout(true);
+                            setTimeout(function () {
+                                dispatch(signOut());
+                                changeRoute();
+                            }, 800);
                         }}>
                         Log out
                     </div>

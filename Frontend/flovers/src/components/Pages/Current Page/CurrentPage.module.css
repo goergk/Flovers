@@ -11,18 +11,16 @@
 
 html {
   background-color: #090b0f;
+  overflow: overlay;
 }
 
 html::-webkit-scrollbar {
   width: 0.8em;
 }
 
-html {
-  scrollbar-color: #d97979 #090b0f;
-}
-
 html::-webkit-scrollbar-track {
   background: #090b0f;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 html::-webkit-scrollbar-thumb {

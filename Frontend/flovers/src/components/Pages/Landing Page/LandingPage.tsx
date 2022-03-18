@@ -1,8 +1,6 @@
 import React from 'react';
 import classes from './LandingPage.module.css';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
@@ -11,6 +9,8 @@ import { Link, useHistory } from 'react-router-dom';
 import Logo from '../../Assets/Logo/Logo';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
+import HeartSvg from '../../Svg/heart_icon.svg';
+import CoffeeSvg from '../../Svg/coffee_icon.svg';
 
 const LandingPage = () => {
     const history = useHistory();
@@ -89,14 +89,14 @@ const LandingPage = () => {
             <div className={classes.Container_3}>
                 <div className={classes.Footer}>
                     <h2>
-                        Made with &nbsp;
-                        <FavoriteIcon className={classes.Heart_Icon} />
-                        &nbsp; and &nbsp;
-                        <LocalCafeIcon className={classes.Coffee_Icon} />
-                        &nbsp; by Grzegorz Kawecki
+                        Made with &nbsp; &nbsp;
+                        <img src={HeartSvg} alt="Heart" className={classes.Icon} />
+                        &nbsp; &nbsp; and &nbsp; &nbsp;
+                        <img src={CoffeeSvg} alt="Coffee" className={classes.Icon} />
+                        &nbsp; &nbsp; by Grzegorz Kawecki
                     </h2>
                     <h2>
-                        Copyright &#xA9; 2021
+                        Copyright &#xA9; 2022
                     </h2>
                 </div>
             </div>

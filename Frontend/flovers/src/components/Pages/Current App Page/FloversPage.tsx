@@ -1,5 +1,5 @@
-import React from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import Error from '../Error Page/Error';
 import Resources from '../Resources Page/Resources';
 import Deliveries from '../Deliveries Page/Deliveries';
@@ -11,17 +11,21 @@ import Sidebar from '../../Assets/Sidebar/Sidebar';
 import classes from './FloversPage.module.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
+import SpaIcon from '@mui/icons-material/Spa';
 
 const FloversPage = () => {
+    const [logout, setLogout] = useState(false);
+
     const history = useHistory();
     const changeRoute = () => history.push(`${PageType.SIGNIN}`);
     const { login } = useSelector((state: RootState) => state.Login);
     if (!login) { changeRoute() }
 
     return (
-        <div className={classes.Page_Container}>
+        <div className={logout ? classes.Page_Container_Logut : classes.Page_Container}>
             <div className={classes.Sidebar_Container}>
-                <Sidebar />
+                <Sidebar setLogout={setLogout} />
+                <Link to={`${PageType.FLOWERS}`}><SpaIcon className={classes.Logo_Icon} /></Link>
             </div>
             <div className={classes.Main_Page_Container}>
                 <Switch>

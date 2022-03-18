@@ -244,6 +244,11 @@
   border-color: #84bb97;
 }
 
+.Icon {
+  margin-bottom: -0.3em;
+  height: 1.7em;
+}
+
 @keyframes myAnimation {
   0% {
     padding-left: 0px;

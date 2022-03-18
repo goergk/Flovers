@@ -47,7 +47,7 @@ const FlowerItem: React.FC<Props> = ({
                 <p
                     className={classes.List_Container_Text}
                     style={{ "color": indexOfElement !== index ? "rgb(195, 195, 195)" : "#d97979" }}>
-                    {flower.price}
+                    {flower.price}$
                 </p>
             </div>
             <div className={classes.Show_Amount}>

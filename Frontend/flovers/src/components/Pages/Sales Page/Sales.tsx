@@ -1,86 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import classes from './Sales.module.css';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import EventIcon from '@mui/icons-material/Event';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import TextField from '@mui/material/TextField';
-import { makeStyles } from "@material-ui/core/styles";
-import NumbersIcon from '@mui/icons-material/Numbers';
-import Grid3x3Icon from '@mui/icons-material/Grid3x3';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import Modal from '@mui/material/Modal';
-import { Backdrop, Fade } from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
-import ClearIcon from '@mui/icons-material/Clear';
-import { Bouquet, Delivery, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
-import Loader from '../../Assets/Loader/Loader';
-
-const useStyles = makeStyles({
-    root: {
-        "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "white",
-        },
-        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#d97979"
-        },
-        "& .MuiOutlinedInput-input": {
-            color: "white"
-        },
-        "& .MuiOutlinedInput-root.Mui-focused": {
-            color: "#d97979"
-        },
-        "& .MuiInputLabel-outlined": {
-            color: "white"
-        },
-        "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "white"
-        },
-        "& .MuiInputLabel-outlined.Mui-focused": {
-            color: "#d97979"
-        },
-        marginBottom: ".2em"
-    }
-});
+import { Bouquet, Flower, Sale, useGetFloristQuery } from '../../../services/FloristsApi';
+import AddSaleModal from './Assets/AddSaleModal';
+import ShowSaleModal from './Assets/ShowSaleModal';
+import ShowSaleListModal from './Assets/ShowSaleListModal';
+import Header from './Assets/Header';
+import SaleAddButton from './Assets/SaleAddButton';
+import SalesListBox from './Assets/SalesListBox';
+import AddSaleBox from './Assets/AddSaleBox';
+import Alert from '../../Assets/Alert/Alert';
 
 const Sales = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openMobileAdd, setOpenMobileAdd] = useState(false);
-    const [openDelete, setOpenDelete] = useState(false);
-    const [openDelivery, setOpenDelivery] = useState(false);
+    const [openSale, setOpenSale] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
     const [firstRun, setFirstRun] = useState(true);
     const [loader, setLoader] = useState(false);
     const [switch_, setSwitch] = useState(true);
+    const [showAddAlert, setShowAddAlert] = useState(false);
+    const [showNotEnoughAlert, setShowNotEnoughAlert] = useState(false);
+    const [width, setWidth] = useState(window.innerWidth);
 
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
     const handleOpenMobileAdd = () => setOpenMobileAdd(true);
     const handleCloseMobileAdd = () => setOpenMobileAdd(false);
-    const handleOpenDelete = () => setOpenDelete(true);
-    const handleCloseDelete = () => setOpenDelete(false);
-    const handleOpenDelivery = () => setOpenDelivery(true);
-    const handleCloseDelivery = () => setOpenDelivery(false);
+    const handleOpenSale = () => setOpenSale(true);
+    const handleCloseSale = () => setOpenSale(false);
 
     const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
 
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [tmpFlowers, setTmpFlowers] = useState<Flower[] | undefined>();
-    const [deliveryFlowers, setDeliveryFlowers] = useState<Flower[] | undefined>();
+    const [saleFlowers, setSaleFlowers] = useState<Flower[] | undefined>();
     const [saleFlowersList, setSaleFlowersList] = useState<Flower[] | undefined>();
 
     const [BouquetsData, setBouquetsData] = useState<Bouquet[] | undefined>();
     const [tmpBouquets, setTmpBouquets] = useState<{ bouquet: Bouquet, amount: number }[] | undefined>([]);
-    const [deliveryBouquets, setDeliveryBouquets] = useState<{ bouquet: Bouquet, amount: number }[] | undefined>([]);
+    const [saleBouquets, setSaleBouquets] = useState<{ bouquet: Bouquet, amount: number }[] | undefined>([]);
     const [saleBouquetsList, setSaleBouquetsList] = useState<{ bouquet: Bouquet, amount: number }[] | undefined>([]);
 
     const [tmpFlowersAmount, setTmpFlowersAmount] = useState<{ flower_name: string, amount: number }[] | undefined>([]);
 
     const [salesData, setSalesData] = useState(Florists_data?.florist[0].sales);
-    const [singleDelivery, setSingleDelivery] = useState<Sale | undefined>();
+    const [singleSale, setSingleSale] = useState<Sale | undefined>();
 
     useEffect(() => {
         let tempArr: Sale[] | undefined = [];
@@ -104,10 +70,10 @@ const Sales = () => {
             setBouquetsData(tempArr_1);
         }
         if (Florists_data !== undefined && firstRun) {
-            setDeliveryFlowers(Florists_data?.florist[0].flowers);
+            setSaleFlowers(Florists_data?.florist[0].flowers);
             let tempBouquet: { bouquet: Bouquet, amount: number }[] = [];
             Florists_data?.florist[0].bouquets.forEach((bouquet) => tempBouquet.push({ bouquet: bouquet, amount: 0 }));
-            setDeliveryBouquets(tempBouquet);
+            setSaleBouquets(tempBouquet);
 
             let tmp: { flower_name: string, amount: number }[] | undefined = [];
             Florists_data?.florist[0].flowers.forEach((flower) => tmp?.push({ flower_name: flower.name, amount: flower.amount }));
@@ -129,11 +95,19 @@ const Sales = () => {
     }, [tmpFlowers]);
 
     useEffect(() => {
-        if (firstRun && deliveryFlowers !== undefined) {
+        if (firstRun && saleFlowers !== undefined) {
             setZerosInDeliveryFlowersArray();
             setFirstRun(false);
         }
-    }, [deliveryFlowers]);
+    }, [saleFlowers]);
+
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    });
 
     const setZerosInFlowersTempArray = () => {
         let newArr = JSON.parse(JSON.stringify(tmpFlowers));
@@ -148,15 +122,15 @@ const Sales = () => {
     }
 
     const setZerosInDeliveryFlowersArray = () => {
-        let newArr = JSON.parse(JSON.stringify(deliveryFlowers));
+        let newArr = JSON.parse(JSON.stringify(saleFlowers));
         newArr.map((flower: Flower) => flower.amount = 0);
-        setDeliveryFlowers(newArr);
+        setSaleFlowers(newArr);
     }
 
     const setZerosInDeliveryBouquetsArray = () => {
-        let newArr = JSON.parse(JSON.stringify(deliveryBouquets));
+        let newArr = JSON.parse(JSON.stringify(saleBouquets));
         newArr.map((item: { bouquet: Bouquet, amount: number }) => item.amount = 0);
-        setDeliveryBouquets(newArr);
+        setSaleBouquets(newArr);
     }
 
     const updateFlowersArrayOnInputChange = (flower_id: number, e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -172,7 +146,7 @@ const Sales = () => {
     }
 
     const updateSaleFlowers = () => {
-        let newArr = JSON.parse(JSON.stringify(deliveryFlowers!));
+        let newArr = JSON.parse(JSON.stringify(saleFlowers!));
         let newArr_1 = JSON.parse(JSON.stringify(tmpFlowersAmount!));
         tmpFlowers?.forEach((flower, index) => {
             if (flower.amount > 0) {
@@ -182,19 +156,21 @@ const Sales = () => {
                             newArr[index].amount += flower.amount;
                             newArr_1[indx].amount -= flower.amount;
                         } else {
-                            console.log("No enough flowers to add this.");
-                            // Display Error Alert
+                            setShowNotEnoughAlert(true);
+                            setTimeout(function () {
+                                setShowNotEnoughAlert(false);
+                            }, 2000);
                         }
                     }
                 })
             }
         })
         setTmpFlowersAmount(newArr_1);
-        setDeliveryFlowers(newArr);
+        setSaleFlowers(newArr);
     }
 
     const updateSaleBouquets = () => {
-        let newArr = JSON.parse(JSON.stringify(deliveryBouquets!));
+        let newArr = JSON.parse(JSON.stringify(saleBouquets!));
         let newArr_1 = JSON.parse(JSON.stringify(tmpFlowersAmount!));
         tmpBouquets?.forEach((item, index) => {
             if (item.amount > 0) {
@@ -220,20 +196,22 @@ const Sales = () => {
                         })
                     })
                 } else {
-                    console.log("No enough flowers to add this.");
-                    // Display Error Alert
+                    setShowNotEnoughAlert(true);
+                    setTimeout(function () {
+                        setShowNotEnoughAlert(false);
+                    }, 2000);
                 }
             }
         })
         setTmpFlowersAmount(newArr_1);
-        setDeliveryBouquets(newArr);
+        setSaleBouquets(newArr);
     }
 
     const deleteSaleFlower = (flower_id: number) => {
-        let newArr = JSON.parse(JSON.stringify(deliveryFlowers!));
+        let newArr = JSON.parse(JSON.stringify(saleFlowers!));
         let newArr_1 = JSON.parse(JSON.stringify(tmpFlowersAmount!));
 
-        deliveryFlowers?.forEach((flower, index) => {
+        saleFlowers?.forEach((flower, index) => {
             tmpFlowersAmount?.forEach((flwr, indx) => {
                 if (flwr.flower_name === flower.name) {
                     newArr_1[indx].amount += flower.amount;
@@ -243,14 +221,14 @@ const Sales = () => {
         })
 
         setTmpFlowersAmount(newArr_1);
-        setDeliveryFlowers(newArr);
+        setSaleFlowers(newArr);
     }
 
     const deleteSaleBouquet = (bouquet_id: number) => {
-        let newArr = JSON.parse(JSON.stringify(deliveryBouquets!));
+        let newArr = JSON.parse(JSON.stringify(saleBouquets!));
         let newArr_1 = JSON.parse(JSON.stringify(tmpFlowersAmount!));
 
-        deliveryBouquets?.forEach((item, index) => {
+        saleBouquets?.forEach((item, index) => {
             if (item.bouquet.id === bouquet_id) {
                 item.bouquet.flowers.forEach(flower => {
                     tmpFlowersAmount?.forEach((flwr, indx) => {
@@ -264,14 +242,14 @@ const Sales = () => {
         })
 
         setTmpFlowersAmount(newArr_1);
-        setDeliveryBouquets(newArr);
+        setSaleBouquets(newArr);
     }
 
     const deleteAllItemsInSale = () => {
 
         let newArr_1 = JSON.parse(JSON.stringify(tmpFlowersAmount!));
 
-        deliveryFlowers?.forEach((flower) => {
+        saleFlowers?.forEach((flower) => {
             if (flower.amount > 0) {
                 tmpFlowersAmount?.forEach((flwr, indx) => {
                     if (flwr.flower_name === flower.name) {
@@ -283,7 +261,7 @@ const Sales = () => {
 
         setTmpFlowersAmount(newArr_1);
 
-        deliveryBouquets?.forEach((item) => {
+        saleBouquets?.forEach((item) => {
             if (item.amount > 0) {
                 item.bouquet.flowers.forEach(flower => {
                     tmpFlowersAmount?.forEach((flwr, indx) => {
@@ -304,13 +282,13 @@ const Sales = () => {
     const updateSaleList = () => {
         let newArr: Flower[] | undefined = [];
         let newArr_1: { bouquet: Bouquet, amount: number }[] | undefined = [];
-        deliveryFlowers?.map((flower) => {
+        saleFlowers?.map((flower) => {
             if (flower.amount > 0) {
                 newArr!.push(flower);
             }
             return flower;
         })
-        deliveryBouquets?.map((item) => {
+        saleBouquets?.map((item) => {
             if (item.amount > 0) {
                 newArr_1!.push(item);
             }
@@ -332,7 +310,7 @@ const Sales = () => {
 
     const updateSingleDelivery = (sale_id: number) => {
         salesData?.forEach((sale: Sale) => {
-            sale.id === sale_id && setSingleDelivery(sale);
+            sale.id === sale_id && setSingleSale(sale);
         })
     }
 
@@ -350,8 +328,8 @@ const Sales = () => {
 
     const deliveryItemsAmount = () => {
         let amount = 0;
-        deliveryFlowers?.forEach(flower => flower.amount > 0 && amount++);
-        deliveryBouquets?.forEach(item => item.amount > 0 && amount++);
+        saleFlowers?.forEach(flower => flower.amount > 0 && amount++);
+        saleBouquets?.forEach(item => item.amount > 0 && amount++);
         return amount;
     }
 
@@ -362,7 +340,8 @@ const Sales = () => {
         return amount;
     }
 
-    const addDelivery = () => {
+    const addSale = () => {
+        setLoader(true);
         fetch(`http://127.0.0.1:8000/api/florist/${sessionStorage.getItem('florist_id')}/sale/`, {
             method: "PUT",
             headers: {
@@ -424,597 +403,117 @@ const Sales = () => {
         setZerosInDeliveryBouquetsArray();
         setSaleFlowersList([]);
         setSaleBouquetsList([]);
+
         setTimeout(function () {
             refetch();
             handleCloseMobileAdd();
             handleCloseAdd();
-        }, 900);
-        // setShowAddAlert(true);
-        // setTimeout(function () {
-        //     setShowAddAlert(false);
-        // }, 2000);
+            setTimeout(function () {
+                setLoader(false);
+            }, 500);
+            setShowAddAlert(true);
+            setTimeout(function () {
+                setShowAddAlert(false);
+            }, 2000);
+        }, 1100);
     }
-
-    const classes_2 = useStyles();
 
     return (
         <div className={classes.Main_Container}>
+
+            <AddSaleModal
+                openMobileAdd={openMobileAdd}
+                handleCloseMobileAdd={handleCloseMobileAdd}
+                switch_={switch_}
+                setSwitch={setSwitch}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                flowersData={flowersData}
+                updateFlowersArrayOnInputChange={updateFlowersArrayOnInputChange}
+                BouquetsData={BouquetsData}
+                updateBouquetsArrayOnInputChange={updateBouquetsArrayOnInputChange}
+                updateSaleFlowers={updateSaleFlowers}
+                updateSaleBouquets={updateSaleBouquets}
+                setZerosInFlowersTempArray={setZerosInFlowersTempArray}
+                setZerosInBouquetsTempArray={setZerosInBouquetsTempArray}
+                tempItemsAmount={tempItemsAmount}
+                setFlowersData={setFlowersData}
+                setBouquetsData={setBouquetsData}
+                updateSaleList={updateSaleList}
+                handleOpenAdd={handleOpenAdd}
+                deliveryItemsAmount={deliveryItemsAmount}
+                Florists_data={Florists_data}
+                showAddAlert={showAddAlert}
+                showNotEnoughAlert={showNotEnoughAlert}
+            />
+            <ShowSaleModal
+                openSale={openSale}
+                handleCloseSale={handleCloseSale}
+                singleSale={singleSale}
+            />
+            <ShowSaleListModal
+                openAdd={openAdd}
+                loader={loader}
+                openMobileAdd={openMobileAdd}
+                handleCloseAdd={handleCloseAdd}
+                deliveryItemsAmount={deliveryItemsAmount}
+                setSaleFlowersList={setSaleFlowersList}
+                setSaleBouquetsList={setSaleBouquetsList}
+                deleteAllItemsInSale={deleteAllItemsInSale}
+                deleteFlowerListElement={deleteFlowerListElement}
+                deleteSaleFlower={deleteSaleFlower}
+                saleFlowersList={saleFlowersList}
+                saleBouquetsList={saleBouquetsList}
+                deleteBouquetListElement={deleteBouquetListElement}
+                deleteSaleBouquet={deleteSaleBouquet}
+                addSale={addSale}
+            />
+
             <div className={classes.Top_Container}>
-                <div className={classes.Header_Container}>
-                    <div className={classes.Header_Container_1}>
-                        <div className={classes.Icon_Container}>
-                            <MonetizationOnIcon className={classes.Header_Icon} />
-                        </div>
-                        <div>
-                            <h1>
-                                Sales
-                            </h1>
-                            <p>
-                                Sell your flowers and bouquets.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div className={classes.Button_Container_Mobile}>
-                    <button className={classes.Add_Flower_Button_Mobile} onClick={e => handleOpenMobileAdd()}>
-                        New Sale
-                    </button>
-                </div>
-
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openMobileAdd}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openMobileAdd}>
-                        <div className={classes.Mobile_Delivery_Modal_container}>
-                            <div className={classes.Delivery_Modal_Container}>
-                                <div className={classes.Close_Icon_container}>
-                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseMobileAdd} />
-                                </div>
-                                <h2>
-                                    Add flowers to sale
-                                </h2>
-                                <div className={classes.Switch_Container}>
-                                    <div
-                                        className={switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
-                                        style={{ borderRight: '1px solid gray' }}
-                                        onClick={e => setSwitch(true)}
-                                    >
-                                        Flowers
-                                    </div>
-                                    <div
-                                        className={!switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
-                                        onClick={e => setSwitch(false)}
-                                    >
-                                        Bouquets
-                                    </div>
-                                </div>
-                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                                    <div className={classes.Nested_Flower_Container}>
-                                        <div className={classes.Nested_Flower_Name}>
-                                            {
-                                                switch_
-                                                    ?
-                                                    <b>Search for a flower:</b>
-                                                    :
-                                                    <b>Search for a bouquet:</b>
-                                            }
-
-                                        </div>
-                                        <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                            <TextField
-                                                id="Search"
-                                                label="Search Name"
-                                                variant="outlined"
-                                                size="small"
-                                                value={searchTerm}
-                                                onChange={(e) => setSearchTerm(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    {
-                                        switch_
-                                            ?
-                                            flowersData?.map((flower, index) => {
-                                                return (
-                                                    <>
-                                                        <div className={classes.Nested_Flower_Container} key={flower.id}>
-                                                            <div className={classes.Nested_Flower_Name}>
-                                                                {flower.name}
-                                                            </div>
-                                                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                                <TextField
-                                                                    id="Amount"
-                                                                    label="Amount"
-                                                                    variant="outlined"
-                                                                    size="small"
-                                                                    type="number"
-                                                                    onChange={(e) => {
-                                                                        updateFlowersArrayOnInputChange(flower.id, e);
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </>)
-                                            })
-                                            :
-                                            BouquetsData?.map((bouquet, index) => {
-                                                return (
-                                                    <>
-                                                        <div className={classes.Nested_Flower_Container} key={bouquet.id}>
-                                                            <div className={classes.Nested_Flower_Name}>
-                                                                {bouquet.name}
-                                                            </div>
-                                                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                                <TextField
-                                                                    id="Amount"
-                                                                    label="Amount"
-                                                                    variant="outlined"
-                                                                    size="small"
-                                                                    type="number"
-                                                                    onChange={(e) => {
-                                                                        updateBouquetsArrayOnInputChange(bouquet.id, e);
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </>)
-                                            })
-                                    }
-                                </div>
-                                <button className={classes.Add_Button} type="button"
-                                    onClick={e => {
-                                        if (switch_) {
-                                            updateSaleFlowers();
-                                        } else {
-                                            updateSaleBouquets();
-                                        }
-                                        setZerosInFlowersTempArray();
-                                        setZerosInBouquetsTempArray();
-                                        if (tempItemsAmount() > 0) {
-                                            setFlowersData([]);
-                                            setBouquetsData([]);
-                                            setTimeout(function () {
-                                                let tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
-                                                tempArr = tempArr!.reverse();
-                                                let tempArr_1 = JSON.parse(JSON.stringify(Florists_data?.florist[0].bouquets));
-                                                tempArr_1 = tempArr_1!.reverse();
-                                                setFlowersData(tempArr);
-                                                setBouquetsData(tempArr_1);
-                                                setSearchTerm('');
-                                            }, 1);
-                                        }
-                                    }}>
-                                    Add to list
-                                </button>
-                                <div className={classes.Delivery_Container} onClick={e => {
-                                    updateSaleList();
-                                    handleOpenAdd();
-                                }}>
-                                    <p>
-                                        <b>Current Sale (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </Fade>
-                </Modal>
-
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openDelivery}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openDelivery}>
-                        <div className={classes.Main_Delivery_Modal_container}>
-                            <div className={classes.Delivery_Modal_Container}>
-                                <div className={classes.Close_Icon_container}>
-                                    <CancelIcon className={classes.Close_Icon} onClick={handleCloseDelivery} />
-                                </div>
-                                <h2>
-                                    Sale {singleDelivery?.id}
-                                </h2>
-                                <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                                    {
-                                        <>
-                                            {
-                                                singleDelivery?.flowers?.map((flower, index) => {
-                                                    return (
-                                                        <div className={classes.Delivery_Item_Container} key={flower.id}>
-                                                            <div className={classes.Container_C1}>
-                                                                <b>{index + 1}</b>
-                                                            </div>
-                                                            <div className={classes.Container_C2} style={{ color: 'green', fontWeight: '500' }}>
-                                                                {flower.name}
-                                                            </div>
-                                                            <div className={classes.Container_C3}>
-                                                                {flower.amount}
-                                                            </div>
-                                                            <div className={classes.Container_C4}>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                            {
-                                                singleDelivery?.bouquets?.map((bouquetObject, index) => {
-                                                    return (
-                                                        <div className={classes.Delivery_Item_Container} key={bouquetObject.id}>
-                                                            <div className={classes.Container_C1}>
-                                                                {
-                                                                    singleDelivery?.flowers?.length
-                                                                        ?
-                                                                        <b>{index + singleDelivery?.flowers?.length! + 1}</b>
-                                                                        :
-                                                                        <b>{index + 1}</b>
-                                                                }
-                                                            </div>
-                                                            <div className={classes.Container_C2} style={{ color: 'purple', fontWeight: '500' }}>
-                                                                {bouquetObject.bouquet.name}
-                                                            </div>
-                                                            <div className={classes.Container_C3}>
-                                                                {bouquetObject.amount}
-                                                            </div>
-                                                            <div className={classes.Container_C4}>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </>
-
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </Fade>
-                </Modal>
-
-
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    open={openAdd}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={openAdd}>
-                        <div className={classes.Main_Delivery_Modal_container}>
-                            {loader
-                                ?
-                                <Loader />
-                                :
-
-                                <div className={classes.Delivery_Modal_Container}>
-                                    <div className={classes.Close_Icon_container} style={openMobileAdd ? { justifyContent: 'flex-start' } : undefined}>
-                                        {openMobileAdd
-                                            ?
-                                            <KeyboardBackspaceIcon className={classes.Back_Icon} onClick={handleCloseAdd} />
-                                            :
-                                            <CancelIcon className={classes.Close_Icon} onClick={handleCloseAdd} />
-                                        }
-
-                                    </div>
-                                    <h2>
-                                        Add new sale
-                                    </h2>
-                                    {deliveryItemsAmount() > 0
-                                        &&
-                                        <div className={classes.Delete_Icon_container}>
-                                            <div className={classes.Delete_Icon_Inner_container}
-                                                onClick={e => {
-                                                    setSaleFlowersList([]);
-                                                    setSaleBouquetsList([]);
-                                                    deleteAllItemsInSale();
-                                                }}
-                                            >
-                                                Delete all <DeleteOutlineIcon />
-                                            </div>
-                                        </div>
-                                    }
-                                    <div className={classes.Delivery_Modal_List_Container} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                                        {
-                                            deliveryItemsAmount() === 0
-                                                ?
-                                                <h4>No items added to sale</h4>
-                                                :
-                                                <>
-                                                    {saleFlowersList?.map((flower, index) => {
-                                                        return (
-                                                            <div className={classes.Delivery_Item_Container} key={flower.id}>
-                                                                <div className={classes.Container_C1}>
-                                                                    <b>{index + 1}</b>
-                                                                </div>
-                                                                <div className={classes.Container_C2}>
-                                                                    {flower.name}
-                                                                </div>
-                                                                <div className={classes.Container_C3}>
-                                                                    {flower.amount}
-                                                                </div>
-                                                                <div className={classes.Container_C4}>
-                                                                    <ClearIcon className={classes.Clear_Icon}
-                                                                        onClick={e => {
-                                                                            deleteFlowerListElement(index);
-                                                                            deleteSaleFlower(flower.id);
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    })}
-                                                    {saleBouquetsList?.map((item, index) => {
-                                                        return (
-                                                            <div className={classes.Delivery_Item_Container} key={item.bouquet.id}>
-                                                                <div className={classes.Container_C1}>
-                                                                    {
-                                                                        saleFlowersList?.length
-                                                                            ?
-                                                                            <b>{index + saleFlowersList?.length! + 1}</b>
-                                                                            :
-                                                                            <b>{index + 1}</b>
-                                                                    }
-                                                                </div>
-                                                                <div className={classes.Container_C2}>
-                                                                    {item.bouquet.name}
-                                                                </div>
-                                                                <div className={classes.Container_C3}>
-                                                                    {item.amount}
-                                                                </div>
-                                                                <div className={classes.Container_C4}>
-                                                                    <ClearIcon className={classes.Clear_Icon}
-                                                                        onClick={e => {
-                                                                            deleteBouquetListElement(index);
-                                                                            deleteSaleBouquet(item.bouquet.id);
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    })}
-                                                </>
-                                        }
-                                    </div>
-                                    {deliveryItemsAmount() > 0
-                                        &&
-                                        <button className={classes.Modal_button} onClick={addDelivery}>Save</button>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    </Fade>
-                </Modal>
+                {
+                    showAddAlert &&
+                    <Alert message="Successfully added" />
+                }
+                {
+                    (width > 1000 && showNotEnoughAlert) &&
+                    <Alert message="Not enough flowers to add product" />
+                }
+                <Header />
+                <SaleAddButton
+                    handleOpenMobileAdd={handleOpenMobileAdd}
+                />
             </div>
             <div className={classes.Bottom_Container}>
-                <div className={classes.Show_Flowers_Container}>
-                    <div className={classes.Show_Container_1}>
-                        <div className={classes.Show_Number}>
-                            <Grid3x3Icon className={classes.Icon} />
-                        </div>
-                        <div className={classes.Show_Name}>
-                            <NumbersIcon className={classes.Icon} />
-                            <p className={classes.Show_Container_Text}>
-                                Sale ID
-                            </p>
-                        </div>
-                        <div className={classes.Show_Date}>
-                            <EventIcon className={classes.Icon} />
-                            <p className={classes.Show_Container_Text}>
-                                Added
-                            </p>
-                        </div>
-                    </div>
-                    <div className={classes.Search_Container}>
-                        <div>
-                            <b>Search for a sale:&nbsp;&nbsp;</b>
-                        </div>
-                        <div>
-                            <TextField
-                                id="Search"
-                                label="Search Id"
-                                variant="outlined"
-                                size="small"
-                                value={itemSearchTerm}
-                                onChange={(e) => setItemSearchTerm(e.target.value)}
-                                className={classes_2.root}
-                            />
-                        </div>
-                    </div>
-                    <div className={classes.Show_Container_2}>
-                        {
-                            salesData?.length! > 0
-                                ?
-                                <>
-                                    {
-                                        salesData?.map((sale, index) => {
-                                            return (
-                                                <>
-                                                    <div
-                                                        className={classes.List_Item_Container}
-                                                        key={sale.id}
-                                                        onClick={e => {
-                                                            updateSingleDelivery(sale.id);
-                                                            handleOpenDelivery();
-                                                        }}
-                                                    >
-                                                        <div className={classes.Show_Number}>
-                                                            <p className={classes.List_Container_Text}>
-                                                                {index + 1}
-                                                            </p>
-                                                        </div>
-                                                        <div className={classes.Show_Name}>
-                                                            <p className={classes.List_Container_Text_First}>
-                                                                {sale.id}
-                                                            </p>
-                                                        </div>
-                                                        <div className={classes.Show_Date}>
-                                                            <p className={classes.List_Container_Text}>
-                                                                {sale.creation_date.toString().split('T')[0]}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )
-                                        })
-                                    }
-                                </>
-                                :
-                                <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                                    No sales
-                                </h3>
-                        }
-                    </div>
-                </div>
-                <div className={classes.Add_Flower_Container}>
-                    <div className={classes.Add_Container_1}>
-                        <AddBoxIcon className={classes.Icon} />
-                        <p>
-                            New Sale
-                        </p>
-                    </div>
-                    <div className={classes.Add_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                        <h3>
-                            Add products to new sale:
-                        </h3>
-                        <div className={classes.Switch_Container}>
-                            <div
-                                className={switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
-                                style={{ borderRight: '1px solid gray' }}
-                                onClick={e => setSwitch(true)}
-                            >
-                                Flowers
-                            </div>
-                            <div
-                                className={!switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
-                                onClick={e => setSwitch(false)}
-                            >
-                                Bouquets
-                            </div>
-                        </div>
-                        <div className={classes.Nested_Flower_Container} style={{ borderBottom: 'none' }}>
-                            <div className={classes.Nested_Flower_Name}>
-                                {switch_
-                                    ?
-                                    <b>Search for a flower:</b>
-                                    :
-                                    <b>Search for a bouquet:</b>
-                                }
-                            </div>
-                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '1.1em' }}>
-                                <TextField
-                                    id="Search"
-                                    label="Search Name"
-                                    variant="outlined"
-                                    size="small"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className={classes_2.root}
-                                />
-                            </div>
-                        </div>
-                        <div className={classes.Add_Flowers_List}>
-                            {
-                                switch_
-                                    ?
-                                    flowersData?.map((flower, index) => {
-                                        return (
-                                            <>
-                                                <div className={classes.Nested_Flower_Container} key={flower.id}>
-                                                    <div className={classes.Nested_Flower_Name}>
-                                                        {flower.name}
-                                                    </div>
-                                                    <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                        <TextField
-                                                            id="Amount"
-                                                            label="Amount"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            type="number"
-                                                            onChange={(e) => {
-                                                                updateFlowersArrayOnInputChange(flower.id, e);
-                                                            }}
-                                                            className={classes_2.root}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </>)
-                                    })
-                                    :
-                                    BouquetsData?.map((bouquet, index) => {
-                                        return (
-                                            <>
-                                                <div className={classes.Nested_Flower_Container} key={bouquet.id}>
-                                                    <div className={classes.Nested_Flower_Name}>
-                                                        {bouquet.name}
-                                                    </div>
-                                                    <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                        <TextField
-                                                            id="Amount"
-                                                            label="Amount"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            type="number"
-                                                            onChange={(e) => {
-                                                                updateBouquetsArrayOnInputChange(bouquet.id, e);
-                                                            }}
-                                                            className={classes_2.root}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </>)
-                                    })
-                            }
-                        </div>
-                        <button className={classes.Add_Button} type="button"
-                            onClick={e => {
-                                if (switch_) {
-                                    updateSaleFlowers();
-                                } else {
-                                    updateSaleBouquets();
-                                }
-                                setZerosInFlowersTempArray();
-                                setZerosInBouquetsTempArray();
-                                if (tempItemsAmount() > 0) {
-                                    setFlowersData([]);
-                                    setBouquetsData([]);
-                                    setTimeout(function () {
-                                        let tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
-                                        tempArr = tempArr!.reverse();
-                                        let tempArr_1 = JSON.parse(JSON.stringify(Florists_data?.florist[0].bouquets));
-                                        tempArr_1 = tempArr_1!.reverse();
-                                        setFlowersData(tempArr);
-                                        setBouquetsData(tempArr_1);
-                                        setSearchTerm('');
-                                    }, 1);
-                                }
-                            }}>
-                            Add to list
-                        </button>
-                        <div className={classes.Delivery_Container} onClick={e => {
-                            updateSaleList();
-                            handleOpenAdd();
-                        }}>
-                            <p>
-                                <b>Current Sale (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <SalesListBox
+                    itemSearchTerm={itemSearchTerm}
+                    setItemSearchTerm={setItemSearchTerm}
+                    salesData={salesData}
+                    updateSingleDelivery={updateSingleDelivery}
+                    handleOpenSale={handleOpenSale}
+                />
+                <AddSaleBox
+                    switch_={switch_}
+                    setSwitch={setSwitch}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    flowersData={flowersData}
+                    updateFlowersArrayOnInputChange={updateFlowersArrayOnInputChange}
+                    BouquetsData={BouquetsData}
+                    updateBouquetsArrayOnInputChange={updateBouquetsArrayOnInputChange}
+                    updateSaleFlowers={updateSaleFlowers}
+                    updateSaleBouquets={updateSaleBouquets}
+                    setZerosInFlowersTempArray={setZerosInFlowersTempArray}
+                    setZerosInBouquetsTempArray={setZerosInBouquetsTempArray}
+                    tempItemsAmount={tempItemsAmount}
+                    setFlowersData={setFlowersData}
+                    setBouquetsData={setBouquetsData}
+                    Florists_data={Florists_data}
+                    updateSaleList={updateSaleList}
+                    handleOpenAdd={handleOpenAdd}
+                    deliveryItemsAmount={deliveryItemsAmount}
+                />
             </div>
-        </div >
+        </div>
 
     )
 }

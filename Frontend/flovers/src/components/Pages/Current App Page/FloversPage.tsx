@@ -15,11 +15,7 @@ import SpaIcon from '@mui/icons-material/Spa';
 
 const FloversPage = () => {
     const [logout, setLogout] = useState(false);
-
-    const history = useHistory();
-    const changeRoute = () => history.push(`${PageType.SIGNIN}`);
     const { login } = useSelector((state: RootState) => state.Login);
-    if (!login) { changeRoute() }
 
     return (
         <div className={logout ? classes.Page_Container_Logut : classes.Page_Container}>
@@ -30,19 +26,49 @@ const FloversPage = () => {
             <div className={classes.Main_Page_Container}>
                 <Switch>
                     <Route path={`${PageType.RESOURCES}`}>
-                        <Resources />
+                        {
+                            login
+                                ?
+                                <Resources />
+                                :
+                                <Redirect from={`${PageType.RESOURCES}`} to={`${PageType.SIGNIN}`} />
+                        }
                     </Route>
                     <Route path={`${PageType.DELIVERIES}`}>
-                        <Deliveries />
+                        {
+                            login
+                                ?
+                                <Deliveries />
+                                :
+                                <Redirect from={`${PageType.RESOURCES}`} to={`${PageType.SIGNIN}`} />
+                        }
                     </Route>
                     <Route path={`${PageType.COMPOSITIONS}`}>
-                        <Compositions />
+                        {
+                            login
+                                ?
+                                <Compositions />
+                                :
+                                <Redirect from={`${PageType.RESOURCES}`} to={`${PageType.SIGNIN}`} />
+                        }
                     </Route>
                     <Route path={`${PageType.SALES}`}>
-                        <Sales />
+                        {
+                            login
+                                ?
+                                <Sales />
+                                :
+                                <Redirect from={`${PageType.RESOURCES}`} to={`${PageType.SIGNIN}`} />
+                        }
                     </Route>
                     <Route path={`${PageType.STATISTICS}`}>
-                        <Stats />
+                        {
+                            login
+                                ?
+                                <Stats />
+                                :
+                                <Redirect from={`${PageType.RESOURCES}`} to={`${PageType.SIGNIN}`} />
+                        }
                     </Route>
                     <Route path='/404'>
                         <Error />

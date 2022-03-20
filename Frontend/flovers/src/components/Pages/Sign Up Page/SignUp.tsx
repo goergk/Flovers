@@ -6,8 +6,7 @@ import Logo from '../../Assets/Logo/Logo';
 import Input from '../../Assets/Sign_Input/Input';
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
+import { useDispatch } from 'react-redux';
 import { signIn } from '../../../features/login';
 
 const initialValues = {
@@ -35,10 +34,7 @@ const SignUp = () => {
     const history = useHistory();
     const changeRoute = () => history.push(`${PageType.FLOWERS}`);
     const [error, setError] = useState('');
-    const { login } = useSelector((state: RootState) => state.Login);
     const dispatch = useDispatch();
-
-    if (login) { changeRoute() }
 
     const onSubmit = () => {
         setError('');

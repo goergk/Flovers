@@ -8,8 +8,12 @@ import SignIn from '../Sign In Page/SignIn';
 import SignUp from '../Sign Up Page/SignUp';
 import Error from '../Error Page/Error';
 import FloversPage from '../Current App Page/FloversPage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
 
 const Page = () => {
+
+    const { login } = useSelector((state: RootState) => state.Login);
 
     return (
         <div className={classes.Main_Container}>
@@ -36,10 +40,22 @@ const Page = () => {
                     <FloversPage />
                 </Route>
                 <Route path={`${PageType.SIGNIN}`}>
-                    <SignIn />
+                    {
+                        login
+                            ?
+                            <Redirect from={`${PageType.SIGNIN}`} to={`${PageType.FLOWERS}`} />
+                            :
+                            <SignIn />
+                    }
                 </Route>
                 <Route path={`${PageType.SIGNUP}`}>
-                    <SignUp />
+                    {
+                        login
+                            ?
+                            <Redirect from={`${PageType.SIGNUP}`} to={`${PageType.FLOWERS}`} />
+                            :
+                            <SignUp />
+                    }
                 </Route>
                 <Route path='/404'>
                     <Error />

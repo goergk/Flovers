@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Backdrop, Fade } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -39,6 +39,18 @@ const AddBouquetModal: React.FC<Props> = ({
     handleOpenAdd,
     bouquetItemsAmount
 }) => {
+
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        if (width > 999) { handleCloseMobileAdd() }
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    });
+
     return (
         <Modal
             aria-labelledby="transition-modal-title"

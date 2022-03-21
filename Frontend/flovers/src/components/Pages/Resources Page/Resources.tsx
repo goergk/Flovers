@@ -50,7 +50,6 @@ const Resources = () => {
     const [indexOfElement, setIndex] = useState(-1);
     const [deleteId, setDeleteId] = useState(-1);
     const [editId, setEditId] = useState(-1);
-    const [width, setWidth] = useState(window.innerWidth);
     const [showAddAlert, setShowAddAlert] = useState(false);
     const [showEditAlert, setShowEditAlert] = useState(false);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -319,15 +318,6 @@ const Resources = () => {
         else if (indexOfElement !== -1 && indexOfElement !== index) { setIndex(index) }
         else { setIndex(-1) }
     }
-
-    useEffect(() => {
-        const handleResize = () => setWidth(window.innerWidth);
-        window.addEventListener("resize", handleResize);
-        if (width > 999) { handleCloseAdd() }
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    });
 
     const updateSingleDelivery = (delivery_id: number, flower_name: string) => {
         setTempName(flower_name);

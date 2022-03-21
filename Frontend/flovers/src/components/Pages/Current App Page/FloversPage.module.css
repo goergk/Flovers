@@ -1,3 +1,15 @@
+@-webkit-keyframes slide-right {
+  from {
+    margin-right: 15em;
+    opacity: 0;
+  }
+
+  to {
+    margin-right: 0em;
+    opacity: 1;
+  }
+}
+
 @keyframes slide-right {
   from {
     margin-right: 15em;
@@ -6,6 +18,16 @@
 
   to {
     margin-right: 0em;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
     opacity: 1;
   }
 }
@@ -20,6 +42,16 @@
   }
 }
 
+@-webkit-keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes fade-out {
   from {
     opacity: 1;
@@ -31,6 +63,8 @@
 }
 
 .Page_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
   width: 100%;
@@ -38,59 +72,60 @@
 }
 
 .Page_Container_Logut {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
   width: 100%;
   color: white;
   -webkit-animation: fade-out ease-out 1;
-  -moz-animation: fade-out ease-out 1;
   animation: fade-out ease-out 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.8s;
-  -moz-animation-duration: 0.8s;
   animation-duration: 0.8s;
 }
 
 .Main_Page_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   height: 100vh;
   width: calc(100% - 14em);
   opacity: 0;
   -webkit-animation: fade-in ease-in 1;
-  -moz-animation: fade-in ease-in 1;
   animation: fade-in ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
   animation-duration: 0.3s;
 }
 
 .Sidebar_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   height: 100vh;
   width: 14em;
   background-color: #090b0f;
   opacity: 0;
   -webkit-animation: slide-right ease-in 1;
-  -moz-animation: slide-right ease-in 1;
   animation: slide-right ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
   animation-duration: 0.3s;
   z-index: 5;
 }
@@ -101,10 +136,16 @@
 
 @media only screen and (max-width: 1000px) {
   .Page_Container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
   }
 
   .Page_Container_Logut {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
   }
 
@@ -114,8 +155,14 @@
   }
 
   .Sidebar_Container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     width: 100%;
     height: 3em;

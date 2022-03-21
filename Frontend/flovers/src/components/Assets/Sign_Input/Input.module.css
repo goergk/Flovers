@@ -42,6 +42,8 @@
   -webkit-transition: top 150ms ease-in, left 150ms ease-in,
     font-size 150ms ease-in;
   -o-transition: top 150ms ease-in, left 150ms ease-in, font-size 150ms ease-in;
+  -webkit-transition: top 150ms ease-in, left 150ms ease-in,
+    font-size 150ms ease-in;
   transition: top 150ms ease-in, left 150ms ease-in, font-size 150ms ease-in;
   background-color: #1a1a1a;
 }

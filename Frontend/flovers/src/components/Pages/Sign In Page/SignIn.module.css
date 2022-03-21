@@ -1,3 +1,13 @@
+@-webkit-keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;
@@ -24,27 +34,20 @@
     height: 25em;
   }
 }
-@-moz-keyframes login {
-  0% {
-    height: 5em;
-  }
-  100% {
-    height: 25em;
-  }
-}
-@-o-keyframes login {
-  0% {
-    height: 5em;
-  }
-  100% {
-    height: 25em;
-  }
-}
 
 .Sign_In_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 100%;
   min-height: 100vh;
@@ -54,51 +57,70 @@
   background-position: 50% 50%;
   opacity: 0;
   -webkit-animation: slide-in ease-in 1;
-  -moz-animation: slide-in ease-in 1;
   animation: slide-in ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.5s;
-  -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
 }
 
 .Navbar_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   margin: 2em auto 0em auto;
   width: 80%;
   opacity: 0;
   -webkit-animation: slide-in ease-in 1;
-  -moz-animation: slide-in ease-in 1;
   animation: slide-in ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.5s;
-  -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
+  -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
 
 .Container_1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 100%;
 }
 
 .Login_Container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   height: 5em;
   width: 30em;
@@ -106,38 +128,40 @@
   color: black;
   border-radius: 0.5em;
   -webkit-animation: login ease-in 1;
-  -moz-animation: login ease-in 1;
   animation: login ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
   animation-duration: 0.3s;
+  -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
 
 .Login_Container * {
   opacity: 0;
   -webkit-animation: slide-in ease-in 1;
-  -moz-animation: slide-in ease-in 1;
   animation: slide-in ease-in 1;
 
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
 
   -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
   animation-duration: 0.3s;
+  -webkit-animation-delay: 0.8s;
   animation-delay: 0.8s;
 }
 
 .Container_2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 20em;
   border-top: 1px solid white;
@@ -190,22 +214,6 @@
       height: 16.5em;
     }
   }
-  @-moz-keyframes login {
-    0% {
-      height: 5em;
-    }
-    100% {
-      height: 16.5em;
-    }
-  }
-  @-o-keyframes login {
-    0% {
-      height: 5em;
-    }
-    100% {
-      height: 16.5em;
-    }
-  }
 
   .Login_Container {
     width: 80%;
@@ -225,6 +233,8 @@
 
   .Container_1 {
     position: absolute;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     width: 100%;
     height: 100vh;
@@ -247,9 +257,18 @@
   }
 
   .Login_From_Container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     width: 90%;
   }

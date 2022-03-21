@@ -23,6 +23,10 @@ const Deliveries = () => {
     const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
     const [firstRun, setFirstRun] = useState(true);
+    const [isDeliveriesTabReversed, setIsDeliveriesTabReversed] = useState(false);
+    const [isFlowersTabReversed, setIsFlowersTabReversed] = useState(false);
+    const [firstDeliveriesRun, setFirstDeliveriesRun] = useState(true);
+    const [firstFlowersRun, setFirstFlowersRun] = useState(true);
     const [loader, setLoader] = useState(false);
     const [showAddAlert, setShowAddAlert] = useState(false);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -36,7 +40,7 @@ const Deliveries = () => {
     const handleOpenDelivery = () => setOpenDelivery(true);
     const handleCloseDelivery = () => setOpenDelivery(false);
 
-    const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
+    const { data: Florists_data, refetch, isFetching } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
 
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [tmpFlowers, setTmpFlowers] = useState<Flower[] | undefined>();
@@ -69,6 +73,34 @@ const Deliveries = () => {
             setTmpFlowers(Florists_data?.florist[0].flowers);
         }
     }, [Florists_data, searchTerm])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstDeliveriesRun) {
+                if (Florists_data?.florist[0].deliveries.length! > 0) {
+                    let temp_id = Florists_data?.florist[0].deliveries[(Florists_data?.florist[0].deliveries.length) - 1].id;
+                    if (deliveriesData?.[0].id === temp_id) {
+                        setIsDeliveriesTabReversed(true);
+                        setFirstDeliveriesRun(false);
+                    }
+                }
+            }
+        }
+    }, [deliveriesData])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstFlowersRun) {
+                if (Florists_data?.florist[0].flowers.length! > 0) {
+                    let temp_name = Florists_data?.florist[0].flowers[(Florists_data?.florist[0].flowers.length) - 1].name;
+                    if (flowersData?.[0].name === temp_name) {
+                        setIsFlowersTabReversed(true);
+                        setFirstFlowersRun(false);
+                    }
+                }
+            }
+        }
+    }, [flowersData])
 
     useEffect(() => {
         if (firstRunTemp && tmpFlowers !== undefined) {
@@ -311,6 +343,8 @@ const Deliveries = () => {
                     updateSingleDelivery={updateSingleDelivery}
                     handleOpenDelivery={handleOpenDelivery}
                     handleOpenDelete={handleOpenDelete}
+                    isFetching={isFetching}
+                    isDeliveriesTabReversed={isDeliveriesTabReversed}
                 />
                 <AddDeliveryBox
                     searchTerm={searchTerm}
@@ -325,6 +359,8 @@ const Deliveries = () => {
                     updateDeliveryList={updateDeliveryList}
                     handleOpenAdd={handleOpenAdd}
                     deliveryItemsAmount={deliveryItemsAmount}
+                    isFetching={isFetching}
+                    isFlowersTabReversed={isFlowersTabReversed}
                 />
             </div>
         </div>

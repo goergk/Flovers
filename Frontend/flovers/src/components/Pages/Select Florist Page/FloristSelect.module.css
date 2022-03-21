@@ -114,6 +114,15 @@
   -ms-flex-pack: center;
   justify-content: center;
   width: 100%;
+  opacity: 0;
+  -webkit-animation: slide-in ease-in-out 1;
+  animation: slide-in ease-in-out 1;
+
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
 }
 
 .Add_Florist_Container {
@@ -138,6 +147,13 @@
   -o-transition: 150ms ease-in-out;
   transition: 150ms ease-in-out;
   margin: 1em;
+  opacity: 0;
+  -webkit-animation: slide-in ease-in-out 1;
+  animation: slide-in ease-in-out 1;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
 }
 
 .Florist_Container {
@@ -162,6 +178,15 @@
   -o-transition: 150ms ease-in-out;
   transition: 150ms ease-in-out;
   margin: 1em;
+  opacity: 0;
+  -webkit-animation: slide-in ease-in-out 1;
+  animation: slide-in ease-in-out 1;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 .Florist_Icon {

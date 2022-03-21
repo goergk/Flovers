@@ -4,6 +4,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import { Bouquet, Flower, RootObject } from '../../../../services/FloristsApi';
+import Loader from '../../../Assets/Loader/Loader';
 
 const useStyles = makeStyles({
     root: {
@@ -51,7 +52,9 @@ interface Props {
     Florists_data: RootObject | undefined,
     updateSaleList: () => void,
     handleOpenAdd: () => void,
-    deliveryItemsAmount: () => number
+    deliveryItemsAmount: () => number,
+    isFetching: boolean,
+    isFlowersTabReversed: boolean
 }
 
 const AddSaleBox: React.FC<Props> = ({
@@ -73,7 +76,9 @@ const AddSaleBox: React.FC<Props> = ({
     Florists_data,
     updateSaleList,
     handleOpenAdd,
-    deliveryItemsAmount
+    deliveryItemsAmount,
+    isFetching,
+    isFlowersTabReversed
 }) => {
 
     const classes_2 = useStyles();
@@ -86,133 +91,141 @@ const AddSaleBox: React.FC<Props> = ({
                     New Sale
                 </p>
             </div>
-            <div className={classes.Add_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
-                <h3>
-                    Add products to new sale:
-                </h3>
-                <div className={classes.Switch_Container}>
-                    <div
-                        className={switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
-                        style={{ borderRight: '1px solid gray' }}
-                        onClick={e => setSwitch(true)}
-                    >
-                        Flowers
+            {
+                (isFetching || !flowersData) && !isFlowersTabReversed
+                    ?
+                    <div className={classes.Loader_Container}>
+                        <Loader />
                     </div>
-                    <div
-                        className={!switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
-                        onClick={e => setSwitch(false)}
-                    >
-                        Bouquets
+                    :
+                    <div className={classes.Add_Container_2} style={{ maxHeight: '100%', overflow: 'auto' }}>
+                        <h3>
+                            Add products to new sale:
+                        </h3>
+                        <div className={classes.Switch_Container}>
+                            <div
+                                className={switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
+                                style={{ borderRight: '1px solid gray' }}
+                                onClick={e => setSwitch(true)}
+                            >
+                                Flowers
+                            </div>
+                            <div
+                                className={!switch_ ? classes.Nested_Switch_Container_Active : classes.Nested_Switch_Container}
+                                onClick={e => setSwitch(false)}
+                            >
+                                Bouquets
+                            </div>
+                        </div>
+                        <div className={classes.Nested_Flower_Container} style={{ borderBottom: 'none' }}>
+                            <div className={classes.Nested_Flower_Name}>
+                                {switch_
+                                    ?
+                                    <b>Search for a flower:</b>
+                                    :
+                                    <b>Search for a bouquet:</b>
+                                }
+                            </div>
+                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '1.1em' }}>
+                                <TextField
+                                    id="Search"
+                                    label="Search Name"
+                                    variant="outlined"
+                                    size="small"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className={classes_2.root}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.Add_Flowers_List}>
+                            {
+                                switch_
+                                    ?
+                                    flowersData?.map((flower, index) => {
+                                        return (
+                                            <React.Fragment key={flower.id}>
+                                                <div className={classes.Nested_Flower_Container} key={flower.id}>
+                                                    <div className={classes.Nested_Flower_Name}>
+                                                        {flower.name}
+                                                    </div>
+                                                    <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
+                                                        <TextField
+                                                            id="Amount"
+                                                            label="Amount"
+                                                            variant="outlined"
+                                                            size="small"
+                                                            type="number"
+                                                            onChange={(e) => {
+                                                                updateFlowersArrayOnInputChange(flower.id, e);
+                                                            }}
+                                                            className={classes_2.root}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>)
+                                    })
+                                    :
+                                    BouquetsData?.map((bouquet, index) => {
+                                        return (
+                                            <React.Fragment key={bouquet.id}>
+                                                <div className={classes.Nested_Flower_Container} key={bouquet.id}>
+                                                    <div className={classes.Nested_Flower_Name}>
+                                                        {bouquet.name}
+                                                    </div>
+                                                    <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
+                                                        <TextField
+                                                            id="Amount"
+                                                            label="Amount"
+                                                            variant="outlined"
+                                                            size="small"
+                                                            type="number"
+                                                            onChange={(e) => {
+                                                                updateBouquetsArrayOnInputChange(bouquet.id, e);
+                                                            }}
+                                                            className={classes_2.root}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>)
+                                    })
+                            }
+                        </div>
+                        <button className={classes.Add_Button} type="button"
+                            onClick={e => {
+                                if (switch_) {
+                                    updateSaleFlowers();
+                                } else {
+                                    updateSaleBouquets();
+                                }
+                                setZerosInFlowersTempArray();
+                                setZerosInBouquetsTempArray();
+                                if (tempItemsAmount() > 0) {
+                                    setFlowersData([]);
+                                    setBouquetsData([]);
+                                    setTimeout(function () {
+                                        let tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
+                                        tempArr = tempArr!.reverse();
+                                        let tempArr_1 = JSON.parse(JSON.stringify(Florists_data?.florist[0].bouquets));
+                                        tempArr_1 = tempArr_1!.reverse();
+                                        setFlowersData(tempArr);
+                                        setBouquetsData(tempArr_1);
+                                        setSearchTerm('');
+                                    }, 1);
+                                }
+                            }}>
+                            Add to list
+                        </button>
+                        <div className={classes.Delivery_Container} onClick={e => {
+                            updateSaleList();
+                            handleOpenAdd();
+                        }}>
+                            <p>
+                                <b>Current Sale (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div className={classes.Nested_Flower_Container} style={{ borderBottom: 'none' }}>
-                    <div className={classes.Nested_Flower_Name}>
-                        {switch_
-                            ?
-                            <b>Search for a flower:</b>
-                            :
-                            <b>Search for a bouquet:</b>
-                        }
-                    </div>
-                    <div className={classes.Nested_Flower_Input} style={{ marginRight: '1.1em' }}>
-                        <TextField
-                            id="Search"
-                            label="Search Name"
-                            variant="outlined"
-                            size="small"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className={classes_2.root}
-                        />
-                    </div>
-                </div>
-                <div className={classes.Add_Flowers_List}>
-                    {
-                        switch_
-                            ?
-                            flowersData?.map((flower, index) => {
-                                return (
-                                    <React.Fragment key={flower.id}>
-                                        <div className={classes.Nested_Flower_Container} key={flower.id}>
-                                            <div className={classes.Nested_Flower_Name}>
-                                                {flower.name}
-                                            </div>
-                                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                <TextField
-                                                    id="Amount"
-                                                    label="Amount"
-                                                    variant="outlined"
-                                                    size="small"
-                                                    type="number"
-                                                    onChange={(e) => {
-                                                        updateFlowersArrayOnInputChange(flower.id, e);
-                                                    }}
-                                                    className={classes_2.root}
-                                                />
-                                            </div>
-                                        </div>
-                                    </React.Fragment>)
-                            })
-                            :
-                            BouquetsData?.map((bouquet, index) => {
-                                return (
-                                    <React.Fragment key={bouquet.id}>
-                                        <div className={classes.Nested_Flower_Container} key={bouquet.id}>
-                                            <div className={classes.Nested_Flower_Name}>
-                                                {bouquet.name}
-                                            </div>
-                                            <div className={classes.Nested_Flower_Input} style={{ marginRight: '0.2em' }}>
-                                                <TextField
-                                                    id="Amount"
-                                                    label="Amount"
-                                                    variant="outlined"
-                                                    size="small"
-                                                    type="number"
-                                                    onChange={(e) => {
-                                                        updateBouquetsArrayOnInputChange(bouquet.id, e);
-                                                    }}
-                                                    className={classes_2.root}
-                                                />
-                                            </div>
-                                        </div>
-                                    </React.Fragment>)
-                            })
-                    }
-                </div>
-                <button className={classes.Add_Button} type="button"
-                    onClick={e => {
-                        if (switch_) {
-                            updateSaleFlowers();
-                        } else {
-                            updateSaleBouquets();
-                        }
-                        setZerosInFlowersTempArray();
-                        setZerosInBouquetsTempArray();
-                        if (tempItemsAmount() > 0) {
-                            setFlowersData([]);
-                            setBouquetsData([]);
-                            setTimeout(function () {
-                                let tempArr = JSON.parse(JSON.stringify(Florists_data?.florist[0].flowers));
-                                tempArr = tempArr!.reverse();
-                                let tempArr_1 = JSON.parse(JSON.stringify(Florists_data?.florist[0].bouquets));
-                                tempArr_1 = tempArr_1!.reverse();
-                                setFlowersData(tempArr);
-                                setBouquetsData(tempArr_1);
-                                setSearchTerm('');
-                            }, 1);
-                        }
-                    }}>
-                    Add to list
-                </button>
-                <div className={classes.Delivery_Container} onClick={e => {
-                    updateSaleList();
-                    handleOpenAdd();
-                }}>
-                    <p>
-                        <b>Current Sale (<span className={classes.Delivery_Amount}> {deliveryItemsAmount()} </span>)</b>
-                    </p>
-                </div>
-            </div>
+            }
         </div>
     )
 }

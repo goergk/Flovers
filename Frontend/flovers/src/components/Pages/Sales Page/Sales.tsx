@@ -21,6 +21,10 @@ const Sales = () => {
     const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
     const [firstRun, setFirstRun] = useState(true);
+    const [isSalesTabReversed, setIsSalesTabReversed] = useState(false);
+    const [isFlowersTabReversed, setIsFlowersTabReversed] = useState(false);
+    const [firstSalesRun, setFirstSalesRun] = useState(true);
+    const [firstFlowersRun, setFirstFlowersRun] = useState(true);
     const [loader, setLoader] = useState(false);
     const [switch_, setSwitch] = useState(true);
     const [showAddAlert, setShowAddAlert] = useState(false);
@@ -34,7 +38,7 @@ const Sales = () => {
     const handleOpenSale = () => setOpenSale(true);
     const handleCloseSale = () => setOpenSale(false);
 
-    const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
+    const { data: Florists_data, refetch, isFetching } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
 
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [tmpFlowers, setTmpFlowers] = useState<Flower[] | undefined>();
@@ -89,6 +93,34 @@ const Sales = () => {
             setTmpBouquets(tempBouquet);
         }
     }, [Florists_data, searchTerm])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstSalesRun) {
+                if (Florists_data?.florist[0].sales.length! > 0) {
+                    let temp_id = Florists_data?.florist[0].sales[(Florists_data?.florist[0].sales.length) - 1].id;
+                    if (salesData?.[0].id === temp_id) {
+                        setIsSalesTabReversed(true);
+                        setFirstSalesRun(false);
+                    }
+                }
+            }
+        }
+    }, [salesData])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstFlowersRun) {
+                if (Florists_data?.florist[0].flowers.length! > 0) {
+                    let temp_name = Florists_data?.florist[0].flowers[(Florists_data?.florist[0].flowers.length) - 1].name;
+                    if (flowersData?.[0].name === temp_name) {
+                        setIsFlowersTabReversed(true);
+                        setFirstFlowersRun(false);
+                    }
+                }
+            }
+        }
+    }, [flowersData])
 
     useEffect(() => {
         if (firstRunTemp && tmpFlowers !== undefined) {
@@ -493,6 +525,8 @@ const Sales = () => {
                     salesData={salesData}
                     updateSingleDelivery={updateSingleDelivery}
                     handleOpenSale={handleOpenSale}
+                    isFetching={isFetching}
+                    isSalesTabReversed={isSalesTabReversed}
                 />
                 <AddSaleBox
                     switch_={switch_}
@@ -514,6 +548,8 @@ const Sales = () => {
                     updateSaleList={updateSaleList}
                     handleOpenAdd={handleOpenAdd}
                     deliveryItemsAmount={deliveryItemsAmount}
+                    isFetching={isFetching}
+                    isFlowersTabReversed={isFlowersTabReversed}
                 />
             </div>
         </div>

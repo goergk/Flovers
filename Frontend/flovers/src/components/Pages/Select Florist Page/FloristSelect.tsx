@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DeleteModal from './Assets/DeleteModal';
 import AddModal from './Assets/AddModal';
+import Loader from '../../Assets/Loader/Loader';
 
 const initialValues = {
     Name: "",
@@ -27,7 +28,7 @@ const FloristSelect = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => { resetValues(); setOpen(false); };
-    const { data: Florists_data, refetch } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
+    const { data: Florists_data, refetch, isFetching } = useGetFloristsQuery(Number(sessionStorage.getItem('user_id')));
     const [amount, setAmount] = useState(0);
     const [fade, setFade] = useState(false);
     const [loader, setLoader] = useState(false);
@@ -156,38 +157,46 @@ const FloristSelect = () => {
             />
             <div className={classes.Tabs_Container}>
                 {
-                    amount < 4
-                    &&
-                    <div className={classes.Add_Florist_Container}
-                        onClick={handleOpen}>
-                        <h1>
-                            Add New
-                        </h1>
-                        <AddCircleOutlineIcon className={classes.Add_Icon} />
-                    </div>
-                }
-                {
-                    Florists_data?.florists?.map(florist => {
-                        return (
-                            <div
-                                className={classes.Florist_Container}
-                                key={florist.id}
-                                onClick={() => handleClick(florist.id)}
-                            >
-                                <DeleteForeverIcon
-                                    className={classes.Delete_Icon}
-                                    onClick={e => {
-                                        e.stopPropagation();
-                                        handleOpenDelete(florist.id);
-                                    }}
-                                />
-                                <h1>
-                                    {florist.name}
-                                </h1>
-                                <YardIcon className={classes.Florist_Icon} />
-                            </div>
-                        )
-                    })
+                    isFetching
+                        ?
+                        <Loader />
+                        :
+                        <>
+                            {
+                                amount < 4
+                                &&
+                                <div className={classes.Add_Florist_Container}
+                                    onClick={handleOpen}>
+                                    <h1>
+                                        Add New
+                                    </h1>
+                                    <AddCircleOutlineIcon className={classes.Add_Icon} />
+                                </div>
+                            }
+                            {
+                                Florists_data?.florists?.map(florist => {
+                                    return (
+                                        <div
+                                            className={classes.Florist_Container}
+                                            key={florist.id}
+                                            onClick={() => handleClick(florist.id)}
+                                        >
+                                            <DeleteForeverIcon
+                                                className={classes.Delete_Icon}
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                    handleOpenDelete(florist.id);
+                                                }}
+                                            />
+                                            <h1>
+                                                {florist.name}
+                                            </h1>
+                                            <YardIcon className={classes.Florist_Icon} />
+                                        </div>
+                                    )
+                                })
+                            }
+                        </>
                 }
             </div>
         </div>

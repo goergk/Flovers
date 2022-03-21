@@ -4,6 +4,7 @@ import classes from '../Compositions.module.css';
 import TextField from '@mui/material/TextField';
 import { Bouquet } from '../../../../services/FloristsApi';
 import { BouquetItem, Tags } from '.';
+import Loader from '../../../Assets/Loader/Loader';
 
 const useStyles = makeStyles({
     root: {
@@ -38,7 +39,9 @@ interface Props {
     bouquetsData: Bouquet[] | undefined,
     updateSingleBouquet: (bouquet_id: number) => void,
     handleOpenBouquet: () => void,
-    handleOpenDelete: () => void
+    handleOpenDelete: () => void,
+    isFetching: boolean,
+    isBouquetsTabReversed: boolean
 }
 
 const BouquetsListBox: React.FC<Props> = ({
@@ -47,7 +50,9 @@ const BouquetsListBox: React.FC<Props> = ({
     bouquetsData,
     updateSingleBouquet,
     handleOpenBouquet,
-    handleOpenDelete
+    handleOpenDelete,
+    isFetching,
+    isBouquetsTabReversed
 }) => {
 
     const classes_2 = useStyles();
@@ -73,33 +78,41 @@ const BouquetsListBox: React.FC<Props> = ({
                     />
                 </div>
             </div>
-            <div className={classes.Show_Container_2}>
-                {
-                    bouquetsData?.length! > 0
-                        ?
-                        <>
-                            {
-                                bouquetsData?.map((bouquet, index) => {
-                                    return (
-                                        <React.Fragment key={bouquet.id}>
-                                            <BouquetItem
-                                                bouquet={bouquet}
-                                                updateSingleBouquet={updateSingleBouquet}
-                                                handleOpenBouquet={handleOpenBouquet}
-                                                index={index}
-                                                handleOpenDelete={handleOpenDelete}
-                                            />
-                                        </React.Fragment>
-                                    )
-                                })
-                            }
-                        </>
-                        :
-                        <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                            No bouquets
-                        </h3>
-                }
-            </div>
+            {
+                (isFetching || !bouquetsData) && !isBouquetsTabReversed
+                    ?
+                    <div className={classes.Loader_Container}>
+                        <Loader />
+                    </div>
+                    :
+                    <div className={classes.Show_Container_2}>
+                        {
+                            bouquetsData?.length! > 0
+                                ?
+                                <>
+                                    {
+                                        bouquetsData?.map((bouquet, index) => {
+                                            return (
+                                                <React.Fragment key={bouquet.id}>
+                                                    <BouquetItem
+                                                        bouquet={bouquet}
+                                                        updateSingleBouquet={updateSingleBouquet}
+                                                        handleOpenBouquet={handleOpenBouquet}
+                                                        index={index}
+                                                        handleOpenDelete={handleOpenDelete}
+                                                    />
+                                                </React.Fragment>
+                                            )
+                                        })
+                                    }
+                                </>
+                                :
+                                <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
+                                    No bouquets
+                                </h3>
+                        }
+                    </div>
+            }
         </div>
     )
 }

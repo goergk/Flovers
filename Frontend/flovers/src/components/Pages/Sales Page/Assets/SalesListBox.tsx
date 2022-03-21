@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from '@mui/material/TextField';
 import { Sale } from '../../../../services/FloristsApi';
 import { SaleItem, Tags } from '.';
+import Loader from '../../../Assets/Loader/Loader';
 
 const useStyles = makeStyles({
     root: {
@@ -37,7 +38,9 @@ interface Props {
     setItemSearchTerm: React.Dispatch<React.SetStateAction<string>>,
     salesData: Sale[] | undefined,
     updateSingleDelivery: (sale_id: number) => void,
-    handleOpenSale: () => void
+    handleOpenSale: () => void,
+    isFetching: boolean,
+    isSalesTabReversed: boolean
 }
 
 const SalesListBox: React.FC<Props> = ({
@@ -45,7 +48,9 @@ const SalesListBox: React.FC<Props> = ({
     setItemSearchTerm,
     salesData,
     updateSingleDelivery,
-    handleOpenSale
+    handleOpenSale,
+    isFetching,
+    isSalesTabReversed
 }) => {
 
     const classes_2 = useStyles();
@@ -71,32 +76,40 @@ const SalesListBox: React.FC<Props> = ({
                     />
                 </div>
             </div>
-            <div className={classes.Show_Container_2}>
-                {
-                    salesData?.length! > 0
-                        ?
-                        <>
-                            {
-                                salesData?.map((sale, index) => {
-                                    return (
-                                        <React.Fragment key={sale.id}>
-                                            <SaleItem
-                                                sale={sale}
-                                                updateSingleDelivery={updateSingleDelivery}
-                                                handleOpenSale={handleOpenSale}
-                                                index={index}
-                                            />
-                                        </React.Fragment>
-                                    )
-                                })
-                            }
-                        </>
-                        :
-                        <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                            No sales
-                        </h3>
-                }
-            </div>
+            {
+                (isFetching || !salesData) && !isSalesTabReversed
+                    ?
+                    <div className={classes.Loader_Container}>
+                        <Loader />
+                    </div>
+                    :
+                    <div className={classes.Show_Container_2}>
+                        {
+                            salesData?.length! > 0
+                                ?
+                                <>
+                                    {
+                                        salesData?.map((sale, index) => {
+                                            return (
+                                                <React.Fragment key={sale.id}>
+                                                    <SaleItem
+                                                        sale={sale}
+                                                        updateSingleDelivery={updateSingleDelivery}
+                                                        handleOpenSale={handleOpenSale}
+                                                        index={index}
+                                                    />
+                                                </React.Fragment>
+                                            )
+                                        })
+                                    }
+                                </>
+                                :
+                                <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
+                                    No sales
+                                </h3>
+                        }
+                    </div>
+            }
         </div>
     )
 }

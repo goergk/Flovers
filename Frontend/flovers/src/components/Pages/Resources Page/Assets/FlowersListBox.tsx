@@ -4,6 +4,7 @@ import { Delivery, Flower } from '../../../../services/FloristsApi';
 import { FlowerItem, MoreOptionsBox, Tags } from '.';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from "@material-ui/core/styles";
+import Loader from '../../../Assets/Loader/Loader';
 
 const useStyles = makeStyles({
     root: {
@@ -43,7 +44,9 @@ interface Props {
     handleOpenDelivery: () => void,
     updateSingleDelivery: (delivery_id: number, flower_name: string) => void,
     itemSearchTerm: string,
-    setItemSearchTerm: React.Dispatch<React.SetStateAction<string>>
+    setItemSearchTerm: React.Dispatch<React.SetStateAction<string>>,
+    isFetching: boolean,
+    isReversed: boolean
 }
 
 const FlowersListBox: React.FC<Props> = ({
@@ -57,7 +60,9 @@ const FlowersListBox: React.FC<Props> = ({
     handleOpenDelivery,
     updateSingleDelivery,
     itemSearchTerm,
-    setItemSearchTerm
+    setItemSearchTerm,
+    isFetching,
+    isReversed
 }) => {
     const classes_2 = useStyles();
 
@@ -82,43 +87,51 @@ const FlowersListBox: React.FC<Props> = ({
                     />
                 </div>
             </div>
-            <div className={classes.Show_Container_2}>
-                {
-                    flowersData?.length! > 0
-                        ?
-                        <>
-                            {
-                                flowersData?.map((flower, index) => {
-                                    return (
-                                        <React.Fragment key={flower.id}>
-                                            <FlowerItem
-                                                flower={flower}
-                                                indexOfElement={indexOfElement}
-                                                index={index}
-                                                handleInput={handleInput}
-                                            />
-                                            <MoreOptionsBox
-                                                flower={flower}
-                                                indexOfElement={indexOfElement}
-                                                index={index}
-                                                handleOpenEdit={handleOpenEdit}
-                                                setEditValues={setEditValues}
-                                                handleOpenDelete={handleOpenDelete}
-                                                deliveriesData={deliveriesData}
-                                                handleOpenDelivery={handleOpenDelivery}
-                                                updateSingleDelivery={updateSingleDelivery}
-                                            />
-                                        </React.Fragment>
-                                    )
-                                })
-                            }
-                        </>
-                        :
-                        <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                            No flowers
-                        </h3>
-                }
-            </div>
+            {
+                (isFetching || !flowersData) && !isReversed
+                    ?
+                    <div className={classes.Loader_Container}>
+                        <Loader />
+                    </div>
+                    :
+                    <div className={classes.Show_Container_2}>
+                        {
+                            flowersData?.length! > 0
+                                ?
+                                <>
+                                    {
+                                        flowersData?.map((flower, index) => {
+                                            return (
+                                                <React.Fragment key={flower.id}>
+                                                    <FlowerItem
+                                                        flower={flower}
+                                                        indexOfElement={indexOfElement}
+                                                        index={index}
+                                                        handleInput={handleInput}
+                                                    />
+                                                    <MoreOptionsBox
+                                                        flower={flower}
+                                                        indexOfElement={indexOfElement}
+                                                        index={index}
+                                                        handleOpenEdit={handleOpenEdit}
+                                                        setEditValues={setEditValues}
+                                                        handleOpenDelete={handleOpenDelete}
+                                                        deliveriesData={deliveriesData}
+                                                        handleOpenDelivery={handleOpenDelivery}
+                                                        updateSingleDelivery={updateSingleDelivery}
+                                                    />
+                                                </React.Fragment>
+                                            )
+                                        })
+                                    }
+                                </>
+                                :
+                                <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
+                                    No flowers
+                                </h3>
+                        }
+                    </div>
+            }
         </div>
     )
 };

@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import { Delivery } from '../../../../services/FloristsApi';
 import { DeliveryItem, Tags } from '.';
+import Loader from '../../../Assets/Loader/Loader';
 
 const useStyles = makeStyles({
     root: {
@@ -38,7 +39,9 @@ interface Props {
     deliveriesData: Delivery[] | undefined,
     updateSingleDelivery: (delivery_id: number) => void,
     handleOpenDelivery: () => void,
-    handleOpenDelete: () => void
+    handleOpenDelete: () => void,
+    isFetching: boolean,
+    isDeliveriesTabReversed: boolean
 }
 
 const DeliveriesListBox: React.FC<Props> = ({
@@ -47,7 +50,9 @@ const DeliveriesListBox: React.FC<Props> = ({
     deliveriesData,
     updateSingleDelivery,
     handleOpenDelivery,
-    handleOpenDelete
+    handleOpenDelete,
+    isFetching,
+    isDeliveriesTabReversed
 }) => {
 
     const classes_2 = useStyles();
@@ -73,33 +78,41 @@ const DeliveriesListBox: React.FC<Props> = ({
                     />
                 </div>
             </div>
-            <div className={classes.Show_Container_2}>
-                {
-                    deliveriesData?.length! > 0
-                        ?
-                        <>
-                            {
-                                deliveriesData?.map((delivery, index) => {
-                                    return (
-                                        <React.Fragment key={delivery.id}>
-                                            <DeliveryItem
-                                                delivery={delivery}
-                                                updateSingleDelivery={updateSingleDelivery}
-                                                handleOpenDelivery={handleOpenDelivery}
-                                                index={index}
-                                                handleOpenDelete={handleOpenDelete}
-                                            />
-                                        </React.Fragment>
-                                    )
-                                })
-                            }
-                        </>
-                        :
-                        <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
-                            No deliveries
-                        </h3>
-                }
-            </div>
+            {
+                (isFetching || !deliveriesData) && !isDeliveriesTabReversed
+                    ?
+                    <div className={classes.Loader_Container}>
+                        <Loader />
+                    </div>
+                    :
+                    <div className={classes.Show_Container_2}>
+                        {
+                            deliveriesData?.length! > 0
+                                ?
+                                <>
+                                    {
+                                        deliveriesData?.map((delivery, index) => {
+                                            return (
+                                                <React.Fragment key={delivery.id}>
+                                                    <DeliveryItem
+                                                        delivery={delivery}
+                                                        updateSingleDelivery={updateSingleDelivery}
+                                                        handleOpenDelivery={handleOpenDelivery}
+                                                        index={index}
+                                                        handleOpenDelete={handleOpenDelete}
+                                                    />
+                                                </React.Fragment>
+                                            )
+                                        })
+                                    }
+                                </>
+                                :
+                                <h3 style={{ fontSize: 'calc(6px + 1.2vh)' }}>
+                                    No deliveries
+                                </h3>
+                        }
+                    </div>
+            }
         </div>
     )
 }

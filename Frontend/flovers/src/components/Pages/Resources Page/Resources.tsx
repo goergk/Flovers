@@ -57,6 +57,8 @@ const Resources = () => {
     const [loader, setLoader] = useState(false);
     const [addLoader, setAddLoader] = useState(false);
     const [err, setErr] = useState(false);
+    const [isReversed, setIsReversed] = useState(false);
+    const [firstFlowersRun, setFirstFlowersRun] = useState(true);
     const [errEdit, setErrEdit] = useState(false);
     const [editTempName, setEditTempName] = useState('');
     const [editNameErr, setEditNameErr] = useState<String | undefined>();
@@ -74,7 +76,7 @@ const Resources = () => {
     const handleOpenDelivery = () => setOpenDelivery(true);
     const handleCloseDelivery = () => setOpenDelivery(false);
 
-    const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
+    const { data: Florists_data, refetch, isFetching } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [deliveriesData, setDeliveriesData] = useState(Florists_data?.florist[0].deliveries);
     const [bouquetsData, setBouquetsData] = useState(Florists_data?.florist[0].bouquets);
@@ -93,6 +95,20 @@ const Resources = () => {
             setDeliveriesData(tempArr_1);
         }
     }, [Florists_data, itemSearchTerm])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstFlowersRun) {
+                if (Florists_data?.florist[0].flowers.length! > 0) {
+                    let temp_name = Florists_data?.florist[0].flowers[(Florists_data?.florist[0].flowers.length) - 1].name;
+                    if (flowersData?.[0].name === temp_name) {
+                        setIsReversed(true);
+                        setFirstFlowersRun(false);
+                    }
+                }
+            }
+        }
+    }, [flowersData])
 
     useEffect(() => {
         let tempArr: Bouquet[] | undefined = [];
@@ -409,6 +425,8 @@ const Resources = () => {
                     updateSingleDelivery={updateSingleDelivery}
                     itemSearchTerm={itemSearchTerm}
                     setItemSearchTerm={setItemSearchTerm}
+                    isFetching={isFetching}
+                    isReversed={isReversed}
                 />
                 <AddFlowerBox
                     values={values}

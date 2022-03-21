@@ -36,6 +36,10 @@ const Compositions = () => {
     const [itemSearchTerm, setItemSearchTerm] = useState('');
     const [firstRunTemp, setFirstRunTemp] = useState(true);
     const [firstRun, setFirstRun] = useState(true);
+    const [isBouquetsTabReversed, setIsBouquetsTabReversed] = useState(false);
+    const [isFlowersTabReversed, setIsFlowersTabReversed] = useState(false);
+    const [firstBouquetsRun, setFirstBouquetsRun] = useState(true);
+    const [firstFlowersRun, setFirstFlowersRun] = useState(true);
     const [loader, setLoader] = useState(false);
     const [showAddAlert, setShowAddAlert] = useState(false);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -49,7 +53,7 @@ const Compositions = () => {
     const handleOpenBouquet = () => setOpenBouquet(true);
     const handleCloseBouquet = () => setOpenBouquet(false);
 
-    const { data: Florists_data, refetch } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
+    const { data: Florists_data, refetch, isFetching } = useGetFloristQuery(Number(sessionStorage.getItem('florist_id')));
 
     const [flowersData, setFlowersData] = useState(Florists_data?.florist[0].flowers);
     const [tmpFlowers, setTmpFlowers] = useState<Flower[] | undefined>();
@@ -82,6 +86,34 @@ const Compositions = () => {
             setTmpFlowers(Florists_data?.florist[0].flowers);
         }
     }, [Florists_data, searchTerm])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstBouquetsRun) {
+                if (Florists_data?.florist[0].bouquets.length! > 0) {
+                    let temp_name = Florists_data?.florist[0].bouquets[(Florists_data?.florist[0].bouquets.length) - 1].name;
+                    if (bouquetsData?.[0].name === temp_name) {
+                        setIsBouquetsTabReversed(true);
+                        setFirstBouquetsRun(false);
+                    }
+                }
+            }
+        }
+    }, [bouquetsData])
+
+    useEffect(() => {
+        if (Florists_data !== undefined) {
+            if (firstFlowersRun) {
+                if (Florists_data?.florist[0].flowers.length! > 0) {
+                    let temp_name = Florists_data?.florist[0].flowers[(Florists_data?.florist[0].flowers.length) - 1].name;
+                    if (flowersData?.[0].name === temp_name) {
+                        setIsFlowersTabReversed(true);
+                        setFirstFlowersRun(false);
+                    }
+                }
+            }
+        }
+    }, [flowersData])
 
     useEffect(() => {
         if (firstRunTemp && tmpFlowers !== undefined) {
@@ -327,6 +359,8 @@ const Compositions = () => {
                     updateSingleBouquet={updateSingleBouquet}
                     handleOpenBouquet={handleOpenBouquet}
                     handleOpenDelete={handleOpenDelete}
+                    isFetching={isFetching}
+                    isBouquetsTabReversed={isBouquetsTabReversed}
                 />
                 <AddBouquetBox
                     searchTerm={searchTerm}
@@ -341,6 +375,8 @@ const Compositions = () => {
                     handleOpenAdd={handleOpenAdd}
                     bouquetItemsAmount={bouquetItemsAmount}
                     Florists_data={Florists_data}
+                    isFetching={isFetching}
+                    isFlowersTabReversed={isFlowersTabReversed}
                 />
             </div>
         </div >

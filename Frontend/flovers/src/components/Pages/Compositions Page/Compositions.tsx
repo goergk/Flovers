@@ -263,23 +263,25 @@ const Compositions = () => {
                 name: values.Name,
                 flowers: BouquetList
             })
+        }).then((response) => {
+            if (response.ok) {
+                refetch();
+                handleCloseMobileAdd();
+                handleCloseAdd();
+                setTimeout(function () {
+                    setLoader(false);
+                }, 500);
+                setShowAddAlert(true);
+                setTimeout(function () {
+                    setShowAddAlert(false);
+                }, 2000);
+            }
         })
+
+
         setBouquetList([]);
         setZerosInBouquetArray();
         setZerosInTempArray();
-
-        setTimeout(function () {
-            refetch();
-            handleCloseMobileAdd();
-            handleCloseAdd();
-            setTimeout(function () {
-                setLoader(false);
-            }, 500);
-            setShowAddAlert(true);
-            setTimeout(function () {
-                setShowAddAlert(false);
-            }, 2000);
-        }, 1100);
 
         values.Name = "";
     }

@@ -230,24 +230,25 @@ const Deliveries = () => {
             body: JSON.stringify({
                 flowers: deliveryList
             })
+        }).then((response) => {
+            if (response.ok) {
+                refetch();
+                handleCloseMobileAdd();
+                handleCloseAdd();
+                setTimeout(function () {
+                    setLoader(false);
+                }, 200);
+                setShowAddAlert(true);
+                setTimeout(function () {
+                    setShowAddAlert(false);
+                }, 2000);
+            }
         })
+
         updateFlowersInResources(deliveryList!, false);
         setDeliveryList([]);
         setZerosInDeliveryArray();
         setZerosInTempArray();
-
-        setTimeout(function () {
-            refetch();
-            handleCloseMobileAdd();
-            handleCloseAdd();
-            setTimeout(function () {
-                setLoader(false);
-            }, 500);
-            setShowAddAlert(true);
-            setTimeout(function () {
-                setShowAddAlert(false);
-            }, 2000);
-        }, 1100);
     }
 
     const updateFlowersInResources = (deliveryList: Flower[], del: boolean) => {

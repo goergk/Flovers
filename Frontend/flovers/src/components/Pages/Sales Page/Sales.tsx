@@ -390,11 +390,32 @@ const Sales = () => {
             })
         })
 
+        FinishUpdates()
+            .then((response) => {
+                refetch();
+                handleCloseMobileAdd();
+                handleCloseAdd();
+                setTimeout(function () {
+                    setLoader(false);
+                }, 500);
+                setShowAddAlert(true);
+                setTimeout(function () {
+                    setShowAddAlert(false);
+                }, 2000);
+            })
+
+        setZerosInDeliveryFlowersArray();
+        setZerosInDeliveryBouquetsArray();
+        setSaleFlowersList([]);
+        setSaleBouquetsList([]);
+    }
+
+    const updateFlowers = () => {
         flowersData?.forEach((flower) => {
             saleFlowersList?.forEach((flwr) => {
                 if (flwr.name === flower.name) {
                     let tempAmount = flower.amount - flwr.amount;
-                    fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
+                    return fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
                         method: "PUT",
                         headers: {
                             'Accept': 'application/json, text/plain',
@@ -410,13 +431,15 @@ const Sales = () => {
                 }
             })
         })
+    }
 
+    const updateBouquets = () => {
         saleBouquetsList?.forEach(bouquetObject => {
             bouquetObject.bouquet.flowers.forEach(flwr => {
                 flowersData?.forEach(flower => {
                     if (flwr.name === flower.name) {
                         let tempAmount = flower.amount - flwr.amount * bouquetObject.amount;
-                        fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
+                        return fetch(`http://127.0.0.1:8000/api/flower/${flower.id}/update/`, {
                             method: "PUT",
                             headers: {
                                 'Accept': 'application/json, text/plain',
@@ -433,24 +456,10 @@ const Sales = () => {
                 })
             })
         })
+    }
 
-        setZerosInDeliveryFlowersArray();
-        setZerosInDeliveryBouquetsArray();
-        setSaleFlowersList([]);
-        setSaleBouquetsList([]);
-
-        setTimeout(function () {
-            refetch();
-            handleCloseMobileAdd();
-            handleCloseAdd();
-            setTimeout(function () {
-                setLoader(false);
-            }, 500);
-            setShowAddAlert(true);
-            setTimeout(function () {
-                setShowAddAlert(false);
-            }, 2000);
-        }, 1100);
+    const FinishUpdates = () => {
+        return Promise.all([updateFlowers(), updateBouquets()])
     }
 
     return (

@@ -158,6 +158,8 @@
     url("../../Images/resources_background.jpg") center center no-repeat;
   background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
     url("../../Images/resources_background.jpg") center center no-repeat;
+  background: -o-linear-gradient(top, rgba(9, 11, 15, 0.2), rgba(9, 11, 15, 1)),
+    url("../../Images/resources_background.jpg") center center no-repeat;
   background: -webkit-gradient(
       linear,
       left top,
@@ -895,19 +897,7 @@
   -webkit-box-shadow: 24em;
   box-shadow: 24em;
   padding: 2em;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  text-align: center;
 }
 
 .Close_Icon {
@@ -942,10 +932,6 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-}
-
-.Modal_button {
-  min-width: 20em;
 }
 
 .Search_Container {
@@ -1089,7 +1075,8 @@
   }
 
   .Modal_container {
-    width: 70%;
+    padding: 1em;
+    width: 80vw;
   }
 
   .Main_Delivery_Modal_container {

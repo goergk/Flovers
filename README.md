@@ -2,24 +2,29 @@
 
 ## Description
 
-Flovers - florist management system.
+Flovers - florist management system(CRUD).
 
-My Engineer’s Thesis project. React + Django Rest Framework.
+My Engineer’s Thesis project. React + Django (Rest Framework).
+
+'This Web application is providing several tools to support the management of the florists. It is designed to provide users with the ability to manage their flowers, search for flowers, bouquets, deliveries and sales. It also allows displaying information about individual products, deliveries and sales. In addition, the presented tools, in the form of graphs, are to facilitate drawing conclusions from sales.'
 
 ## Preview
 
 <p align="center">
-  <img src="https://i.postimg.cc/Znz4pRxz/Landing-Page.png">
+  <img src="https://user-images.githubusercontent.com/79984111/172250006-e3505a70-a27d-4d0d-b3b2-1636a788442e.png">
 </p>
 <p align="center">
-  <img src="https://i.postimg.cc/wx1Dx9MR/Flovers-Resources.png">
+  <img src="https://user-images.githubusercontent.com/79984111/172250153-26b609ab-a817-421b-9f4d-33bde0f2e956.png">
 </p>
 <p align="center">
-  <img src="https://i.postimg.cc/B6Yt9PH7/Flovers-Sales.png">
+  <img src="https://user-images.githubusercontent.com/79984111/172250208-25580747-efd0-4e51-bd46-e9071fe1b062.png">
 </p>
 <p align="center">
-  <img src="https://i.postimg.cc/zB07s7dm/Flovers-Stats.png">
+  <img src="https://user-images.githubusercontent.com/79984111/172250242-9bef3300-fe28-452f-b31d-0a6b38fbf6b4.png">
 </p>
+
+## Quick video review
+https://user-images.githubusercontent.com/79984111/172253346-ea6b19c1-69a4-45fd-9384-04e7cbb6959d.mp4
 
 ## Installation
 
@@ -76,7 +81,7 @@ cd Frontend/flovers/
 npm start
 ```
 
-### Testing App
+### Manual application testing
 
 You can use those credentials to test application:
 ```
@@ -90,7 +95,8 @@ Password: Pass12@!
 
 ## Tech Stack and tools:
 - React/Typescript,
-- Django Rest Framework,
+- Django (Rest Framework),
+- SQLite,
 - Redux Toolkit,
 - RTK Query,
 - Material UI,
